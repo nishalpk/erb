@@ -1,0 +1,9 @@
+model,dataset,condition,mean,count,scheme
+mock,synthetic,contra_2,0.2631578947368421,95,A/B markers
+mock,synthetic,contra_4,0.5578947368421052,95,A/B markers
+mock,synthetic,neutral,0.0,95,A/B markers
+mock,synthetic,none,0.0,95,A/B markers
+mock,synthetic,contra_2,0.28865979381443296,97,left/right
+mock,synthetic,contra_4,0.5360824742268041,97,left/right
+mock,synthetic,neutral,0.041237113402061855,97,left/right
+mock,synthetic,none,0.0,97,left/right

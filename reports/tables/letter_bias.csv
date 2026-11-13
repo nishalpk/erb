@@ -1,0 +1,2 @@
+model,dataset,P(answer=A),P(answer=first option),mean_option_mass
+mock,synthetic,0.51,0.51625,0.9499999999999998

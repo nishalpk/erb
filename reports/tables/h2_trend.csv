@@ -1,0 +1,2 @@
+model,dataset,z,p,RR_by_level,monotone
+mock,synthetic,21.03537426965804,3.113070672893146e-98,"[0.055, 0.233, 0.364, 0.529]",True

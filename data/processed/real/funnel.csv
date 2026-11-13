@@ -1,0 +1,14 @@
+stage,hico,vcoco,total
+all images,38118,10346,48464
+has whitelisted action,2569,7431,10000
+CVC1a: exactly 2 persons (annotation),383,1258,1641
+"CVC1b: separable (IoU<0.3), each >= 2% area",218,862,1080
+(V-COCO only) both persons action-labelled,0,517,517
+CVC2a: one target object (annotation),146,244,390
+CVC3: action linked to exactly one person,79,188,267
+CVC4: distractor has no conflicting label,45,186,231
+image downloaded,45,186,231
+"CVC1c: no unannotated person (detector, conf>=0.4)",17,179,196
+"CVC2b: one object (annotation U detector, conf>=0.2)",14,138,152
+CVC1 strict: each person >= 3% area,14,137,151
+FINAL automatic candidates (area >= 2%),14,138,152

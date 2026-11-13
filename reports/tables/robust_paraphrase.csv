@@ -1,0 +1,10 @@
+model,dataset,cap_tpl,q_tpl,rebind
+mock,synthetic,0,0,0.24210526315789474
+mock,synthetic,0,1,0.2736842105263158
+mock,synthetic,0,2,0.25263157894736843
+mock,synthetic,1,0,0.24210526315789474
+mock,synthetic,1,1,0.25263157894736843
+mock,synthetic,1,2,0.25263157894736843
+mock,synthetic,2,0,0.2631578947368421
+mock,synthetic,2,1,0.24210526315789474
+mock,synthetic,2,2,0.2631578947368421

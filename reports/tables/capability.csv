@@ -1,0 +1,7 @@
+model,dataset,task,acc,lo,hi,n
+mock,synthetic,"Q4 binding, no text (both orders)",0.95625,0.9397625524882001,0.9683765634769355,800
+mock,synthetic,Q1 entity identity,1.0,0.9952209490028883,1.0,800
+mock,synthetic,Q2 action present,0.99875,0.9929535807359597,0.9997793158944215,800
+mock,synthetic,Q2 foil (absent action),0.99125,0.9820493694300353,0.9957552129653023,800
+mock,synthetic,Q3 true caption = match,0.74875,0.7175534667190877,0.7775689554098493,800
+mock,synthetic,Q3 false caption = conflict,0.86875,0.8435776964089796,0.8903977534806504,800

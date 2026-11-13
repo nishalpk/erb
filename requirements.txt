@@ -1,0 +1,23 @@
+# Core (data, stats, figures)
+numpy
+pandas
+pyarrow
+scipy
+statsmodels
+scikit-learn
+matplotlib
+pyyaml
+tqdm
+pillow
+requests
+huggingface_hub
+nbformat
+# Models (install torch from https://download.pytorch.org/whl/cu128 for a CUDA GPU)
+torch
+torchvision
+transformers>=4.57
+accelerate
+bitsandbytes
+num2words
+# API fallbacks
+google-genai

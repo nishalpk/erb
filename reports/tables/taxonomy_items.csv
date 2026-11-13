@@ -1,0 +1,765 @@
+model,item_id,dataset,condition,cap_tpl,q_tpl,p_true,n_orders,both_correct,any_distractor,logit_diff,readout,rebind,tie,q2_ok,q3_flag,outcome
+mock,synth_0000,synthetic,contra_2,0,0,0.4054928161856242,2,False,True,-0.4019526496534788,logits,1,False,1,1,"Rebound, perception intact"
+mock,synth_0001,synthetic,contra_2,0,0,0.3406169783016867,2,False,True,-0.7153483046307616,logits,1,False,1,0,"Rebound, perception intact"
+mock,synth_0002,synthetic,contra_2,0,0,0.7692149195300273,2,True,False,1.2765512354907989,logits,0,False,1,1,Stable
+mock,synth_0003,synthetic,contra_2,0,0,0.9383723330199225,2,True,False,2.734494871948624,logits,0,False,1,0,Stable
+mock,synth_0004,synthetic,contra_2,0,0,0.9493945302145997,2,True,False,2.9845047936768143,logits,0,False,1,1,Stable
+mock,synth_0005,synthetic,contra_2,0,0,0.5271009512516766,2,False,True,0.10886381781311133,logits,0,False,1,1,Stable
+mock,synth_0006,synthetic,contra_2,0,0,0.7531859182468874,2,True,False,1.1287875033532306,logits,0,False,1,1,Stable
+mock,synth_0007,synthetic,contra_2,0,0,0.8962823334960106,2,True,False,2.408661860815366,logits,0,False,1,1,Stable
+mock,synth_0008,synthetic,contra_2,0,0,0.7204932940891171,2,True,False,0.9484424924440029,logits,0,False,1,1,Stable
+mock,synth_0009,synthetic,contra_2,0,0,0.8019146364846805,2,True,False,1.4094325239770022,logits,0,False,1,1,Stable
+mock,synth_0010,synthetic,contra_2,0,0,0.9192549377446653,2,True,False,2.4334166178650642,logits,0,False,1,1,Stable
+mock,synth_0011,synthetic,contra_2,0,0,0.743692804162892,2,True,False,1.0895682680074552,logits,0,False,1,1,Stable
+mock,synth_0012,synthetic,contra_2,0,0,0.29293414932312556,2,False,True,-0.9394779050144726,logits,1,False,1,1,"Rebound, perception intact"
+mock,synth_0013,synthetic,contra_2,0,0,0.6448976893545395,2,True,False,0.6145746411426658,logits,0,False,1,1,Stable
+mock,synth_0014,synthetic,contra_2,0,0,0.31707875945368547,2,False,True,-0.7816305509900712,logits,1,False,1,1,"Rebound, perception intact"
+mock,synth_0015,synthetic,contra_2,0,0,0.6975230446966463,2,True,False,0.8369919283433316,logits,0,False,1,1,Stable
+mock,synth_0016,synthetic,contra_2,0,0,0.9428198960343175,2,True,False,2.8069260466968378,logits,0,False,1,1,Stable
+mock,synth_0017,synthetic,contra_2,0,0,0.9461596323224055,2,True,False,2.8666287574746696,logits,0,False,1,1,Stable
+mock,synth_0018,synthetic,contra_2,0,0,0.9718142060854547,2,True,False,3.5848070368597904,logits,0,False,1,1,Stable
+mock,synth_0019,synthetic,contra_2,0,0,0.9033022431761772,2,True,False,2.2349071964175433,logits,0,False,1,1,Stable
+mock,synth_0020,synthetic,contra_2,0,0,0.9822118026230138,2,True,False,4.139170971547782,logits,0,False,1,1,Stable
+mock,synth_0021,synthetic,contra_2,0,0,0.9588863982006788,2,True,False,3.1953769591483843,logits,0,False,1,1,Stable
+mock,synth_0022,synthetic,contra_2,0,0,0.8804569549702728,2,True,False,2.2086636512894753,logits,0,False,1,1,Stable
+mock,synth_0023,synthetic,contra_2,0,0,0.9136338952094504,2,True,False,2.430340179500768,logits,0,False,1,0,Stable
+mock,synth_0024,synthetic,contra_2,0,0,0.7942152946650204,2,True,False,1.3526648279527609,logits,0,False,1,0,Stable
+mock,synth_0025,synthetic,contra_2,0,0,0.7811798883306404,2,True,False,1.3418847963258336,logits,0,False,1,1,Stable
+mock,synth_0026,synthetic,contra_2,0,0,0.9820147362236666,2,True,False,4.001553808655841,logits,0,False,1,0,Stable
+mock,synth_0027,synthetic,contra_2,0,0,0.8345382739542215,2,True,False,1.6186751415524674,logits,0,False,1,1,Stable
+mock,synth_0028,synthetic,contra_2,0,0,0.8169977399004326,2,True,False,1.56596763940478,logits,0,False,1,1,Stable
+mock,synth_0029,synthetic,contra_2,0,0,0.677926355317231,2,True,False,0.8134348667658273,logits,0,False,1,1,Stable
+mock,synth_0030,synthetic,contra_2,0,0,0.38780596251890975,2,False,True,-0.47600579662297476,logits,1,False,1,1,"Rebound, perception intact"
+mock,synth_0031,synthetic,contra_2,0,0,0.8354536552407553,2,True,False,1.6780812542582701,logits,0,False,1,1,Stable
+mock,synth_0032,synthetic,contra_2,0,0,0.8546387709856564,2,True,False,1.8134001879734503,logits,0,False,1,1,Stable
+mock,synth_0033,synthetic,contra_2,0,0,0.8485175167427648,2,True,False,1.7236527869720741,logits,0,False,1,1,Stable
+mock,synth_0034,synthetic,contra_2,0,0,0.8013266597322588,2,True,False,1.5784912945574114,logits,0,False,1,1,Stable
+mock,synth_0035,synthetic,contra_2,0,0,0.8943153513948962,2,True,False,2.1483705414723913,logits,0,False,1,1,Stable
+mock,synth_0036,synthetic,contra_2,0,0,0.9590125165899503,2,True,False,3.2999436875393,logits,0,False,1,1,Stable
+mock,synth_0037,synthetic,contra_2,0,0,0.4432236777725964,2,False,True,-0.24211724755228164,logits,1,False,1,0,"Rebound, perception intact"
+mock,synth_0038,synthetic,contra_2,0,0,0.4922245706302696,2,False,True,-0.03110514132326564,logits,1,False,1,1,"Rebound, perception intact"
+mock,synth_0039,synthetic,contra_2,0,0,0.6856267842108374,2,True,False,0.8422293122767593,logits,0,False,1,1,Stable
+mock,synth_0040,synthetic,contra_2,0,0,0.20390894503068657,2,False,True,-1.3656015199555342,logits,1,False,1,1,"Rebound, perception intact"
+mock,synth_0041,synthetic,contra_2,0,0,0.775859036951384,2,True,False,1.2679755020886843,logits,0,False,1,1,Stable
+mock,synth_0042,synthetic,contra_2,0,0,0.4715518627509738,2,False,True,-0.11432401914203333,logits,1,False,1,1,"Rebound, perception intact"
+mock,synth_0043,synthetic,contra_2,0,0,0.9708046977459621,2,True,False,3.5183921043388406,logits,0,False,1,1,Stable
+mock,synth_0044,synthetic,contra_2,0,0,0.37950068994944786,2,False,True,-0.5505294794274214,logits,1,False,1,1,"Rebound, perception intact"
+mock,synth_0045,synthetic,contra_2,0,0,0.41839630703844605,2,False,True,-0.34168933683685737,logits,1,False,1,0,"Rebound, perception intact"
+mock,synth_0046,synthetic,contra_2,0,0,0.4187335417170207,2,False,True,-0.3348962160493915,logits,1,False,1,1,"Rebound, perception intact"
+mock,synth_0047,synthetic,contra_2,0,0,0.6929993952553886,2,True,False,0.8194101933312612,logits,0,False,1,1,Stable
+mock,synth_0048,synthetic,contra_2,0,0,0.8788932334455084,2,True,False,2.0604934978469522,logits,0,False,1,1,Stable
+mock,synth_0049,synthetic,contra_2,0,0,0.7276288961719143,2,True,False,1.1746534903128678,logits,0,False,1,1,Stable
+mock,synth_0050,synthetic,contra_2,0,0,0.4373808293061435,2,False,True,-0.271313934933354,logits,1,False,1,1,"Rebound, perception intact"
+mock,synth_0051,synthetic,contra_2,0,0,0.9548566103389544,2,True,False,3.16140443191851,logits,0,False,1,1,Stable
+mock,synth_0052,synthetic,contra_2,0,0,0.4894104605613178,2,False,True,-0.042665849026645886,logits,1,False,1,1,"Rebound, perception intact"
+mock,synth_0053,synthetic,contra_2,0,0,0.7585620740844181,2,True,False,1.1984100528769974,logits,0,False,1,1,Stable
+mock,synth_0054,synthetic,contra_2,0,0,0.36883099930052465,2,False,True,-0.5538007606628689,logits,1,False,1,1,"Rebound, perception intact"
+mock,synth_0055,synthetic,contra_2,0,0,0.7660056091881832,2,True,False,1.2143819644620935,logits,0,False,1,1,Stable
+mock,synth_0056,synthetic,contra_2,0,0,0.9223386546989776,2,True,False,2.496800330172219,logits,0,False,1,1,Stable
+mock,synth_0057,synthetic,contra_2,0,0,0.40501913461787964,2,False,True,-0.4818553927716148,logits,1,False,1,0,"Rebound, perception intact"
+mock,synth_0058,synthetic,contra_2,0,0,0.4647601148131443,2,False,True,-0.1583938558001337,logits,1,False,1,1,"Rebound, perception intact"
+mock,synth_0059,synthetic,contra_2,0,0,0.8808173714543902,2,True,False,2.0135035397435797,logits,0,False,1,1,Stable
+mock,synth_0060,synthetic,contra_2,0,0,0.7535430673735231,2,True,False,1.1613311984781232,logits,0,False,1,1,Stable
+mock,synth_0061,synthetic,contra_2,0,0,0.482645371505447,2,False,True,-0.06966373272442633,logits,1,False,1,1,"Rebound, perception intact"
+mock,synth_0062,synthetic,contra_2,0,0,0.5246761807553807,2,True,False,0.09893678909452569,logits,0,False,1,0,Stable
+mock,synth_0063,synthetic,contra_2,0,0,0.026310509120379542,2,False,True,-3.669426365301085,logits,1,False,1,1,"Rebound, perception intact"
+mock,synth_0064,synthetic,contra_2,0,0,0.2274516402186325,2,False,True,-1.2555412971741569,logits,1,False,1,1,"Rebound, perception intact"
+mock,synth_0065,synthetic,contra_2,0,0,0.9356320527581021,2,True,False,2.7022938082948285,logits,0,False,1,1,Stable
+mock,synth_0066,synthetic,contra_2,0,0,0.9384305140363813,2,True,False,2.749504203644987,logits,0,False,1,1,Stable
+mock,synth_0067,synthetic,contra_2,0,0,0.6792833678839891,2,True,False,0.7589805125643884,logits,0,False,1,1,Stable
+mock,synth_0068,synthetic,contra_2,0,0,0.6510110278501571,2,True,False,0.6473623741982857,logits,0,False,1,1,Stable
+mock,synth_0069,synthetic,contra_2,0,0,0.36425905832749084,2,False,True,-0.5576427141196009,logits,1,False,1,0,"Rebound, perception intact"
+mock,synth_0070,synthetic,contra_2,0,0,0.6081903102091484,2,True,False,0.44003072957285105,logits,0,False,1,1,Stable
+mock,synth_0071,synthetic,contra_2,0,0,0.8645954396557014,2,True,False,1.858070824198471,logits,0,False,1,1,Stable
+mock,synth_0072,synthetic,contra_2,0,0,0.42646968858704337,2,False,True,-0.29917181008083105,logits,1,False,1,1,"Rebound, perception intact"
+mock,synth_0073,synthetic,contra_2,0,0,0.8237862823155245,2,True,False,1.6890912443801438,logits,0,False,1,1,Stable
+mock,synth_0074,synthetic,contra_2,0,0,0.73009952289947,2,True,False,1.0504548978572805,logits,0,False,1,1,Stable
+mock,synth_0075,synthetic,contra_2,0,0,0.8721492001110607,2,True,False,1.920454758143676,logits,0,False,1,1,Stable
+mock,synth_0076,synthetic,contra_2,0,0,0.5231195990684459,2,False,True,0.09374408579888227,logits,0,False,1,1,Stable
+mock,synth_0078,synthetic,contra_2,0,0,0.6143781880798673,2,True,False,0.4912585375788779,logits,0,False,1,1,Stable
+mock,synth_0079,synthetic,contra_2,0,0,0.9143450470377943,2,True,False,2.390558651638884,logits,0,False,1,1,Stable
+mock,synth_0080,synthetic,contra_2,0,0,0.1154034619742234,2,False,True,-2.0486295864981567,logits,1,False,1,1,"Rebound, perception intact"
+mock,synth_0081,synthetic,contra_2,0,0,0.9582831020750322,2,True,False,3.136986213974665,logits,0,False,1,1,Stable
+mock,synth_0082,synthetic,contra_2,0,0,0.8920574943738804,2,True,False,2.133296307669524,logits,0,False,1,1,Stable
+mock,synth_0083,synthetic,contra_2,0,0,0.39953938196915295,2,False,True,-0.4971977416608827,logits,1,False,1,1,"Rebound, perception intact"
+mock,synth_0084,synthetic,contra_2,0,0,0.6619129681152802,2,True,False,0.7142355929893351,logits,0,False,1,1,Stable
+mock,synth_0085,synthetic,contra_2,0,0,0.901139256616086,2,True,False,2.2354318955176153,logits,0,False,1,1,Stable
+mock,synth_0086,synthetic,contra_2,0,0,0.865857967915353,2,True,False,1.9222310799077609,logits,0,False,1,1,Stable
+mock,synth_0087,synthetic,contra_2,0,0,0.9595044786206215,2,True,False,3.2200420812851895,logits,0,False,1,1,Stable
+mock,synth_0088,synthetic,contra_2,0,0,0.8430080518515082,2,True,False,1.7603710438644347,logits,0,False,1,1,Stable
+mock,synth_0089,synthetic,contra_2,0,0,0.8461242798611126,2,True,False,1.8147722318860982,logits,0,False,1,1,Stable
+mock,synth_0090,synthetic,contra_2,0,0,0.5941015317724938,2,True,False,0.3928206615322913,logits,0,False,1,1,Stable
+mock,synth_0091,synthetic,contra_2,0,0,0.8489007069498922,2,True,False,1.795370859255421,logits,0,False,1,1,Stable
+mock,synth_0092,synthetic,contra_2,0,0,0.7329701421046165,2,True,False,1.1374613237640605,logits,0,False,1,0,Stable
+mock,synth_0093,synthetic,contra_2,0,0,0.9044572129151244,2,True,False,2.2480760393051145,logits,0,False,1,0,Stable
+mock,synth_0094,synthetic,contra_2,0,0,0.9784413850766038,2,True,False,3.8621094212392193,logits,0,False,1,1,Stable
+mock,synth_0095,synthetic,contra_2,0,0,0.6695938054060908,2,True,False,0.7256568922000133,logits,0,False,1,1,Stable
+mock,synth_0096,synthetic,contra_2,0,0,0.81242021273666,2,True,False,1.556999816602492,logits,0,False,1,1,Stable
+mock,synth_0097,synthetic,contra_2,0,0,0.8960409224588786,2,True,False,2.184118410785893,logits,0,False,1,1,Stable
+mock,synth_0098,synthetic,contra_2,0,0,0.8885484607105641,2,True,False,2.1065896943425386,logits,0,False,1,1,Stable
+mock,synth_0099,synthetic,contra_2,0,0,0.5776974550319954,2,True,False,0.31342565381213294,logits,0,False,1,1,Stable
+mock,synth_0100,synthetic,contra_2,0,0,0.7031217988850853,2,True,False,0.8865359383033873,logits,0,False,1,1,Stable
+mock,synth_0101,synthetic,contra_2,0,0,0.6932923336647334,2,True,False,0.8874473047010998,logits,0,False,1,1,Stable
+mock,synth_0102,synthetic,contra_2,0,0,0.8577965958275933,2,True,False,1.8267373190760328,logits,0,False,1,1,Stable
+mock,synth_0103,synthetic,contra_2,0,0,0.9211596988184088,2,True,False,2.641011141530777,logits,0,False,1,1,Stable
+mock,synth_0104,synthetic,contra_2,0,0,0.9507469261770074,2,True,False,2.9672460381923957,logits,0,False,1,1,Stable
+mock,synth_0105,synthetic,contra_2,0,0,0.4744326421662789,2,False,True,-0.11305667014726145,logits,1,False,1,0,"Rebound, perception intact"
+mock,synth_0106,synthetic,contra_2,0,0,0.9353196231352108,2,True,False,2.7901395698850964,logits,0,False,1,1,Stable
+mock,synth_0107,synthetic,contra_2,0,0,0.17477811590717499,2,False,True,-1.6352206093124,logits,1,False,1,1,"Rebound, perception intact"
+mock,synth_0108,synthetic,contra_2,0,0,0.9733318087437657,2,True,False,3.674386298907959,logits,0,False,1,1,Stable
+mock,synth_0109,synthetic,contra_2,0,0,0.8657655248710003,2,True,False,1.8675501456828885,logits,0,False,1,0,Stable
+mock,synth_0110,synthetic,contra_2,0,0,0.7900451577502114,2,True,False,1.5823830251004085,logits,0,False,1,1,Stable
+mock,synth_0111,synthetic,contra_2,0,0,0.6986065485122882,2,True,False,0.8447530046071237,logits,0,False,1,1,Stable
+mock,synth_0112,synthetic,contra_2,0,0,0.910131158516217,2,True,False,2.340501786323631,logits,0,False,1,1,Stable
+mock,synth_0113,synthetic,contra_2,0,0,0.4953875250256518,2,False,True,-0.0196664467245265,logits,1,False,1,1,"Rebound, perception intact"
+mock,synth_0114,synthetic,contra_2,0,0,0.7510010528769397,2,True,False,1.1274397793361397,logits,0,False,1,0,Stable
+mock,synth_0116,synthetic,contra_2,0,0,0.9204072278342776,2,True,False,2.4591142195231077,logits,0,False,1,1,Stable
+mock,synth_0117,synthetic,contra_2,0,0,0.9704298706088741,2,True,False,3.5039295660962155,logits,0,False,1,1,Stable
+mock,synth_0118,synthetic,contra_2,0,0,0.7154172293933648,2,True,False,0.9909316926080693,logits,0,False,1,1,Stable
+mock,synth_0119,synthetic,contra_2,0,0,0.2410589817753226,2,False,True,-1.1468933536489967,logits,1,False,1,1,"Rebound, perception intact"
+mock,synth_0120,synthetic,contra_2,0,0,0.8550464986024882,2,True,False,1.7747864185348652,logits,0,False,1,1,Stable
+mock,synth_0121,synthetic,contra_2,0,0,0.9787114023393273,2,True,False,3.937644971122577,logits,0,False,1,1,Stable
+mock,synth_0122,synthetic,contra_2,0,0,0.7948829380570029,2,True,False,1.4638539598466462,logits,0,False,1,1,Stable
+mock,synth_0123,synthetic,contra_2,0,0,0.4213327777087437,2,False,True,-0.3441860962390309,logits,1,False,1,1,"Rebound, perception intact"
+mock,synth_0124,synthetic,contra_2,0,0,0.6353769783874081,2,True,False,0.5724959572707083,logits,0,False,1,1,Stable
+mock,synth_0125,synthetic,contra_2,0,0,0.9221868604685333,2,True,False,2.496894317012866,logits,0,False,1,1,Stable
+mock,synth_0126,synthetic,contra_2,0,0,0.9608691819968033,2,True,False,3.3285550285608467,logits,0,False,1,1,Stable
+mock,synth_0127,synthetic,contra_2,0,0,0.9118538058351007,2,True,False,2.414660216174571,logits,0,False,1,1,Stable
+mock,synth_0128,synthetic,contra_2,0,0,0.9044088714741747,2,True,False,2.303368228934243,logits,0,False,1,1,Stable
+mock,synth_0129,synthetic,contra_2,0,0,0.9612912118386913,2,True,False,3.390425537543665,logits,0,False,1,0,Stable
+mock,synth_0131,synthetic,contra_2,0,0,0.9277287815679826,2,True,False,2.562621324237419,logits,0,False,1,1,Stable
+mock,synth_0132,synthetic,contra_2,0,0,0.9410760207360125,2,True,False,2.841402985693988,logits,0,False,1,1,Stable
+mock,synth_0133,synthetic,contra_2,0,0,0.8781833991827712,2,True,False,1.9753551316062015,logits,0,False,1,1,Stable
+mock,synth_0135,synthetic,contra_2,0,0,0.9631168493631024,2,True,False,3.347728540880907,logits,0,False,1,1,Stable
+mock,synth_0136,synthetic,contra_2,0,0,0.7874449153158908,2,True,False,1.310373046639089,logits,0,False,1,1,Stable
+mock,synth_0137,synthetic,contra_2,0,0,0.8098887747759955,2,True,False,1.469042652485848,logits,0,False,1,1,Stable
+mock,synth_0138,synthetic,contra_2,0,0,0.5722170949948862,2,False,True,0.3269899290341207,logits,0,False,1,1,Stable
+mock,synth_0139,synthetic,contra_2,0,0,0.8140028874528504,2,True,False,1.5321922915922759,logits,0,False,1,1,Stable
+mock,synth_0140,synthetic,contra_2,0,0,0.8198771382530092,2,True,False,1.6375641582849658,logits,0,False,1,1,Stable
+mock,synth_0141,synthetic,contra_2,0,0,0.8067352685493854,2,True,False,1.428962880865705,logits,0,False,1,1,Stable
+mock,synth_0142,synthetic,contra_2,0,0,0.7921119063320315,2,True,False,1.342825566703306,logits,0,False,1,1,Stable
+mock,synth_0143,synthetic,contra_2,0,0,0.8912737420524677,2,True,False,2.1212732929972504,logits,0,False,1,1,Stable
+mock,synth_0144,synthetic,contra_2,0,0,0.5244431172660888,2,False,True,0.1015966430916524,logits,0,False,1,1,Stable
+mock,synth_0145,synthetic,contra_2,0,0,0.24752494712278933,2,False,True,-1.1610890188617142,logits,1,False,1,1,"Rebound, perception intact"
+mock,synth_0146,synthetic,contra_2,0,0,0.4282943015739846,2,False,True,-0.3055833662972876,logits,1,False,1,1,"Rebound, perception intact"
+mock,synth_0147,synthetic,contra_2,0,0,0.5642160473659318,2,False,True,0.2637961754504581,logits,0,False,1,1,Stable
+mock,synth_0148,synthetic,contra_2,0,0,0.727142782170477,2,True,False,1.1735769789828026,logits,0,False,1,1,Stable
+mock,synth_0149,synthetic,contra_2,0,0,0.9524692786109376,2,True,False,3.0210232243614312,logits,0,False,1,1,Stable
+mock,synth_0151,synthetic,contra_2,0,0,0.9439446745300193,2,True,False,3.2141053005497064,logits,0,False,1,0,Stable
+mock,synth_0152,synthetic,contra_2,0,0,0.6874414124850055,2,True,False,0.7949140450693872,logits,0,False,1,1,Stable
+mock,synth_0153,synthetic,contra_2,0,0,0.6578667520071182,2,True,False,0.6836453707380516,logits,0,False,1,0,Stable
+mock,synth_0154,synthetic,contra_2,0,0,0.9223300610331548,2,True,False,2.483073110616529,logits,0,False,1,1,Stable
+mock,synth_0155,synthetic,contra_2,0,0,0.42204341781826804,2,False,True,-0.32378623645956506,logits,1,False,1,1,"Rebound, perception intact"
+mock,synth_0156,synthetic,contra_2,0,0,0.936465546055733,2,True,False,2.829113262386852,logits,0,False,1,1,Stable
+mock,synth_0157,synthetic,contra_2,0,0,0.6350902996264299,2,True,False,0.5605204337384215,logits,0,False,1,1,Stable
+mock,synth_0158,synthetic,contra_2,0,0,0.8447442768838865,2,True,False,1.6998511744064255,logits,0,False,1,1,Stable
+mock,synth_0159,synthetic,contra_2,0,0,0.5806186032597307,2,True,False,0.32543009420874713,logits,0,False,1,1,Stable
+mock,synth_0160,synthetic,contra_2,0,0,0.9715109351302885,2,True,False,3.6156797262276,logits,0,False,1,0,Stable
+mock,synth_0161,synthetic,contra_2,0,0,0.2360254844750022,2,False,True,-1.222486010073641,logits,1,False,1,0,"Rebound, perception intact"
+mock,synth_0162,synthetic,contra_2,0,0,0.5419229647186592,2,False,True,0.191212706940239,logits,0,False,1,1,Stable
+mock,synth_0163,synthetic,contra_2,0,0,0.6997183059029906,2,True,False,0.8468789455209513,logits,0,False,1,1,Stable
+mock,synth_0165,synthetic,contra_2,0,0,0.4710597621867657,2,False,True,-0.11612507716050763,logits,1,False,1,1,"Rebound, perception intact"
+mock,synth_0166,synthetic,contra_2,0,0,0.8336046094005014,2,True,False,1.643743969069798,logits,0,False,1,1,Stable
+mock,synth_0167,synthetic,contra_2,0,0,0.7155642076747541,2,True,False,0.9360262191236541,logits,0,False,1,1,Stable
+mock,synth_0168,synthetic,contra_2,0,0,0.7316021042579155,2,True,False,1.0256754125222631,logits,0,False,1,1,Stable
+mock,synth_0169,synthetic,contra_2,0,0,0.8327833485883718,2,True,False,1.6901371148077124,logits,0,False,1,1,Stable
+mock,synth_0170,synthetic,contra_2,0,0,0.9507859825502996,2,True,False,3.075332058295981,logits,0,False,1,1,Stable
+mock,synth_0171,synthetic,contra_2,0,0,0.7978563261946173,2,True,False,1.3766540431607044,logits,0,False,1,1,Stable
+mock,synth_0172,synthetic,contra_2,0,0,0.9370972108552995,2,True,False,2.7315524394831088,logits,0,False,1,1,Stable
+mock,synth_0173,synthetic,contra_2,0,0,0.9236220687536119,2,True,False,2.4941861141056663,logits,0,False,1,1,Stable
+mock,synth_0174,synthetic,contra_2,0,0,0.9569345579073865,2,True,False,3.1687479231224964,logits,0,False,1,1,Stable
+mock,synth_0175,synthetic,contra_2,0,0,0.985021424629053,2,True,False,4.2764219376638275,logits,0,False,1,1,Stable
+mock,synth_0176,synthetic,contra_2,0,0,0.809745936131152,2,True,False,1.4668983790187173,logits,0,False,1,1,Stable
+mock,synth_0177,synthetic,contra_2,0,0,0.9310513725983407,2,True,False,2.725112405280944,logits,0,False,1,1,Stable
+mock,synth_0178,synthetic,contra_2,0,0,0.49389693497731857,2,False,True,-0.0255066469000646,logits,1,False,1,1,"Rebound, perception intact"
+mock,synth_0179,synthetic,contra_2,0,0,0.3195159589651041,2,False,True,-0.760379530061704,logits,1,False,1,1,"Rebound, perception intact"
+mock,synth_0180,synthetic,contra_2,0,0,0.4233073158946479,2,False,True,-0.3327889665213227,logits,1,False,1,1,"Rebound, perception intact"
+mock,synth_0181,synthetic,contra_2,0,0,0.7416827708961473,2,True,False,1.1537022441924911,logits,0,False,1,1,Stable
+mock,synth_0182,synthetic,contra_2,0,0,0.6481021402747513,2,False,True,0.7028887949305741,logits,0,False,1,1,Stable
+mock,synth_0183,synthetic,contra_2,0,0,0.8943063764303762,2,True,False,2.1804080807065476,logits,0,False,1,1,Stable
+mock,synth_0184,synthetic,contra_2,0,0,0.9253166924501068,2,True,False,2.5305412865496626,logits,0,False,1,0,Stable
+mock,synth_0185,synthetic,contra_2,0,0,0.8563279101056325,2,True,False,1.864558728337134,logits,0,False,1,0,Stable
+mock,synth_0186,synthetic,contra_2,0,0,0.7948605022410984,2,True,False,1.4137509382474125,logits,0,False,1,1,Stable
+mock,synth_0187,synthetic,contra_2,0,0,0.36372437937199054,2,False,True,-0.5663757205794497,logits,1,False,1,1,"Rebound, perception intact"
+mock,synth_0188,synthetic,contra_2,0,0,0.26454188019654756,2,False,True,-1.0284963608551951,logits,1,False,1,1,"Rebound, perception intact"
+mock,synth_0189,synthetic,contra_2,0,0,0.863013150381317,2,True,False,1.863804501861391,logits,0,False,1,1,Stable
+mock,synth_0190,synthetic,contra_2,0,0,0.6802159958036603,2,True,False,0.8294977100630827,logits,0,False,1,1,Stable
+mock,synth_0191,synthetic,contra_2,0,0,0.8764699576942934,2,True,False,1.9595065672887735,logits,0,False,1,1,Stable
+mock,synth_0192,synthetic,contra_2,0,0,0.9245057514397165,2,True,False,2.519260692025738,logits,0,False,1,1,Stable
+mock,synth_0193,synthetic,contra_2,0,0,0.035103226699615186,2,False,True,-3.313842238489082,logits,1,False,1,1,"Rebound, perception intact"
+mock,synth_0194,synthetic,contra_2,0,0,0.9271454990183992,2,True,False,2.773826365113287,logits,0,False,1,1,Stable
+mock,synth_0195,synthetic,contra_2,0,0,0.6301052560310159,2,True,False,0.535249481794702,logits,0,False,1,1,Stable
+mock,synth_0196,synthetic,contra_2,0,0,0.7903649545023733,2,True,False,1.3615925598503595,logits,0,False,1,0,Stable
+mock,synth_0197,synthetic,contra_2,0,0,0.8411076906493695,2,True,False,1.7204712976636527,logits,0,False,1,1,Stable
+mock,synth_0198,synthetic,contra_2,0,0,0.9706651708712384,2,True,False,3.6087033776982342,logits,0,False,1,1,Stable
+mock,synth_0199,synthetic,contra_2,0,0,0.5459286638990306,2,False,True,0.21814694830211634,logits,0,False,1,1,Stable
+mock,synth_0200,synthetic,contra_2,0,0,0.5963242865899363,2,True,False,0.39078648855872233,logits,0,False,1,1,Stable
+mock,synth_0201,synthetic,contra_2,0,0,0.2936429479511525,2,False,True,-0.8847098959151009,logits,1,False,1,1,"Rebound, perception intact"
+mock,synth_0202,synthetic,contra_2,0,0,0.5152474439942171,2,False,True,0.06107181080998314,logits,0,False,1,1,Stable
+mock,synth_0203,synthetic,contra_2,0,0,0.2603806010253812,2,False,True,-1.0859576966910378,logits,1,False,1,1,"Rebound, perception intact"
+mock,synth_0204,synthetic,contra_2,0,0,0.8992215243167132,2,True,False,2.2871008828869486,logits,0,False,1,1,Stable
+mock,synth_0205,synthetic,contra_2,0,0,0.6143568898127937,2,True,False,0.4683358859423445,logits,0,False,1,1,Stable
+mock,synth_0206,synthetic,contra_2,0,0,0.9828527518594117,2,True,False,4.087576842031962,logits,0,False,1,1,Stable
+mock,synth_0207,synthetic,contra_2,0,0,0.9031259656889515,2,True,False,2.2433623128368785,logits,0,False,1,1,Stable
+mock,synth_0208,synthetic,contra_2,0,0,0.07987005521301471,2,False,True,-2.4654780524681206,logits,1,False,1,1,"Rebound, perception intact"
+mock,synth_0209,synthetic,contra_2,0,0,0.8425799154662248,2,True,False,1.6787139510792493,logits,0,False,1,1,Stable
+mock,synth_0210,synthetic,contra_2,0,0,0.9751888152797801,2,True,False,3.6873970699533487,logits,0,False,1,1,Stable
+mock,synth_0211,synthetic,contra_2,0,0,0.9817612225445705,2,True,False,4.244126148281543,logits,0,False,1,1,Stable
+mock,synth_0212,synthetic,contra_2,0,0,0.9587035008150712,2,True,False,3.1921541665860103,logits,0,False,1,1,Stable
+mock,synth_0213,synthetic,contra_2,0,0,0.9162735307972596,2,True,False,2.510611925562274,logits,0,False,1,1,Stable
+mock,synth_0214,synthetic,contra_2,0,0,0.8570383071419785,2,True,False,1.8006294199488238,logits,0,False,1,1,Stable
+mock,synth_0215,synthetic,contra_2,0,0,0.8225851448149424,2,True,False,1.5881778869557825,logits,0,False,1,1,Stable
+mock,synth_0216,synthetic,contra_2,0,0,0.3267383504496016,2,False,True,-0.7469697575796301,logits,1,False,1,0,"Rebound, perception intact"
+mock,synth_0217,synthetic,contra_2,0,0,0.910998881479941,2,True,False,2.4333191866265778,logits,0,False,1,1,Stable
+mock,synth_0218,synthetic,contra_2,0,0,0.6155832373590251,2,True,False,0.47158642043413834,logits,0,False,1,1,Stable
+mock,synth_0219,synthetic,contra_2,0,0,0.6102247902746423,2,False,True,0.5436428254924093,logits,0,False,1,1,Stable
+mock,synth_0220,synthetic,contra_2,0,0,0.6967856139306277,2,True,False,0.836190955998168,logits,0,False,1,1,Stable
+mock,synth_0221,synthetic,contra_2,0,0,0.9673331383562381,2,True,False,3.398183941744361,logits,0,False,1,1,Stable
+mock,synth_0222,synthetic,contra_2,0,0,0.5850328779490723,2,False,True,0.38463759659180347,logits,0,False,1,1,Stable
+mock,synth_0223,synthetic,contra_2,0,0,0.6108150370494434,2,True,False,0.45156984564116676,logits,0,False,1,1,Stable
+mock,synth_0224,synthetic,contra_2,0,0,0.8367915658286096,2,True,False,1.6495147197323168,logits,0,False,1,1,Stable
+mock,synth_0225,synthetic,contra_2,0,0,0.9219320623993343,2,True,False,2.6507706440685492,logits,0,False,1,0,Stable
+mock,synth_0226,synthetic,contra_2,0,0,0.8058158427750666,2,True,False,1.4420441228270955,logits,0,False,1,1,Stable
+mock,synth_0227,synthetic,contra_2,0,0,0.5788063891527353,2,False,True,0.3355529362426658,logits,0,False,1,1,Stable
+mock,synth_0228,synthetic,contra_2,0,0,0.9169139442482073,2,True,False,2.4489103384148914,logits,0,False,1,1,Stable
+mock,synth_0230,synthetic,contra_2,0,0,0.6403833958796742,2,True,False,0.5867659498320432,logits,0,False,1,1,Stable
+mock,synth_0231,synthetic,contra_2,0,0,0.12193755804453879,2,False,True,-2.0464744171547804,logits,1,False,1,1,"Rebound, perception intact"
+mock,synth_0232,synthetic,contra_2,0,0,0.7725218353667533,2,True,False,1.404111054809431,logits,0,False,1,1,Stable
+mock,synth_0234,synthetic,contra_2,0,0,0.8221789276078579,2,True,False,1.7175039631353077,logits,0,False,1,1,Stable
+mock,synth_0235,synthetic,contra_2,0,0,0.7224352667560252,2,True,False,0.9574788134545822,logits,0,False,1,1,Stable
+mock,synth_0236,synthetic,contra_2,0,0,0.9637627519554033,2,True,False,3.4745503342106154,logits,0,False,1,1,Stable
+mock,synth_0237,synthetic,contra_2,0,0,0.5404768031114726,2,False,True,0.17809943031381592,logits,0,False,1,1,Stable
+mock,synth_0238,synthetic,contra_2,0,0,0.23307593940199403,2,False,True,-1.217768930721027,logits,1,False,1,1,"Rebound, perception intact"
+mock,synth_0239,synthetic,contra_2,0,0,0.9918509189477052,2,True,False,4.809699849975585,logits,0,False,1,1,Stable
+mock,synth_0240,synthetic,contra_2,0,0,0.8871818745003498,2,True,False,2.1547692433293353,logits,0,False,1,0,Stable
+mock,synth_0241,synthetic,contra_2,0,0,0.1498159682763616,2,False,True,-1.762747665551335,logits,1,False,1,1,"Rebound, perception intact"
+mock,synth_0242,synthetic,contra_2,0,0,0.769819174523282,2,True,False,1.3227759270564714,logits,0,False,1,1,Stable
+mock,synth_0243,synthetic,contra_2,0,0,0.6871228195375789,2,True,False,0.7877326720850549,logits,0,False,1,1,Stable
+mock,synth_0244,synthetic,contra_2,0,0,0.5919564946063072,2,True,False,0.3726289407483696,logits,0,False,1,1,Stable
+mock,synth_0245,synthetic,contra_2,0,0,0.9462327437313293,2,True,False,2.9272076283410646,logits,0,False,1,1,Stable
+mock,synth_0246,synthetic,contra_2,0,0,0.9662041108879065,2,True,False,3.397245337497295,logits,0,False,1,1,Stable
+mock,synth_0247,synthetic,contra_2,0,0,0.8013339025152819,2,True,False,1.4231810614615643,logits,0,False,1,0,Stable
+mock,synth_0248,synthetic,contra_2,0,0,0.9255517530953632,2,True,False,2.6098998775352467,logits,0,False,1,1,Stable
+mock,synth_0249,synthetic,contra_2,0,0,0.9148045783181848,2,True,False,2.3826268869966154,logits,0,False,1,1,Stable
+mock,synth_0250,synthetic,contra_2,0,0,0.8922955463772265,2,True,False,2.2313188928808767,logits,0,False,1,1,Stable
+mock,synth_0251,synthetic,contra_2,0,0,0.4405043110432443,2,False,True,-0.2408084881399512,logits,1,False,1,1,"Rebound, perception intact"
+mock,synth_0252,synthetic,contra_2,0,0,0.854490538942327,2,True,False,1.8557374492952428,logits,0,False,1,1,Stable
+mock,synth_0253,synthetic,contra_2,0,0,0.841254341854209,2,True,False,1.671062977663596,logits,0,False,1,1,Stable
+mock,synth_0254,synthetic,contra_2,0,0,0.8240053197058412,2,True,False,1.543751234049226,logits,0,False,1,1,Stable
+mock,synth_0255,synthetic,contra_2,0,0,0.6420763532324418,2,True,False,0.5900159698600846,logits,0,False,1,1,Stable
+mock,synth_0256,synthetic,contra_2,0,0,0.22268173846738332,2,False,True,-1.2774091857731433,logits,1,False,1,0,"Rebound, perception intact"
+mock,synth_0257,synthetic,contra_2,0,0,0.7436097877600119,2,True,False,1.0670170270789443,logits,0,False,1,1,Stable
+mock,synth_0258,synthetic,contra_2,0,0,0.36533337197498145,2,False,True,-0.5524301262036901,logits,1,False,1,1,"Rebound, perception intact"
+mock,synth_0259,synthetic,contra_2,0,0,0.06326601987523373,2,False,True,-2.701642976035117,logits,1,False,1,1,"Rebound, perception intact"
+mock,synth_0260,synthetic,contra_2,0,0,0.8935277604202423,2,True,False,2.1280307820067335,logits,0,False,1,0,Stable
+mock,synth_0261,synthetic,contra_2,0,0,0.3191743232486574,2,False,True,-0.7749464231686157,logits,1,False,1,1,"Rebound, perception intact"
+mock,synth_0262,synthetic,contra_2,0,0,0.4743293200523785,2,False,True,-0.10450068541227786,logits,1,False,1,1,"Rebound, perception intact"
+mock,synth_0263,synthetic,contra_2,0,0,0.736496720521219,2,True,False,1.0684512904654095,logits,0,False,1,0,Stable
+mock,synth_0264,synthetic,contra_2,0,0,0.864224282717944,2,True,False,1.9480559061742524,logits,0,False,1,1,Stable
+mock,synth_0266,synthetic,contra_2,0,0,0.9303504646272222,2,True,False,2.5993030038291822,logits,0,False,1,1,Stable
+mock,synth_0267,synthetic,contra_2,0,0,0.9258263385818608,2,True,False,2.5473596739164073,logits,0,False,1,0,Stable
+mock,synth_0268,synthetic,contra_2,0,0,0.7610555279596678,2,True,False,1.1643361371337329,logits,0,False,1,1,Stable
+mock,synth_0269,synthetic,contra_2,0,0,0.4594710697751121,2,False,True,-0.17594255981841,logits,1,False,1,1,"Rebound, perception intact"
+mock,synth_0270,synthetic,contra_2,0,0,0.9664980654066637,2,True,False,3.362076136089553,logits,0,False,1,1,Stable
+mock,synth_0271,synthetic,contra_2,0,0,0.8034716575313936,2,True,False,1.4493925644154384,logits,0,False,1,1,Stable
+mock,synth_0272,synthetic,contra_2,0,0,0.8306290658703948,2,True,False,1.642487974815933,logits,0,False,1,1,Stable
+mock,synth_0273,synthetic,contra_2,0,0,0.2920655356159455,2,False,True,-0.9108963736988643,logits,1,False,1,1,"Rebound, perception intact"
+mock,synth_0274,synthetic,contra_2,0,0,0.9174174367437891,2,True,False,2.4086530359781864,logits,0,False,1,1,Stable
+mock,synth_0275,synthetic,contra_2,0,0,0.1809263867324764,2,False,True,-1.5349495301435092,logits,1,False,1,1,"Rebound, perception intact"
+mock,synth_0276,synthetic,contra_2,0,0,0.868529428404367,2,True,False,1.8932505452458745,logits,0,False,1,1,Stable
+mock,synth_0277,synthetic,contra_2,0,0,0.14664813842117908,2,False,True,-1.771550105981658,logits,1,False,1,1,"Rebound, perception intact"
+mock,synth_0278,synthetic,contra_2,0,0,0.767957478645001,2,True,False,1.20115986627951,logits,0,False,1,1,Stable
+mock,synth_0279,synthetic,contra_2,0,0,0.46280814234827145,2,False,True,-0.1509812464517042,logits,1,False,1,1,"Rebound, perception intact"
+mock,synth_0280,synthetic,contra_2,0,0,0.5971970027911488,2,True,False,0.39408710725422147,logits,0,False,1,0,Stable
+mock,synth_0281,synthetic,contra_2,0,0,0.8837356707689625,2,True,False,2.0635739009333336,logits,0,False,1,1,Stable
+mock,synth_0282,synthetic,contra_2,0,0,0.7463156974314462,2,True,False,1.0790597920779277,logits,0,False,1,1,Stable
+mock,synth_0284,synthetic,contra_2,0,0,0.8508081872548121,2,True,False,1.964102117650151,logits,0,False,1,1,Stable
+mock,synth_0285,synthetic,contra_2,0,0,0.4164156037426482,2,False,True,-0.3543400497954242,logits,1,False,1,1,"Rebound, perception intact"
+mock,synth_0286,synthetic,contra_2,0,0,0.8987355010820323,2,True,False,2.184316555813411,logits,0,False,1,1,Stable
+mock,synth_0287,synthetic,contra_2,0,0,0.7689646515347512,2,True,False,1.3612039269898233,logits,0,False,1,1,Stable
+mock,synth_0288,synthetic,contra_2,0,0,0.6705006970611594,2,True,False,0.7132424720666375,logits,0,False,1,1,Stable
+mock,synth_0289,synthetic,contra_2,0,0,0.3029636562586061,2,False,True,-1.01284327293321,logits,1,False,1,0,"Rebound, perception intact"
+mock,synth_0290,synthetic,contra_2,0,0,0.6981005890921874,2,True,False,0.9097003195742517,logits,0,False,1,1,Stable
+mock,synth_0291,synthetic,contra_2,0,0,0.37875059253807,2,False,True,-0.5148183853133215,logits,1,False,1,1,"Rebound, perception intact"
+mock,synth_0292,synthetic,contra_2,0,0,0.4117001145040238,2,False,True,-0.36811728737017285,logits,1,False,1,1,"Rebound, perception intact"
+mock,synth_0293,synthetic,contra_2,0,0,0.9331144100971472,2,True,False,2.657136727676463,logits,0,False,1,1,Stable
+mock,synth_0294,synthetic,contra_2,0,0,0.26672773452362364,2,False,True,-1.0116267572456088,logits,1,False,1,1,"Rebound, perception intact"
+mock,synth_0295,synthetic,contra_2,0,0,0.8487715573007067,2,True,False,1.7489161314122903,logits,0,False,1,1,Stable
+mock,synth_0296,synthetic,contra_2,0,0,0.42752597167235584,2,False,True,-0.2921664457351781,logits,1,False,1,1,"Rebound, perception intact"
+mock,synth_0297,synthetic,contra_2,0,0,0.6540694413389103,2,True,False,0.6755825791367782,logits,0,False,1,1,Stable
+mock,synth_0298,synthetic,contra_2,0,0,0.5312210042908947,2,False,True,0.12632284729715448,logits,0,False,1,1,Stable
+mock,synth_0299,synthetic,contra_2,0,0,0.30961589363150477,2,False,True,-0.8459902340971683,logits,1,False,1,1,"Rebound, perception intact"
+mock,synth_0300,synthetic,contra_2,0,0,0.6055257020425239,2,False,True,0.45718516589233316,logits,0,False,0,1,Stable
+mock,synth_0301,synthetic,contra_2,0,0,0.8251814857559483,2,True,False,1.552000709686999,logits,0,False,1,0,Stable
+mock,synth_0302,synthetic,contra_2,0,0,0.012393762761409084,2,False,True,-4.393195792613289,logits,1,False,1,0,"Rebound, perception intact"
+mock,synth_0303,synthetic,contra_2,0,0,0.9235053864579936,2,True,False,2.497358942004525,logits,0,False,1,1,Stable
+mock,synth_0304,synthetic,contra_2,0,0,0.6405365466130477,2,True,False,0.609717277872496,logits,0,False,1,1,Stable
+mock,synth_0305,synthetic,contra_2,0,0,0.35699925251168213,2,False,True,-0.625558197852362,logits,1,False,1,1,"Rebound, perception intact"
+mock,synth_0307,synthetic,contra_2,0,0,0.8741898257377626,2,True,False,1.9951833053232146,logits,0,False,1,1,Stable
+mock,synth_0308,synthetic,contra_2,0,0,0.816880764015759,2,True,False,1.8076233452315624,logits,0,False,1,1,Stable
+mock,synth_0309,synthetic,contra_2,0,0,0.9670743329111062,2,True,False,3.570435083678132,logits,0,False,1,1,Stable
+mock,synth_0310,synthetic,contra_2,0,0,0.7183775383278457,2,True,False,0.9634853297556516,logits,0,False,1,1,Stable
+mock,synth_0311,synthetic,contra_2,0,0,0.8412782537323704,2,True,False,1.8038525536320007,logits,0,False,1,0,Stable
+mock,synth_0312,synthetic,contra_2,0,0,0.9509796761896036,2,True,False,2.9776602573823423,logits,0,False,1,1,Stable
+mock,synth_0313,synthetic,contra_2,0,0,0.8013873880336668,2,True,False,1.4545151310650914,logits,0,False,1,1,Stable
+mock,synth_0314,synthetic,contra_2,0,0,0.7593000641117504,2,True,False,1.1662594517550757,logits,0,False,1,1,Stable
+mock,synth_0315,synthetic,contra_2,0,0,0.8249767428822977,2,True,False,1.5506039155642883,logits,0,False,1,1,Stable
+mock,synth_0317,synthetic,contra_2,0,0,0.6976792609193765,2,True,False,0.852457326584588,logits,0,False,1,1,Stable
+mock,synth_0318,synthetic,contra_2,0,0,0.7669413476496078,2,True,False,1.1932483978532376,logits,0,False,1,1,Stable
+mock,synth_0319,synthetic,contra_2,0,0,0.7045529482883922,2,True,False,0.8748104294174932,logits,0,False,1,1,Stable
+mock,synth_0320,synthetic,contra_2,0,0,0.7169639919874129,2,True,False,0.9326545757437056,logits,0,False,1,0,Stable
+mock,synth_0321,synthetic,contra_2,0,0,0.4690771316096168,2,False,True,-0.12412556803088981,logits,1,False,1,1,"Rebound, perception intact"
+mock,synth_0322,synthetic,contra_2,0,0,0.20461876073644342,2,False,True,-1.3599186566369905,logits,1,False,1,1,"Rebound, perception intact"
+mock,synth_0323,synthetic,contra_2,0,0,0.8535487823769335,2,True,False,1.8638350387501643,logits,0,False,1,1,Stable
+mock,synth_0324,synthetic,contra_2,0,0,0.9075622787429642,2,True,False,2.4719416342485507,logits,0,False,1,1,Stable
+mock,synth_0325,synthetic,contra_2,0,0,0.4351699521523633,2,False,True,-0.2665244482442448,logits,1,False,1,0,"Rebound, perception intact"
+mock,synth_0326,synthetic,contra_2,0,0,0.4132424107644483,2,False,True,-0.35339791778559687,logits,1,False,1,1,"Rebound, perception intact"
+mock,synth_0327,synthetic,contra_2,0,0,0.9236702802657724,2,True,False,2.5284928337572836,logits,0,False,1,0,Stable
+mock,synth_0328,synthetic,contra_2,0,0,0.5642321517029252,2,True,False,0.25858813015398047,logits,0,False,1,1,Stable
+mock,synth_0329,synthetic,contra_2,0,0,0.8831292167963745,2,True,False,2.027794773342376,logits,0,False,1,1,Stable
+mock,synth_0330,synthetic,contra_2,0,0,0.1676710733413687,2,False,True,-1.6327143408482574,logits,1,False,1,1,"Rebound, perception intact"
+mock,synth_0331,synthetic,contra_2,0,0,0.825047607253721,2,True,False,1.6508090458303915,logits,0,False,1,1,Stable
+mock,synth_0332,synthetic,contra_2,0,0,0.7800204661875183,2,True,False,1.2733701935361104,logits,0,False,1,1,Stable
+mock,synth_0333,synthetic,contra_2,0,0,0.8057732217805786,2,True,False,1.4279879738586496,logits,0,False,1,1,Stable
+mock,synth_0334,synthetic,contra_2,0,0,0.7355057475977018,2,True,False,1.0858018418202144,logits,0,False,1,1,Stable
+mock,synth_0335,synthetic,contra_2,0,0,0.21687914577714507,2,False,True,-1.3353577543995256,logits,1,False,1,1,"Rebound, perception intact"
+mock,synth_0336,synthetic,contra_2,0,0,0.29771092702680224,2,False,True,-0.8838052378954067,logits,1,False,1,1,"Rebound, perception intact"
+mock,synth_0337,synthetic,contra_2,0,0,0.8866150529013178,2,True,False,2.3181782454241158,logits,0,False,1,1,Stable
+mock,synth_0338,synthetic,contra_2,0,0,0.559730042202767,2,False,True,0.2484099964285219,logits,0,False,1,1,Stable
+mock,synth_0339,synthetic,contra_2,0,0,0.9532134627312117,2,True,False,3.1560289526017034,logits,0,False,1,1,Stable
+mock,synth_0340,synthetic,contra_2,0,0,0.7412650945361089,2,True,False,1.1291625691818652,logits,0,False,1,1,Stable
+mock,synth_0341,synthetic,contra_2,0,0,0.18304759148185545,2,False,True,-1.5109347446774808,logits,1,False,1,1,"Rebound, perception intact"
+mock,synth_0342,synthetic,contra_2,0,0,0.028639462546927376,2,False,True,-3.827157680215498,logits,1,False,1,1,"Rebound, perception intact"
+mock,synth_0343,synthetic,contra_2,0,0,0.6507795549945614,2,False,True,0.7252518851785767,logits,0,False,1,1,Stable
+mock,synth_0344,synthetic,contra_2,0,0,0.8797224222178552,2,True,False,2.075315256155287,logits,0,False,1,1,Stable
+mock,synth_0345,synthetic,contra_2,0,0,0.7846463697872348,2,True,False,1.2978894140128365,logits,0,False,1,1,Stable
+mock,synth_0346,synthetic,contra_2,0,0,0.8255598217529402,2,True,False,1.5919252457160886,logits,0,False,1,1,Stable
+mock,synth_0347,synthetic,contra_2,0,0,0.43820174789361116,2,False,True,-0.2573807968412386,logits,1,False,1,1,"Rebound, perception intact"
+mock,synth_0348,synthetic,contra_2,0,0,0.718365650821378,2,True,False,0.9466545025199885,logits,0,False,1,1,Stable
+mock,synth_0349,synthetic,contra_2,0,0,0.8773585821697036,2,True,False,2.1370585371762036,logits,0,False,1,1,Stable
+mock,synth_0350,synthetic,contra_2,0,0,0.5490952674091262,2,False,True,0.2052795242882507,logits,0,False,1,1,Stable
+mock,synth_0351,synthetic,contra_2,0,0,0.2386604134974878,2,False,True,-1.164148509744227,logits,1,False,1,1,"Rebound, perception intact"
+mock,synth_0352,synthetic,contra_2,0,0,0.8414354689724868,2,True,False,1.6753574440221009,logits,0,False,1,0,Stable
+mock,synth_0353,synthetic,contra_2,0,0,0.8961445069699958,2,True,False,2.157438308951135,logits,0,False,1,1,Stable
+mock,synth_0354,synthetic,contra_2,0,0,0.7074374496411173,2,True,False,0.9296360556333962,logits,0,False,1,1,Stable
+mock,synth_0355,synthetic,contra_2,0,0,0.47360993253491734,2,False,True,-0.10941294751340028,logits,1,False,1,1,"Rebound, perception intact"
+mock,synth_0356,synthetic,contra_2,0,0,0.6744839958353028,2,True,False,0.7303989409421803,logits,0,False,1,1,Stable
+mock,synth_0357,synthetic,contra_2,0,0,0.6530581083952629,2,True,False,0.6364203863680113,logits,0,False,1,1,Stable
+mock,synth_0358,synthetic,contra_2,0,0,0.04822641969751369,2,False,True,-3.0131540120597218,logits,1,False,1,0,"Rebound, perception intact"
+mock,synth_0359,synthetic,contra_2,0,0,0.71539263986106,2,True,False,0.9257145372594248,logits,0,False,1,1,Stable
+mock,synth_0360,synthetic,contra_2,0,0,0.876017424966143,2,True,False,2.0273961748421767,logits,0,False,1,1,Stable
+mock,synth_0361,synthetic,contra_2,0,0,0.9637546519854372,2,True,False,3.343610072582724,logits,0,False,1,1,Stable
+mock,synth_0362,synthetic,contra_2,0,0,0.6265390602059366,2,True,False,0.5214412835496457,logits,0,False,1,1,Stable
+mock,synth_0363,synthetic,contra_2,0,0,0.3176311311780824,2,False,True,-0.7707685263279611,logits,1,False,1,1,"Rebound, perception intact"
+mock,synth_0364,synthetic,contra_2,0,0,0.7918337169694123,2,True,False,1.336023595798876,logits,0,False,1,1,Stable
+mock,synth_0365,synthetic,contra_2,0,0,0.7416064780604127,2,True,False,1.0550571991113067,logits,0,False,1,1,Stable
+mock,synth_0366,synthetic,contra_2,0,0,0.5199999901303629,2,False,True,0.08080675956457722,logits,0,False,1,0,Stable
+mock,synth_0367,synthetic,contra_2,0,0,0.34428303470955257,2,False,True,-0.6773657324356469,logits,1,False,1,1,"Rebound, perception intact"
+mock,synth_0368,synthetic,contra_2,0,0,0.8939144428048222,2,True,False,2.131676799308736,logits,0,False,1,1,Stable
+mock,synth_0369,synthetic,contra_2,0,0,0.9382602538007452,2,True,False,2.778025885990984,logits,0,False,1,1,Stable
+mock,synth_0370,synthetic,contra_2,0,0,0.987919489327892,2,True,False,4.434779358254305,logits,0,False,1,1,Stable
+mock,synth_0371,synthetic,contra_2,0,0,0.7605280708546993,2,True,False,1.4245629190421027,logits,0,False,1,1,Stable
+mock,synth_0372,synthetic,contra_2,0,0,0.603372645457929,2,False,True,0.44650758639136884,logits,0,False,1,1,Stable
+mock,synth_0373,synthetic,contra_2,0,0,0.949102393497025,2,True,False,2.9348330772368847,logits,0,False,1,1,Stable
+mock,synth_0374,synthetic,contra_2,0,0,0.27446572192966656,2,False,True,-1.0082581322277373,logits,1,False,1,1,"Rebound, perception intact"
+mock,synth_0375,synthetic,contra_2,0,0,0.26083247884389493,2,False,True,-1.04586821875233,logits,1,False,1,1,"Rebound, perception intact"
+mock,synth_0376,synthetic,contra_2,0,0,0.7889390909894123,2,True,False,1.329551192940284,logits,0,False,1,0,Stable
+mock,synth_0378,synthetic,contra_2,0,0,0.45439078606491057,2,False,True,-0.19752899257059925,logits,1,False,1,1,"Rebound, perception intact"
+mock,synth_0379,synthetic,contra_2,0,0,0.21081234696892293,2,False,True,-1.3285795982519208,logits,1,False,1,0,"Rebound, perception intact"
+mock,synth_0380,synthetic,contra_2,0,0,0.34635253834053903,2,False,True,-0.6395819697619071,logits,1,False,1,0,"Rebound, perception intact"
+mock,synth_0381,synthetic,contra_2,0,0,0.6337724333551169,2,True,False,0.5485067695158603,logits,0,False,1,1,Stable
+mock,synth_0382,synthetic,contra_2,0,0,0.7758369873366304,2,True,False,1.2506012541547884,logits,0,False,1,1,Stable
+mock,synth_0383,synthetic,contra_2,0,0,0.8616559746349799,2,True,False,1.9061513931790617,logits,0,False,1,1,Stable
+mock,synth_0384,synthetic,contra_2,0,0,0.7286979835059584,2,True,False,0.9910081439499706,logits,0,False,1,1,Stable
+mock,synth_0385,synthetic,contra_2,0,0,0.3440862683409954,2,False,True,-0.65255489799325,logits,1,False,1,1,"Rebound, perception intact"
+mock,synth_0386,synthetic,contra_2,0,0,0.4479072151624235,2,False,True,-0.21708952541882642,logits,1,False,1,1,"Rebound, perception intact"
+mock,synth_0387,synthetic,contra_2,0,0,0.6110155640777382,2,True,False,0.4557969330058711,logits,0,False,1,1,Stable
+mock,synth_0388,synthetic,contra_2,0,0,0.7762610617710488,2,True,False,1.2557273552975015,logits,0,False,1,1,Stable
+mock,synth_0389,synthetic,contra_2,0,0,0.3955646031055666,2,False,True,-0.4257955240426399,logits,1,False,1,0,"Rebound, perception intact"
+mock,synth_0390,synthetic,contra_2,0,0,0.5425811424051524,2,True,False,0.1708160110777981,logits,0,False,1,1,Stable
+mock,synth_0391,synthetic,contra_2,0,0,0.7515847664995745,2,True,False,1.3516876965114872,logits,0,False,1,1,Stable
+mock,synth_0392,synthetic,contra_2,0,0,0.8284148631639068,2,True,False,1.5836022401240397,logits,0,False,1,1,Stable
+mock,synth_0393,synthetic,contra_2,0,0,0.9603744167682393,2,True,False,3.303603441874929,logits,0,False,1,1,Stable
+mock,synth_0394,synthetic,contra_2,0,0,0.4052097825545834,2,False,True,-0.3850904853923956,logits,1,False,1,1,"Rebound, perception intact"
+mock,synth_0396,synthetic,contra_2,0,0,0.1895849559883249,2,False,True,-1.59092489089045,logits,1,False,1,1,"Rebound, perception intact"
+mock,synth_0397,synthetic,contra_2,0,0,0.8808819012289651,2,True,False,2.0090589400091607,logits,0,False,1,1,Stable
+mock,synth_0398,synthetic,contra_2,0,0,0.9356130598004644,2,True,False,2.761468256391645,logits,0,False,1,1,Stable
+mock,synth_0399,synthetic,contra_2,0,0,0.9667073612885356,2,True,False,3.476960533198527,logits,0,False,1,1,Stable
+mock,synth_0400,synthetic,contra_2,0,0,0.8371705004853669,2,True,False,1.6869547184271376,logits,0,False,1,1,Stable
+mock,synth_0401,synthetic,contra_2,0,0,0.5951478826988048,2,True,False,0.39116790406421986,logits,0,False,1,0,Stable
+mock,synth_0402,synthetic,contra_2,0,0,0.7667134262827593,2,True,False,1.209423317071402,logits,0,False,1,0,Stable
+mock,synth_0403,synthetic,contra_2,0,0,0.6492199898452969,2,True,False,0.6186601130336753,logits,0,False,1,1,Stable
+mock,synth_0404,synthetic,contra_2,0,0,0.9069498957404618,2,True,False,2.2775001043117147,logits,0,False,1,1,Stable
+mock,synth_0405,synthetic,contra_2,0,0,0.979583342043059,2,True,False,3.9285318675348417,logits,0,False,1,1,Stable
+mock,synth_0406,synthetic,contra_2,0,0,0.7604953700976633,2,True,False,1.3542153961240295,logits,0,False,1,1,Stable
+mock,synth_0407,synthetic,contra_2,0,0,0.4913621559909563,2,False,True,-0.03477872038600022,logits,1,False,1,0,"Rebound, perception intact"
+mock,synth_0408,synthetic,contra_2,0,0,0.46497288066252906,2,False,True,-0.14034977008017702,logits,1,False,1,1,"Rebound, perception intact"
+mock,synth_0410,synthetic,contra_2,0,0,0.7020538548934523,2,True,False,0.8603326885115273,logits,0,False,1,1,Stable
+mock,synth_0411,synthetic,contra_2,0,0,0.36005079769724896,2,False,True,-0.6043420113665463,logits,1,False,1,0,"Rebound, perception intact"
+mock,synth_0412,synthetic,contra_2,0,0,0.8033152274259501,2,True,False,1.408484132797803,logits,0,False,1,1,Stable
+mock,synth_0413,synthetic,contra_2,0,0,0.9342344606694352,2,True,False,2.873669310786404,logits,0,False,1,0,Stable
+mock,synth_0415,synthetic,contra_2,0,0,0.7813175281758902,2,True,False,1.2755328431597324,logits,0,False,1,1,Stable
+mock,synth_0416,synthetic,contra_2,0,0,0.5903320131828429,2,True,False,0.3711875215226761,logits,0,False,1,1,Stable
+mock,synth_0417,synthetic,contra_2,0,0,0.24137851328192655,2,False,True,-1.346782206660536,logits,1,False,1,1,"Rebound, perception intact"
+mock,synth_0418,synthetic,contra_2,0,0,0.5615523096764214,2,True,False,0.25070549252172863,logits,0,False,1,1,Stable
+mock,synth_0419,synthetic,contra_2,0,0,0.09237235300230992,2,False,True,-2.29813470398065,logits,1,False,1,1,"Rebound, perception intact"
+mock,synth_0420,synthetic,contra_2,0,0,0.6923353228590543,2,True,False,0.8390163993032619,logits,0,False,1,1,Stable
+mock,synth_0421,synthetic,contra_2,0,0,0.459900525186751,2,False,True,-0.16179940806143978,logits,1,False,1,1,"Rebound, perception intact"
+mock,synth_0422,synthetic,contra_2,0,0,0.20683413003713375,2,False,True,-1.3716138184171556,logits,1,False,1,1,"Rebound, perception intact"
+mock,synth_0423,synthetic,contra_2,0,0,0.12489655288505441,2,False,True,-2.158340059928986,logits,1,False,1,1,"Rebound, perception intact"
+mock,synth_0424,synthetic,contra_2,0,0,0.9679264192879258,2,True,False,3.40726412463401,logits,0,False,1,1,Stable
+mock,synth_0425,synthetic,contra_2,0,0,0.6607320466301934,2,True,False,0.6805089544778558,logits,0,False,1,0,Stable
+mock,synth_0426,synthetic,contra_2,0,0,0.2642017355223093,2,False,True,-1.138356408730268,logits,1,False,1,1,"Rebound, perception intact"
+mock,synth_0427,synthetic,contra_2,0,0,0.35954916510849144,2,False,True,-0.5788172411039649,logits,1,False,1,1,"Rebound, perception intact"
+mock,synth_0428,synthetic,contra_2,0,0,0.6792167234376074,2,True,False,0.764008450205812,logits,0,False,1,1,Stable
+mock,synth_0429,synthetic,contra_2,0,0,0.9148324133902854,2,True,False,2.408008920139042,logits,0,False,1,1,Stable
+mock,synth_0430,synthetic,contra_2,0,0,0.1270380431116398,2,False,True,-1.9988201606578722,logits,1,False,1,1,"Rebound, perception intact"
+mock,synth_0431,synthetic,contra_2,0,0,0.8367671892359061,2,True,False,1.6351859913025417,logits,0,False,1,0,Stable
+mock,synth_0432,synthetic,contra_2,0,0,0.8102293905226086,2,True,False,1.5291299361376314,logits,0,False,1,1,Stable
+mock,synth_0433,synthetic,contra_2,0,0,0.7548500052834017,2,True,False,1.1297394458635994,logits,0,False,1,1,Stable
+mock,synth_0434,synthetic,contra_2,0,0,0.6137434041212122,2,True,False,0.4753066046916983,logits,0,False,1,1,Stable
+mock,synth_0435,synthetic,contra_2,0,0,0.9227599360860788,2,True,False,2.496402529509663,logits,0,False,1,0,Stable
+mock,synth_0436,synthetic,contra_2,0,0,0.26494747216507575,2,False,True,-1.1863411620144189,logits,1,False,1,1,"Rebound, perception intact"
+mock,synth_0437,synthetic,contra_2,0,0,0.9133131284057026,2,True,False,2.393339318033559,logits,0,False,1,1,Stable
+mock,synth_0438,synthetic,contra_2,0,0,0.5422029254166979,2,False,True,0.1773523674824059,logits,0,False,1,1,Stable
+mock,synth_0439,synthetic,contra_2,0,0,0.8941592933261393,2,True,False,2.1454775160525523,logits,0,False,1,1,Stable
+mock,synth_0440,synthetic,contra_2,0,0,0.7187657253530764,2,True,False,0.9713156429522715,logits,0,False,1,1,Stable
+mock,synth_0441,synthetic,contra_2,0,0,0.9593540686924207,2,True,False,3.1760838921770342,logits,0,False,1,1,Stable
+mock,synth_0442,synthetic,contra_2,0,0,0.8705892577701837,2,True,False,2.0351294303175376,logits,0,False,1,1,Stable
+mock,synth_0443,synthetic,contra_2,0,0,0.37633185169958694,2,False,True,-0.5071173351958715,logits,1,False,1,1,"Rebound, perception intact"
+mock,synth_0444,synthetic,contra_2,0,0,0.5932356371356,2,True,False,0.389390734902632,logits,0,False,1,1,Stable
+mock,synth_0445,synthetic,contra_2,0,0,0.3951971322619332,2,False,True,-0.43534771168109293,logits,1,False,1,1,"Rebound, perception intact"
+mock,synth_0446,synthetic,contra_2,0,0,0.544874420387101,2,False,True,0.18502311749053096,logits,0,False,1,1,Stable
+mock,synth_0447,synthetic,contra_2,0,0,0.697100338480164,2,True,False,0.8336309698511014,logits,0,False,1,1,Stable
+mock,synth_0448,synthetic,contra_2,0,0,0.6946088307396074,2,True,False,0.8365587759736286,logits,0,False,1,1,Stable
+mock,synth_0449,synthetic,contra_2,0,0,0.7746188244225113,2,True,False,1.264780058894918,logits,0,False,1,0,Stable
+mock,synth_0450,synthetic,contra_2,0,0,0.972648014448231,2,True,False,3.574023793324014,logits,0,False,1,0,Stable
+mock,synth_0451,synthetic,contra_2,0,0,0.6285694155935999,2,True,False,0.5301538393344729,logits,0,False,1,1,Stable
+mock,synth_0452,synthetic,contra_2,0,0,0.9909144607590672,2,True,False,4.694994120831572,logits,0,False,1,1,Stable
+mock,synth_0453,synthetic,contra_2,0,0,0.8186825394047805,2,True,False,1.5367160401939384,logits,0,False,1,1,Stable
+mock,synth_0454,synthetic,contra_2,0,0,0.5037621902296534,2,False,True,0.01517417231341539,logits,0,False,1,1,Stable
+mock,synth_0455,synthetic,contra_2,0,0,0.9141954418093798,2,True,False,2.4140959457824,logits,0,False,1,1,Stable
+mock,synth_0456,synthetic,contra_2,0,0,0.7518110723429637,2,True,False,1.2908752586535903,logits,0,False,1,1,Stable
+mock,synth_0457,synthetic,contra_2,0,0,0.4600901317686653,2,False,True,-0.163387345653672,logits,1,False,1,1,"Rebound, perception intact"
+mock,synth_0458,synthetic,contra_2,0,0,0.8237273299003454,2,True,False,1.5688583027076568,logits,0,False,1,0,Stable
+mock,synth_0459,synthetic,contra_2,0,0,0.39909998714315864,2,False,True,-0.4213912438387363,logits,1,False,1,1,"Rebound, perception intact"
+mock,synth_0460,synthetic,contra_2,0,0,0.7942031329446961,2,True,False,1.428546100331335,logits,0,False,1,1,Stable
+mock,synth_0461,synthetic,contra_2,0,0,0.9712183222573179,2,True,False,3.52060572346842,logits,0,False,1,1,Stable
+mock,synth_0462,synthetic,contra_2,0,0,0.41850870568850673,2,False,True,-0.32918270061038923,logits,1,False,1,1,"Rebound, perception intact"
+mock,synth_0463,synthetic,contra_2,0,0,0.7732597432258858,2,True,False,1.2275354843715638,logits,0,False,1,1,Stable
+mock,synth_0464,synthetic,contra_2,0,0,0.9120911869284648,2,True,False,2.5753840315086114,logits,0,False,1,0,Stable
+mock,synth_0465,synthetic,contra_2,0,0,0.7456054530404861,2,True,False,1.0769103511707323,logits,0,False,1,1,Stable
+mock,synth_0466,synthetic,contra_2,0,0,0.8520389318759746,2,True,False,1.7506872489620628,logits,0,False,1,1,Stable
+mock,synth_0467,synthetic,contra_2,0,0,0.8001481157551457,2,True,False,1.4334103015015525,logits,0,False,1,1,Stable
+mock,synth_0468,synthetic,contra_2,0,0,0.9017578577099545,2,True,False,2.277548199894257,logits,0,False,1,1,Stable
+mock,synth_0469,synthetic,contra_2,0,0,0.9219442104236877,2,True,False,2.513354925290117,logits,0,False,1,1,Stable
+mock,synth_0470,synthetic,contra_2,0,0,0.7360579167924477,2,True,False,1.0282566440110652,logits,0,False,1,0,Stable
+mock,synth_0471,synthetic,contra_2,0,0,0.5805071041137926,2,True,False,0.3257520519788943,logits,0,False,1,1,Stable
+mock,synth_0472,synthetic,contra_2,0,0,0.8476300387197462,2,True,False,1.7317129091702275,logits,0,False,1,1,Stable
+mock,synth_0473,synthetic,contra_2,0,0,0.5585964718697749,2,False,True,0.2423333501800456,logits,0,False,1,1,Stable
+mock,synth_0474,synthetic,contra_2,0,0,0.24281361266126264,2,False,True,-1.1586337662380028,logits,1,False,1,0,"Rebound, perception intact"
+mock,synth_0475,synthetic,contra_2,0,0,0.8241704223612434,2,True,False,1.5618669938716065,logits,0,False,1,0,Stable
+mock,synth_0476,synthetic,contra_2,0,0,0.5714326159505948,2,True,False,0.2887616040024513,logits,0,False,1,1,Stable
+mock,synth_0477,synthetic,contra_2,0,0,0.9280850586074066,2,True,False,2.5901242672398403,logits,0,False,1,1,Stable
+mock,synth_0478,synthetic,contra_2,0,0,0.8884452577381108,2,True,False,2.1893073528846223,logits,0,False,1,1,Stable
+mock,synth_0479,synthetic,contra_2,0,0,0.8235636376093673,2,True,False,1.5458156394852747,logits,0,False,1,1,Stable
+mock,synth_0480,synthetic,contra_2,0,0,0.9940693367358051,2,True,False,5.34218441358,logits,0,False,1,1,Stable
+mock,synth_0481,synthetic,contra_2,0,0,0.6963773701971543,2,True,False,0.8752043943401748,logits,0,False,1,1,Stable
+mock,synth_0482,synthetic,contra_2,0,0,0.4360542618805574,2,False,True,-0.28753113458918383,logits,1,False,1,1,"Rebound, perception intact"
+mock,synth_0483,synthetic,contra_2,0,0,0.6083916136817954,2,True,False,0.4444606630401958,logits,0,False,1,0,Stable
+mock,synth_0484,synthetic,contra_2,0,0,0.9175612840525988,2,True,False,2.4103727814498654,logits,0,False,1,1,Stable
+mock,synth_0485,synthetic,contra_2,0,0,0.7126552726369555,2,True,False,0.9145460366537141,logits,0,False,1,1,Stable
+mock,synth_0486,synthetic,contra_2,0,0,0.8091217793961406,2,True,False,1.4692447773480484,logits,0,False,1,0,Stable
+mock,synth_0487,synthetic,contra_2,0,0,0.5311800230721997,2,True,False,0.12496148107006844,logits,0,False,1,1,Stable
+mock,synth_0488,synthetic,contra_2,0,0,0.8580318355471214,2,True,False,1.799722330492311,logits,0,False,1,1,Stable
+mock,synth_0489,synthetic,contra_2,0,0,0.548934168497793,2,False,True,0.20432534954621112,logits,0,False,1,1,Stable
+mock,synth_0490,synthetic,contra_2,0,0,0.9933946555701174,2,True,False,5.0537905020317915,logits,0,False,1,1,Stable
+mock,synth_0491,synthetic,contra_2,0,0,0.46151660786948756,2,False,True,-0.1552268370908526,logits,1,False,1,1,"Rebound, perception intact"
+mock,synth_0492,synthetic,contra_2,0,0,0.40400229982999886,2,False,True,-0.3926074815719249,logits,1,False,1,1,"Rebound, perception intact"
+mock,synth_0493,synthetic,contra_2,0,0,0.6523204055024945,2,True,False,0.6390988626577804,logits,0,False,1,1,Stable
+mock,synth_0494,synthetic,contra_2,0,0,0.7340388821018542,2,True,False,1.030524023060657,logits,0,False,1,1,Stable
+mock,synth_0495,synthetic,contra_2,0,0,0.398700593112246,2,False,True,-0.4603560137338924,logits,1,False,1,1,"Rebound, perception intact"
+mock,synth_0496,synthetic,contra_2,0,0,0.5096587197394322,2,False,True,0.039756667144346336,logits,0,False,1,1,Stable
+mock,synth_0497,synthetic,contra_2,0,0,0.9677074463800002,2,True,False,3.4663046871545173,logits,0,False,1,1,Stable
+mock,synth_0498,synthetic,contra_2,0,0,0.8593939714770075,2,True,False,1.8541264809599585,logits,0,False,1,1,Stable
+mock,synth_0499,synthetic,contra_2,0,0,0.14884861274009442,2,False,True,-2.003506557406697,logits,1,False,1,0,"Rebound, perception intact"
+mock,synth_0500,synthetic,contra_2,0,0,0.6098719696185892,2,False,True,0.4777450177567894,logits,0,False,1,0,Stable
+mock,synth_0501,synthetic,contra_2,0,0,0.7389948201310725,2,True,False,1.1480242030331507,logits,0,False,1,1,Stable
+mock,synth_0502,synthetic,contra_2,0,0,0.85151162317969,2,True,False,1.7476002385993226,logits,0,False,1,0,Stable
+mock,synth_0503,synthetic,contra_2,0,0,0.42339497535917386,2,False,True,-0.3350471904874835,logits,1,False,1,1,"Rebound, perception intact"
+mock,synth_0505,synthetic,contra_2,0,0,0.7786787187874182,2,True,False,1.4221806286067729,logits,0,False,1,1,Stable
+mock,synth_0506,synthetic,contra_2,0,0,0.6764782212351345,2,True,False,0.7471605423579395,logits,0,False,1,1,Stable
+mock,synth_0507,synthetic,contra_2,0,0,0.7875634199122712,2,True,False,1.3810460579623431,logits,0,False,1,1,Stable
+mock,synth_0508,synthetic,contra_2,0,0,0.765885069266997,2,True,False,1.2420056714420349,logits,0,False,1,1,Stable
+mock,synth_0509,synthetic,contra_2,0,0,0.2632602967965216,2,False,True,-1.036273813265166,logits,1,False,1,1,"Rebound, perception intact"
+mock,synth_0510,synthetic,contra_2,0,0,0.9740720437704937,2,True,False,3.630708765252989,logits,0,False,1,1,Stable
+mock,synth_0511,synthetic,contra_2,0,0,0.4589439837441089,2,False,True,-0.16524613808797017,logits,1,False,1,1,"Rebound, perception intact"
+mock,synth_0512,synthetic,contra_2,0,0,0.8788580810099629,2,True,False,2.042234461024534,logits,0,False,1,1,Stable
+mock,synth_0513,synthetic,contra_2,0,0,0.6385610596222608,2,False,True,0.6396388757409717,logits,0,False,1,1,Stable
+mock,synth_0514,synthetic,contra_2,0,0,0.18047094018618082,2,False,True,-1.51347741795161,logits,1,False,1,0,"Rebound, perception intact"
+mock,synth_0515,synthetic,contra_2,0,0,0.7588669211475745,2,True,False,1.1774708792686925,logits,0,False,1,1,Stable
+mock,synth_0516,synthetic,contra_2,0,0,0.7998927618558972,2,True,False,1.3865271995051425,logits,0,False,1,1,Stable
+mock,synth_0517,synthetic,contra_2,0,0,0.7583140781503438,2,True,False,1.1607954226266914,logits,0,False,1,1,Stable
+mock,synth_0518,synthetic,contra_2,0,0,0.5674047727013913,2,True,False,0.2724814177856337,logits,0,False,1,1,Stable
+mock,synth_0519,synthetic,contra_2,0,0,0.6246845734911766,2,True,False,0.5449757763372676,logits,0,False,1,1,Stable
+mock,synth_0520,synthetic,contra_2,0,0,0.2800717641830825,2,False,True,-0.9464789951009485,logits,1,False,1,1,"Rebound, perception intact"
+mock,synth_0521,synthetic,contra_2,0,0,0.2840761400857125,2,False,True,-0.929216316215307,logits,1,False,1,1,"Rebound, perception intact"
+mock,synth_0522,synthetic,contra_2,0,0,0.6841150643762572,2,True,False,0.7912617794668971,logits,0,False,1,1,Stable
+mock,synth_0523,synthetic,contra_2,0,0,0.7810426858697941,2,True,False,1.3355462609146487,logits,0,False,1,1,Stable
+mock,synth_0524,synthetic,contra_2,0,0,0.7450037427020764,2,True,False,1.2723043060969248,logits,0,False,1,1,Stable
+mock,synth_0525,synthetic,contra_2,0,0,0.8637586982720993,2,True,False,1.9251638456104863,logits,0,False,1,1,Stable
+mock,synth_0526,synthetic,contra_2,0,0,0.7199212811280644,2,True,False,0.9668437470583813,logits,0,False,1,1,Stable
+mock,synth_0527,synthetic,contra_2,0,0,0.789308223134955,2,True,False,1.3765247041017499,logits,0,False,1,0,Stable
+mock,synth_0528,synthetic,contra_2,0,0,0.20253321986555428,2,False,True,-1.420509011259139,logits,1,False,1,1,"Rebound, perception intact"
+mock,synth_0529,synthetic,contra_2,0,0,0.8873823247792612,2,True,False,2.0683864819480995,logits,0,False,1,1,Stable
+mock,synth_0530,synthetic,contra_2,0,0,0.6963890425069343,2,True,False,0.8674229502657416,logits,0,False,1,1,Stable
+mock,synth_0531,synthetic,contra_2,0,0,0.7255317678840092,2,True,False,0.9735864349359891,logits,0,False,1,1,Stable
+mock,synth_0532,synthetic,contra_2,0,0,0.8837202853837771,2,True,False,2.062099337979509,logits,0,False,1,1,Stable
+mock,synth_0534,synthetic,contra_2,0,0,0.2570301637731509,2,False,True,-1.0746275432663228,logits,1,False,1,1,"Rebound, perception intact"
+mock,synth_0535,synthetic,contra_2,0,0,0.44268697912005944,2,False,True,-0.24528688022451361,logits,1,False,1,1,"Rebound, perception intact"
+mock,synth_0536,synthetic,contra_2,0,0,0.9756805480086417,2,True,False,3.701969871712966,logits,0,False,1,1,Stable
+mock,synth_0537,synthetic,contra_2,0,0,0.9747891895825278,2,True,False,3.65769460327953,logits,0,False,1,1,Stable
+mock,synth_0538,synthetic,contra_2,0,0,0.8982122144169116,2,True,False,2.2164922647185192,logits,0,False,1,1,Stable
+mock,synth_0539,synthetic,contra_2,0,0,0.851966940718146,2,True,False,1.7524695000914998,logits,0,False,1,1,Stable
+mock,synth_0540,synthetic,contra_2,0,0,0.9094351224750872,2,True,False,2.530562886605281,logits,0,False,1,0,Stable
+mock,synth_0541,synthetic,contra_2,0,0,0.39445835398256,2,False,True,-0.4394045617833739,logits,1,False,1,1,"Rebound, perception intact"
+mock,synth_0542,synthetic,contra_2,0,0,0.595519520734936,2,True,False,0.3882312980066089,logits,0,False,1,1,Stable
+mock,synth_0543,synthetic,contra_2,0,0,0.4144816901779087,2,False,True,-0.3475848204610519,logits,1,False,1,1,"Rebound, perception intact"
+mock,synth_0544,synthetic,contra_2,0,0,0.5772965669864155,2,False,True,0.32532197981795946,logits,0,False,1,1,Stable
+mock,synth_0545,synthetic,contra_2,0,0,0.5943345958802504,2,True,False,0.39156554877565014,logits,0,False,1,1,Stable
+mock,synth_0546,synthetic,contra_2,0,0,0.42135711817161026,2,False,True,-0.3350150480031562,logits,1,False,1,1,"Rebound, perception intact"
+mock,synth_0547,synthetic,contra_2,0,0,0.5420695350030291,2,True,False,0.16870096677317836,logits,0,False,1,1,Stable
+mock,synth_0548,synthetic,contra_2,0,0,0.19976166353306218,2,False,True,-1.5772622773145268,logits,1,False,1,1,"Rebound, perception intact"
+mock,synth_0549,synthetic,contra_2,0,0,0.8657827700452077,2,True,False,1.9266491674997201,logits,0,False,1,1,Stable
+mock,synth_0550,synthetic,contra_2,0,0,0.8067461637653799,2,True,False,1.4293544683120114,logits,0,False,1,1,Stable
+mock,synth_0551,synthetic,contra_2,0,0,0.1691959034892192,2,False,True,-1.608919096313683,logits,1,False,1,1,"Rebound, perception intact"
+mock,synth_0552,synthetic,contra_2,0,0,0.9551461726833896,2,True,False,3.2103366021150483,logits,0,False,1,1,Stable
+mock,synth_0553,synthetic,contra_2,0,0,0.057748644948502265,2,False,True,-2.8272046770407737,logits,1,False,1,1,"Rebound, perception intact"
+mock,synth_0554,synthetic,contra_2,0,0,0.7755838656056753,2,True,False,1.249305534139903,logits,0,False,1,1,Stable
+mock,synth_0555,synthetic,contra_2,0,0,0.7080306312439222,2,True,False,0.8876899960960136,logits,0,False,1,1,Stable
+mock,synth_0556,synthetic,contra_2,0,0,0.8045739309670024,2,True,False,1.4252007560990148,logits,0,False,1,1,Stable
+mock,synth_0557,synthetic,contra_2,0,0,0.646896298969319,2,True,False,0.6062385698531136,logits,0,False,1,0,Stable
+mock,synth_0558,synthetic,contra_2,0,0,0.2555578011086397,2,False,True,-1.0737089130517798,logits,1,False,1,1,"Rebound, perception intact"
+mock,synth_0559,synthetic,contra_2,0,0,0.4724508828026892,2,False,True,-0.11069681964050787,logits,1,False,1,1,"Rebound, perception intact"
+mock,synth_0560,synthetic,contra_2,0,0,0.32283774714526725,2,False,True,-0.948778434328942,logits,1,False,1,1,"Rebound, perception intact"
+mock,synth_0561,synthetic,contra_2,0,0,0.028022814274569176,2,False,True,-3.555223125758059,logits,1,False,1,1,"Rebound, perception intact"
+mock,synth_0562,synthetic,contra_2,0,0,0.9153028006069461,2,True,False,2.3925480650422895,logits,0,False,1,1,Stable
+mock,synth_0564,synthetic,contra_2,0,0,0.32816081691822496,2,False,True,-0.7266461396522143,logits,1,False,1,1,"Rebound, perception intact"
+mock,synth_0565,synthetic,contra_2,0,0,0.4646504129218013,2,False,True,-0.14730985347363967,logits,1,False,1,1,"Rebound, perception intact"
+mock,synth_0566,synthetic,contra_2,0,0,0.7010633040880683,2,True,False,0.8598474859743702,logits,0,False,1,1,Stable
+mock,synth_0567,synthetic,contra_2,0,0,0.8455032967975447,2,True,False,1.7113763845105698,logits,0,False,1,0,Stable
+mock,synth_0568,synthetic,contra_2,0,0,0.7787163872534586,2,True,False,1.2680263415410105,logits,0,False,1,0,Stable
+mock,synth_0569,synthetic,contra_2,0,0,0.7152822730240174,2,True,False,1.1132096128328892,logits,0,False,1,1,Stable
+mock,synth_0570,synthetic,contra_2,0,0,0.5774597314987804,2,True,False,0.31665199959443785,logits,0,False,1,1,Stable
+mock,synth_0571,synthetic,contra_2,0,0,0.7451209978762201,2,True,False,1.0787096268291663,logits,0,False,1,1,Stable
+mock,synth_0573,synthetic,contra_2,0,0,0.8750807571975092,2,True,False,1.9566368442069852,logits,0,False,1,1,Stable
+mock,synth_0574,synthetic,contra_2,0,0,0.6804215132183559,2,True,False,0.7563129901668674,logits,0,False,1,0,Stable
+mock,synth_0575,synthetic,contra_2,0,0,0.5499802552694376,2,False,True,0.2217081032888702,logits,0,False,1,1,Stable
+mock,synth_0576,synthetic,contra_2,0,0,0.809277612080314,2,True,False,1.4860067462988011,logits,0,False,1,1,Stable
+mock,synth_0577,synthetic,contra_2,0,0,0.30953068108765747,2,False,True,-0.8227010185537564,logits,1,False,1,0,"Rebound, perception intact"
+mock,synth_0578,synthetic,contra_2,0,0,0.5533780804420996,2,False,True,0.2356094818845354,logits,0,False,1,1,Stable
+mock,synth_0579,synthetic,contra_2,0,0,0.2352317208678003,2,False,True,-1.2709038118957816,logits,1,False,1,1,"Rebound, perception intact"
+mock,synth_0580,synthetic,contra_2,0,0,0.9354829056360214,2,True,False,2.779638487335821,logits,0,False,1,1,Stable
+mock,synth_0581,synthetic,contra_2,0,0,0.9243409664229248,2,True,False,2.6418289454868633,logits,0,False,1,1,Stable
+mock,synth_0582,synthetic,contra_2,0,0,0.5161113615855787,2,False,True,0.0689621124775757,logits,0,False,1,1,Stable
+mock,synth_0584,synthetic,contra_2,0,0,0.49240458519689856,2,False,True,-0.030558442158897137,logits,1,False,1,1,"Rebound, perception intact"
+mock,synth_0585,synthetic,contra_2,0,0,0.7429204499268247,2,True,False,1.0675129981897356,logits,0,False,1,1,Stable
+mock,synth_0586,synthetic,contra_2,0,0,0.6768307516346244,2,True,False,0.8490433271581762,logits,0,False,1,0,Stable
+mock,synth_0587,synthetic,contra_2,0,0,0.8249365208460964,2,True,False,1.6019340302784633,logits,0,False,1,1,Stable
+mock,synth_0588,synthetic,contra_2,0,0,0.9357048953653999,2,True,False,2.705867465414025,logits,0,False,1,1,Stable
+mock,synth_0589,synthetic,contra_2,0,0,0.3257815879835021,2,False,True,-0.7479217071950741,logits,1,False,1,1,"Rebound, perception intact"
+mock,synth_0590,synthetic,contra_2,0,0,0.9170693397670691,2,True,False,2.47942151103935,logits,0,False,1,1,Stable
+mock,synth_0591,synthetic,contra_2,0,0,0.6096028418704571,2,False,True,0.5083997832383091,logits,0,False,1,0,Stable
+mock,synth_0592,synthetic,contra_2,0,0,0.5244309724828093,2,False,True,0.1007825500106048,logits,0,False,1,0,Stable
+mock,synth_0593,synthetic,contra_2,0,0,0.510242939555662,2,False,True,0.04101273739847028,logits,0,False,1,1,Stable
+mock,synth_0594,synthetic,contra_2,0,0,0.9166849504199979,2,True,False,2.4420270676241147,logits,0,False,1,1,Stable
+mock,synth_0595,synthetic,contra_2,0,0,0.9046538322451301,2,True,False,2.322720753638568,logits,0,False,1,1,Stable
+mock,synth_0596,synthetic,contra_2,0,0,0.9703898235882977,2,True,False,3.532896126217283,logits,0,False,1,1,Stable
+mock,synth_0597,synthetic,contra_2,0,0,0.900630047473398,2,True,False,2.4238134867756194,logits,0,False,1,1,Stable
+mock,synth_0598,synthetic,contra_2,0,0,0.7469559381634454,2,True,False,1.0944328139586912,logits,0,False,1,1,Stable
+mock,synth_0599,synthetic,contra_2,0,0,0.7877248149846137,2,True,False,1.3639042804127612,logits,0,False,1,1,Stable
+mock,synth_0600,synthetic,contra_2,0,0,0.9159093603484032,2,True,False,2.443662033227088,logits,0,False,1,1,Stable
+mock,synth_0601,synthetic,contra_2,0,0,0.9061850418559892,2,True,False,2.4881809087999436,logits,0,False,1,1,Stable
+mock,synth_0602,synthetic,contra_2,0,0,0.7800671276937732,2,True,False,1.3233366985567785,logits,0,False,1,0,Stable
+mock,synth_0603,synthetic,contra_2,0,0,0.18473971660938904,2,False,True,-1.498792703588044,logits,1,False,1,1,"Rebound, perception intact"
+mock,synth_0604,synthetic,contra_2,0,0,0.8501418510886503,2,True,False,1.7361343547247772,logits,0,False,1,1,Stable
+mock,synth_0606,synthetic,contra_2,0,0,0.7304035233817257,2,True,False,1.0255630462268561,logits,0,False,1,1,Stable
+mock,synth_0607,synthetic,contra_2,0,0,0.8792854495724891,2,True,False,1.9895734189705658,logits,0,False,1,1,Stable
+mock,synth_0608,synthetic,contra_2,0,0,0.8898100180931328,2,True,False,2.090579036137762,logits,0,False,1,1,Stable
+mock,synth_0609,synthetic,contra_2,0,0,0.7905662539760484,2,True,False,1.3374600010980435,logits,0,False,1,1,Stable
+mock,synth_0610,synthetic,contra_2,0,0,0.5331503891135265,2,False,True,0.13742919138350207,logits,0,False,1,1,Stable
+mock,synth_0611,synthetic,contra_2,0,0,0.14481606441637096,2,False,True,-2.038139734547013,logits,1,False,1,1,"Rebound, perception intact"
+mock,synth_0612,synthetic,contra_2,0,0,0.2239779848336217,2,False,True,-1.2648409373426364,logits,1,False,1,1,"Rebound, perception intact"
+mock,synth_0613,synthetic,contra_2,0,0,0.8715625800609536,2,True,False,1.9517683597951414,logits,0,False,1,1,Stable
+mock,synth_0614,synthetic,contra_2,0,0,0.6167483966134644,2,True,False,0.48108607178089713,logits,0,False,1,1,Stable
+mock,synth_0615,synthetic,contra_2,0,0,0.7447994650967498,2,True,False,1.0821083010978763,logits,0,False,1,0,Stable
+mock,synth_0616,synthetic,contra_2,0,0,0.8460087981871907,2,True,False,1.705002918475119,logits,0,False,1,0,Stable
+mock,synth_0617,synthetic,contra_2,0,0,0.3987505286708053,2,False,True,-0.4312102427110365,logits,1,False,1,1,"Rebound, perception intact"
+mock,synth_0618,synthetic,contra_2,0,0,0.7683452563352009,2,True,False,1.2180139038618618,logits,0,False,1,0,Stable
+mock,synth_0620,synthetic,contra_2,0,0,0.39247926477886846,2,False,True,-0.4790676553492429,logits,1,False,1,1,"Rebound, perception intact"
+mock,synth_0621,synthetic,contra_2,0,0,0.9022028113248857,2,True,False,2.3306250735052747,logits,0,False,1,1,Stable
+mock,synth_0622,synthetic,contra_2,0,0,0.42617936623301467,2,False,True,-0.2982506387889267,logits,1,False,1,1,"Rebound, perception intact"
+mock,synth_0623,synthetic,contra_2,0,0,0.7978323205949953,2,True,False,1.4074928687075552,logits,0,False,1,1,Stable
+mock,synth_0624,synthetic,contra_2,0,0,0.7367168475213126,2,True,False,1.0314187275947888,logits,0,False,1,1,Stable
+mock,synth_0625,synthetic,contra_2,0,0,0.8109290531750062,2,True,False,1.5129340178578041,logits,0,False,1,1,Stable
+mock,synth_0626,synthetic,contra_2,0,0,0.690229232927692,2,True,False,0.803219252412637,logits,0,False,1,1,Stable
+mock,synth_0627,synthetic,contra_2,0,0,0.7936390663246375,2,True,False,1.347539254364679,logits,0,False,1,1,Stable
+mock,synth_0628,synthetic,contra_2,0,0,0.8613137257339682,2,True,False,1.9744890182194843,logits,0,False,1,1,Stable
+mock,synth_0629,synthetic,contra_2,0,0,0.5961603028888989,2,True,False,0.38976455930027476,logits,0,False,1,1,Stable
+mock,synth_0630,synthetic,contra_2,0,0,0.9516219820906224,2,True,False,2.9820786891911815,logits,0,False,1,1,Stable
+mock,synth_0631,synthetic,contra_2,0,0,0.7711660513892685,2,True,False,1.2472381301724633,logits,0,False,1,1,Stable
+mock,synth_0632,synthetic,contra_2,0,0,0.9786757335570582,2,True,False,3.8566670267167886,logits,0,False,1,1,Stable
+mock,synth_0633,synthetic,contra_2,0,0,0.695755672648978,2,True,False,0.8455705177161286,logits,0,False,1,0,Stable
+mock,synth_0634,synthetic,contra_2,0,0,0.7746920335186329,2,True,False,1.238258843568655,logits,0,False,1,1,Stable
+mock,synth_0635,synthetic,contra_2,0,0,0.8653285801828432,2,True,False,1.8746304236714608,logits,0,False,1,1,Stable
+mock,synth_0636,synthetic,contra_2,0,0,0.8275651229793839,2,True,False,1.6302604580832454,logits,0,False,1,1,Stable
+mock,synth_0637,synthetic,contra_2,0,0,0.863088977164343,2,True,False,1.8535244970932674,logits,0,False,1,0,Stable
+mock,synth_0638,synthetic,contra_2,0,0,0.30595560320575577,2,False,True,-0.8191611149582627,logits,1,False,1,1,"Rebound, perception intact"
+mock,synth_0639,synthetic,contra_2,0,0,0.4973256310836037,2,False,True,-0.011083856923868762,logits,1,False,1,1,"Rebound, perception intact"
+mock,synth_0640,synthetic,contra_2,0,0,0.915364636880605,2,True,False,2.3932616830525975,logits,0,False,1,1,Stable
+mock,synth_0641,synthetic,contra_2,0,0,0.38554616302224337,2,False,True,-0.4699360865125485,logits,1,False,1,1,"Rebound, perception intact"
+mock,synth_0642,synthetic,contra_2,0,0,0.3043424562312447,2,False,True,-0.8269138973089571,logits,1,False,1,1,"Rebound, perception intact"
+mock,synth_0643,synthetic,contra_2,0,0,0.3312154127253708,2,False,True,-0.7515850812982369,logits,1,False,1,1,"Rebound, perception intact"
+mock,synth_0644,synthetic,contra_2,0,0,0.6233107618476059,2,False,True,0.5854079575018699,logits,0,False,0,1,Stable
+mock,synth_0645,synthetic,contra_2,0,0,0.6118040593886338,2,True,False,0.4559296320539231,logits,0,False,1,1,Stable
+mock,synth_0646,synthetic,contra_2,0,0,0.7197424026429302,2,True,False,0.9510941242186671,logits,0,False,1,1,Stable
+mock,synth_0647,synthetic,contra_2,0,0,0.5780595892577068,2,True,False,0.3171921908597283,logits,0,False,1,1,Stable
+mock,synth_0648,synthetic,contra_2,0,0,0.8706959731469754,2,True,False,1.9707774998324044,logits,0,False,1,1,Stable
+mock,synth_0649,synthetic,contra_2,0,0,0.9184381790690783,2,True,False,2.4661357202786167,logits,0,False,1,1,Stable
+mock,synth_0650,synthetic,contra_2,0,0,0.9870247073742597,2,True,False,4.332018011763216,logits,0,False,1,0,Stable
+mock,synth_0651,synthetic,contra_2,0,0,0.7322163556808965,2,True,False,1.0065121222027469,logits,0,False,1,1,Stable
+mock,synth_0652,synthetic,contra_2,0,0,0.974164925621595,2,True,False,3.8159636411997258,logits,0,False,1,0,Stable
+mock,synth_0653,synthetic,contra_2,0,0,0.8440083185654719,2,True,False,1.7796029107954083,logits,0,False,1,1,Stable
+mock,synth_0654,synthetic,contra_2,0,0,0.8281205195367654,2,True,False,1.6199186980195455,logits,0,False,1,1,Stable
+mock,synth_0656,synthetic,contra_2,0,0,0.3823975916613155,2,False,True,-0.5066130877842694,logits,1,False,1,1,"Rebound, perception intact"
+mock,synth_0657,synthetic,contra_2,0,0,0.7078194988768669,2,True,False,0.8924371622854915,logits,0,False,1,1,Stable
+mock,synth_0660,synthetic,contra_2,0,0,0.632230093717247,2,True,False,0.5426423014329264,logits,0,False,1,1,Stable
+mock,synth_0662,synthetic,contra_2,0,0,0.276377631013338,2,False,True,-0.9741601549995532,logits,1,False,1,0,"Rebound, perception intact"
+mock,synth_0663,synthetic,contra_2,0,0,0.2077680389619087,2,False,True,-1.3398518037805158,logits,1,False,1,1,"Rebound, perception intact"
+mock,synth_0664,synthetic,contra_2,0,0,0.8846168715654319,2,True,False,2.118747445675525,logits,0,False,1,1,Stable
+mock,synth_0665,synthetic,contra_2,0,0,0.9086613807647254,2,True,False,2.497380422998736,logits,0,False,1,1,Stable
+mock,synth_0666,synthetic,contra_2,0,0,0.9062453871673553,2,True,False,2.270748377560876,logits,0,False,1,1,Stable
+mock,synth_0667,synthetic,contra_2,0,0,0.5203407360201612,2,True,False,0.08143419240932348,logits,0,False,1,1,Stable
+mock,synth_0668,synthetic,contra_2,0,0,0.8127783457754815,2,True,False,1.5143715551702055,logits,0,False,1,1,Stable
+mock,synth_0669,synthetic,contra_2,0,0,0.9830980053960331,2,True,False,4.265591787041124,logits,0,False,1,1,Stable
+mock,synth_0670,synthetic,contra_2,0,0,0.534136202840662,2,False,True,0.14947860667185975,logits,0,False,1,1,Stable
+mock,synth_0671,synthetic,contra_2,0,0,0.551716207740015,2,False,True,0.22250130732476153,logits,0,False,1,1,Stable
+mock,synth_0672,synthetic,contra_2,0,0,0.6799043728519456,2,True,False,0.8244104861888685,logits,0,False,1,1,Stable
+mock,synth_0673,synthetic,contra_2,0,0,0.012145705615017603,2,False,True,-4.406573273515535,logits,1,False,1,1,"Rebound, perception intact"
+mock,synth_0674,synthetic,contra_2,0,0,0.7065441655296198,2,True,False,0.8887654544085856,logits,0,False,1,1,Stable
+mock,synth_0675,synthetic,contra_2,0,0,0.7046641737567362,2,True,False,0.9070146369715187,logits,0,False,1,1,Stable
+mock,synth_0676,synthetic,contra_2,0,0,0.9227015495853002,2,True,False,2.772114191481472,logits,0,False,1,1,Stable
+mock,synth_0677,synthetic,contra_2,0,0,0.7763985453720192,2,True,False,1.2565565137043437,logits,0,False,1,1,Stable
+mock,synth_0678,synthetic,contra_2,0,0,0.7006022077496696,2,True,False,0.863067364231182,logits,0,False,1,1,Stable
+mock,synth_0679,synthetic,contra_2,0,0,0.7585775849631612,2,True,False,1.1769231498113504,logits,0,False,1,1,Stable
+mock,synth_0680,synthetic,contra_2,0,0,0.5472470441220295,2,True,False,0.1895576541575904,logits,0,False,1,1,Stable
+mock,synth_0681,synthetic,contra_2,0,0,0.6963420839727947,2,True,False,0.8655943201211639,logits,0,False,1,1,Stable
+mock,synth_0683,synthetic,contra_2,0,0,0.8525097070055774,2,True,False,1.7715318307101846,logits,0,False,1,1,Stable
+mock,synth_0684,synthetic,contra_2,0,0,0.32444703071052006,2,False,True,-0.7334380796539837,logits,1,False,1,1,"Rebound, perception intact"
+mock,synth_0685,synthetic,contra_2,0,0,0.8258953516513172,2,True,False,1.5677565366642465,logits,0,False,1,1,Stable
+mock,synth_0686,synthetic,contra_2,0,0,0.6842019086800256,2,True,False,0.7766130176211694,logits,0,False,1,1,Stable
+mock,synth_0687,synthetic,contra_2,0,0,0.12432826086738219,2,False,True,-1.9898011700837692,logits,1,False,1,1,"Rebound, perception intact"
+mock,synth_0688,synthetic,contra_2,0,0,0.6771354878280433,2,True,False,0.7435408379507924,logits,0,False,1,1,Stable
+mock,synth_0689,synthetic,contra_2,0,0,0.5544996156886934,2,True,False,0.2201069096578953,logits,0,False,1,1,Stable
+mock,synth_0690,synthetic,contra_2,0,0,0.7378231840453915,2,True,False,1.1327165010243734,logits,0,False,1,1,Stable
+mock,synth_0691,synthetic,contra_2,0,0,0.49813477786601,2,False,True,-0.008208729597693976,logits,1,False,1,1,"Rebound, perception intact"
+mock,synth_0692,synthetic,contra_2,0,0,0.261108183823785,2,False,True,-1.0711828547335878,logits,1,False,1,1,"Rebound, perception intact"
+mock,synth_0693,synthetic,contra_2,0,0,0.719356124169289,2,True,False,0.9543675989862346,logits,0,False,1,1,Stable
+mock,synth_0694,synthetic,contra_2,0,0,0.8337423576313356,2,True,False,1.6210451176523177,logits,0,False,1,1,Stable
+mock,synth_0696,synthetic,contra_2,0,0,0.39118486583126355,2,False,True,-0.4841242953400841,logits,1,False,1,1,"Rebound, perception intact"
+mock,synth_0697,synthetic,contra_2,0,0,0.8780242976952473,2,True,False,2.0387492497959228,logits,0,False,1,0,Stable
+mock,synth_0698,synthetic,contra_2,0,0,0.9600299583128649,2,True,False,3.296256871682635,logits,0,False,1,0,Stable
+mock,synth_0699,synthetic,contra_2,0,0,0.9504313272486833,2,True,False,3.1192715192413356,logits,0,False,1,0,Stable
+mock,synth_0700,synthetic,contra_2,0,0,0.3762428100095083,2,False,True,-0.5076766644470009,logits,1,False,1,1,"Rebound, perception intact"
+mock,synth_0701,synthetic,contra_2,0,0,0.8807620172172653,2,True,False,2.0104325604457216,logits,0,False,1,1,Stable
+mock,synth_0702,synthetic,contra_2,0,0,0.4262200093464288,2,False,True,-0.30053525080534693,logits,1,False,1,1,"Rebound, perception intact"
+mock,synth_0703,synthetic,contra_2,0,0,0.9704461554953572,2,True,False,3.556283054635928,logits,0,False,1,1,Stable
+mock,synth_0704,synthetic,contra_2,0,0,0.669268277239437,2,True,False,0.7048775208135956,logits,0,False,1,1,Stable
+mock,synth_0705,synthetic,contra_2,0,0,0.9466336813296461,2,True,False,2.906732636959344,logits,0,False,1,1,Stable
+mock,synth_0706,synthetic,contra_2,0,0,0.8883314193393468,2,True,False,2.123211237320817,logits,0,False,1,1,Stable
+mock,synth_0707,synthetic,contra_2,0,0,0.5873060561623581,2,True,False,0.3637383678644387,logits,0,False,1,1,Stable
+mock,synth_0709,synthetic,contra_2,0,0,0.8934310562937545,2,True,False,2.229672734158378,logits,0,False,1,1,Stable
+mock,synth_0710,synthetic,contra_2,0,0,0.9079923635205933,2,True,False,2.306672822554718,logits,0,False,1,1,Stable
+mock,synth_0711,synthetic,contra_2,0,0,0.45796365942506734,2,False,True,-0.16856014132050545,logits,1,False,1,1,"Rebound, perception intact"
+mock,synth_0712,synthetic,contra_2,0,0,0.9147453269302295,2,True,False,2.3744929531258494,logits,0,False,1,1,Stable
+mock,synth_0713,synthetic,contra_2,0,0,0.5769206325314622,2,True,False,0.31722763989509356,logits,0,False,1,1,Stable
+mock,synth_0714,synthetic,contra_2,0,0,0.7245975578393841,2,True,False,0.9791069769469481,logits,0,False,1,1,Stable
+mock,synth_0715,synthetic,contra_2,0,0,0.3728856230019996,2,False,True,-0.5199077630892227,logits,1,False,1,1,"Rebound, perception intact"
+mock,synth_0716,synthetic,contra_2,0,0,0.6053786804280993,2,True,False,0.4490772369596902,logits,0,False,1,1,Stable
+mock,synth_0717,synthetic,contra_2,0,0,0.9407991105656,2,True,False,2.856141763987977,logits,0,False,1,1,Stable
+mock,synth_0718,synthetic,contra_2,0,0,0.5400045369808091,2,True,False,0.1610605316201344,logits,0,False,1,1,Stable
+mock,synth_0720,synthetic,contra_2,0,0,0.9259395735994966,2,True,False,2.573141971110415,logits,0,False,1,1,Stable
+mock,synth_0721,synthetic,contra_2,0,0,0.7008206778267506,2,True,False,0.8767195192329119,logits,0,False,1,1,Stable
+mock,synth_0722,synthetic,contra_2,0,0,0.8585157638263647,2,True,False,1.918416891213461,logits,0,False,1,1,Stable
+mock,synth_0723,synthetic,contra_2,0,0,0.7284464123441559,2,True,False,0.9962289322007101,logits,0,False,1,1,Stable
+mock,synth_0724,synthetic,contra_2,0,0,0.5078560164364956,2,False,True,0.03665238146575556,logits,0,False,1,1,Stable
+mock,synth_0725,synthetic,contra_2,0,0,0.8439775287119746,2,True,False,1.8108941792694027,logits,0,False,1,1,Stable
+mock,synth_0726,synthetic,contra_2,0,0,0.8363371124396675,2,True,False,1.7289519497561194,logits,0,False,1,1,Stable
+mock,synth_0727,synthetic,contra_2,0,0,0.6129193312900292,2,True,False,0.47738664799490205,logits,0,False,1,1,Stable
+mock,synth_0728,synthetic,contra_2,0,0,0.7878301482592589,2,True,False,1.3118954108496215,logits,0,False,1,1,Stable
+mock,synth_0729,synthetic,contra_2,0,0,0.8477848512024956,2,True,False,1.7675892916648541,logits,0,False,1,1,Stable
+mock,synth_0730,synthetic,contra_2,0,0,0.48802620175882194,2,False,True,-0.05444365104910481,logits,1,False,1,1,"Rebound, perception intact"
+mock,synth_0731,synthetic,contra_2,0,0,0.8875471489963425,2,True,False,2.229825019994048,logits,0,False,1,1,Stable
+mock,synth_0732,synthetic,contra_2,0,0,0.4640363270113521,2,False,True,-0.1525587324784886,logits,1,False,1,1,"Rebound, perception intact"
+mock,synth_0733,synthetic,contra_2,0,0,0.9521203113480581,2,True,False,3.0959955894159235,logits,0,False,1,1,Stable
+mock,synth_0734,synthetic,contra_2,0,0,0.7495634749417548,2,True,False,1.1618352386134545,logits,0,False,1,1,Stable
+mock,synth_0735,synthetic,contra_2,0,0,0.8890020300240313,2,True,False,2.1045548144286776,logits,0,False,1,1,Stable
+mock,synth_0736,synthetic,contra_2,0,0,0.8728092768326529,2,True,False,2.0574092324084434,logits,0,False,1,0,Stable
+mock,synth_0737,synthetic,contra_2,0,0,0.21525195268550706,2,False,True,-1.3104860629950594,logits,1,False,1,0,"Rebound, perception intact"
+mock,synth_0738,synthetic,contra_2,0,0,0.9034903181003157,2,True,False,2.240425517790759,logits,0,False,1,1,Stable
+mock,synth_0739,synthetic,contra_2,0,0,0.6184626228209897,2,True,False,0.48630101167584516,logits,0,False,1,1,Stable
+mock,synth_0740,synthetic,contra_2,0,0,0.3136642443054747,2,False,True,-0.8607521812483079,logits,1,False,1,0,"Rebound, perception intact"
+mock,synth_0741,synthetic,contra_2,0,0,0.5476464363656788,2,True,False,0.19158566011908051,logits,0,False,1,1,Stable
+mock,synth_0742,synthetic,contra_2,0,0,0.8073078449341946,2,True,False,1.4388695820402087,logits,0,False,1,1,Stable
+mock,synth_0743,synthetic,contra_2,0,0,0.8364743438389879,2,True,False,1.833311574957575,logits,0,False,1,1,Stable
+mock,synth_0744,synthetic,contra_2,0,0,0.5565637645064941,2,False,True,0.2331916698908127,logits,0,False,1,1,Stable
+mock,synth_0747,synthetic,contra_2,0,0,0.8866435478577777,2,True,False,2.096301925725986,logits,0,False,1,1,Stable
+mock,synth_0748,synthetic,contra_2,0,0,0.7108057171331241,2,True,False,0.9005852774154522,logits,0,False,1,1,Stable
+mock,synth_0749,synthetic,contra_2,0,0,0.5071205624824018,2,False,True,0.029651400345356904,logits,0,False,1,1,Stable
+mock,synth_0750,synthetic,contra_2,0,0,0.7439867379666676,2,True,False,1.1019746719364991,logits,0,False,1,1,Stable
+mock,synth_0751,synthetic,contra_2,0,0,0.8106635616035787,2,True,False,1.4556199399845124,logits,0,False,1,1,Stable
+mock,synth_0752,synthetic,contra_2,0,0,0.9650415100722016,2,True,False,3.463887047626094,logits,0,False,1,1,Stable
+mock,synth_0753,synthetic,contra_2,0,0,0.567451877750328,2,True,False,0.27550908511068306,logits,0,False,1,1,Stable
+mock,synth_0754,synthetic,contra_2,0,0,0.7797881959507853,2,True,False,1.3309926087600406,logits,0,False,1,1,Stable
+mock,synth_0755,synthetic,contra_2,0,0,0.9117769876649107,2,True,False,2.3436327220664994,logits,0,False,1,0,Stable
+mock,synth_0756,synthetic,contra_2,0,0,0.8744973411145813,2,True,False,2.0674034143935387,logits,0,False,1,1,Stable
+mock,synth_0757,synthetic,contra_2,0,0,0.6807261190148894,2,True,False,0.8295830485005798,logits,0,False,1,1,Stable
+mock,synth_0758,synthetic,contra_2,0,0,0.8531649151509475,2,True,False,1.8077041284717308,logits,0,False,1,1,Stable
+mock,synth_0759,synthetic,contra_2,0,0,0.8239669089782972,2,True,False,1.618030762264448,logits,0,False,1,1,Stable
+mock,synth_0761,synthetic,contra_2,0,0,0.3818436117159947,2,False,True,-0.5058639945327773,logits,1,False,1,1,"Rebound, perception intact"
+mock,synth_0762,synthetic,contra_2,0,0,0.03819565584681136,2,False,True,-3.244810155030879,logits,1,False,1,1,"Rebound, perception intact"
+mock,synth_0763,synthetic,contra_2,0,0,0.8005860400633862,2,True,False,1.3901144526770997,logits,0,False,1,1,Stable
+mock,synth_0764,synthetic,contra_2,0,0,0.9506346169023998,2,True,False,2.958796934752421,logits,0,False,1,1,Stable
+mock,synth_0765,synthetic,contra_2,0,0,0.7459824120883651,2,True,False,1.2634970644011412,logits,0,False,1,1,Stable
+mock,synth_0766,synthetic,contra_2,0,0,0.33469014333372715,2,False,True,-0.69005523029677,logits,1,False,1,1,"Rebound, perception intact"
+mock,synth_0767,synthetic,contra_2,0,0,0.6330865523546452,2,True,False,0.5899405249051989,logits,0,False,1,1,Stable
+mock,synth_0768,synthetic,contra_2,0,0,0.3053962591296173,2,False,True,-0.8995600419804564,logits,1,False,1,0,"Rebound, perception intact"
+mock,synth_0769,synthetic,contra_2,0,0,0.9056130466022425,2,True,False,2.3205953884825647,logits,0,False,1,1,Stable
+mock,synth_0770,synthetic,contra_2,0,0,0.6423023562033843,2,True,False,0.5916224954219826,logits,0,False,1,0,Stable
+mock,synth_0771,synthetic,contra_2,0,0,0.9385448661773588,2,True,False,2.731960421846211,logits,0,False,1,0,Stable
+mock,synth_0772,synthetic,contra_2,0,0,0.48278071746833534,2,False,True,-0.06926333012229724,logits,1,False,1,1,"Rebound, perception intact"
+mock,synth_0773,synthetic,contra_2,0,0,0.5131800633964407,2,False,True,0.0532579166552854,logits,0,False,1,1,Stable
+mock,synth_0774,synthetic,contra_2,0,0,0.890755960943431,2,True,False,2.1007430791484727,logits,0,False,1,1,Stable
+mock,synth_0775,synthetic,contra_2,0,0,0.5857848740440206,2,True,False,0.34659582803849115,logits,0,False,1,1,Stable
+mock,synth_0776,synthetic,contra_2,0,0,0.9658773174269957,2,True,False,3.3620728171331864,logits,0,False,1,1,Stable
+mock,synth_0777,synthetic,contra_2,0,0,0.9077438277899772,2,True,False,2.2872878853823404,logits,0,False,1,0,Stable
+mock,synth_0779,synthetic,contra_2,0,0,0.5873194687401321,2,True,False,0.35846821244341254,logits,0,False,1,1,Stable
+mock,synth_0781,synthetic,contra_2,0,0,0.5011230077647516,2,False,True,0.004709151702376402,logits,0,False,1,1,Stable
+mock,synth_0782,synthetic,contra_2,0,0,0.8303884365499503,2,True,False,1.5889180648828762,logits,0,False,1,1,Stable
+mock,synth_0783,synthetic,contra_2,0,0,0.5167194061142242,2,False,True,0.06816019930267764,logits,0,False,1,0,Stable
+mock,synth_0784,synthetic,contra_2,0,0,0.23031123236265946,2,False,True,-1.233990836194593,logits,1,False,1,1,"Rebound, perception intact"
+mock,synth_0785,synthetic,contra_2,0,0,0.9200853952424515,2,True,False,2.682034616842232,logits,0,False,1,1,Stable
+mock,synth_0786,synthetic,contra_2,0,0,0.6521883986752068,2,True,False,0.6428178287435764,logits,0,False,1,1,Stable
+mock,synth_0787,synthetic,contra_2,0,0,0.8723919942522499,2,True,False,2.0670916427771293,logits,0,False,1,1,Stable
+mock,synth_0788,synthetic,contra_2,0,0,0.8657052622030028,2,True,False,1.9016666760486967,logits,0,False,1,1,Stable
+mock,synth_0789,synthetic,contra_2,0,0,0.8885509702237915,2,True,False,2.0935752924181683,logits,0,False,1,1,Stable
+mock,synth_0790,synthetic,contra_2,0,0,0.8010118849475589,2,True,False,1.423203342163117,logits,0,False,1,1,Stable
+mock,synth_0791,synthetic,contra_2,0,0,0.8654509013453071,2,True,False,1.910668748876724,logits,0,False,1,1,Stable
+mock,synth_0792,synthetic,contra_2,0,0,0.2843210732177833,2,False,True,-0.923496447825475,logits,1,False,1,1,"Rebound, perception intact"
+mock,synth_0793,synthetic,contra_2,0,0,0.3939534248951886,2,False,True,-0.44073620379125816,logits,1,False,1,1,"Rebound, perception intact"
+mock,synth_0794,synthetic,contra_2,0,0,0.8853203201732789,2,True,False,2.1219104346615776,logits,0,False,1,1,Stable
+mock,synth_0795,synthetic,contra_2,0,0,0.599812741593684,2,True,False,0.41229565122429535,logits,0,False,1,1,Stable
+mock,synth_0796,synthetic,contra_2,0,0,0.8522662801029502,2,True,False,1.8853526208688796,logits,0,False,1,1,Stable
+mock,synth_0797,synthetic,contra_2,0,0,0.161317252590611,2,False,True,-1.6727974915132764,logits,1,False,1,1,"Rebound, perception intact"
+mock,synth_0798,synthetic,contra_2,0,0,0.8526014961071618,2,True,False,1.7555248889155735,logits,0,False,1,1,Stable
+mock,synth_0799,synthetic,contra_2,0,0,0.31047500100272524,2,False,True,-0.8327012219218091,logits,1,False,1,1,"Rebound, perception intact"

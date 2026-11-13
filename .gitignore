@@ -1,0 +1,13 @@
+# secrets
+.env
+# environment / caches
+.venv/
+__pycache__/
+*.pyc
+.claude/
+# large raw downloads (rebuilt by src/00 and src/01)
+data/raw/
+erb2_bundle.zip
+# test-only results (pipeline check and smoke runs)
+results/mock.*
+results/*_smoke.*

@@ -1,0 +1,154 @@
+# Single source of truth for the benchmark: whitelist, thresholds, templates, models.
+# Changing anything here after results exist changes `config_hash` in the results files.
+
+seed: 20261113
+
+# ---------------------------------------------------------------- real subset
+real:
+  # Annotation source (full multi-pair HICO-DET train annotations, HAKE release)
+  hake_repo: ayh015/HICO-Det_Halpe_HAKE
+  hake_file: Annotation/hico-det-instance-level/hico-det-training-set-instance-level.json
+  hoi_list_file: Configs/hico_hoi_list.txt
+  # Per-image JPEG source (only candidates are downloaded)
+  image_repo: chelsielei/hico_train2015_split
+
+  # Second real source: V-COCO on COCO 2014. COCO boxes every person (CVC1 is checked on all
+  # non-crowd person boxes) and V-COCO labels every annotated person for all 26 actions (exhaustive).
+  vcoco_urls:
+    trainval: https://raw.githubusercontent.com/s-gupta/v-coco/master/data/vcoco/vcoco_trainval.json
+    test: https://raw.githubusercontent.com/s-gupta/v-coco/master/data/vcoco/vcoco_test.json
+  coco_ann_zip: http://images.cocodataset.org/annotations/annotations_trainval2014.zip
+  coco_image_url: http://images.cocodataset.org/{split}2014/COCO_{split}2014_{id:012d}.jpg
+
+  # Exclusive-verb whitelists (CVC4). Order = priority when an image qualifies for several.
+  # `allowed_other`: labels the distractor MAY carry for the same object without making the false
+  # caption true (e.g. catching a frisbee the actor threw). Anything else on that object -> drop.
+  # The plan's original 5 entries yield 0 strict items on HICO train (both people almost always carry
+  # some label for the object), see docs/schema_notes.md and the funnel.
+  whitelist_hico:
+    - {object: sports_ball,   verb: kick,       ing: kicking,   obj_np: "the ball",          q2_obj: "a ball",          allowed_other: [no_interaction, block, inspect]}
+    - {object: frisbee,       verb: throw,      ing: throwing,  obj_np: "the frisbee",       q2_obj: "a frisbee",       allowed_other: [no_interaction, catch, block]}
+    - {object: frisbee,       verb: catch,      ing: catching,  obj_np: "the frisbee",       q2_obj: "a frisbee",       allowed_other: [no_interaction, throw]}
+    - {object: baseball_bat,  verb: swing,      ing: swinging,  obj_np: "the baseball bat",  q2_obj: "a baseball bat",  allowed_other: [no_interaction]}
+    - {object: tennis_racket, verb: swing,      ing: swinging,  obj_np: "the tennis racket", q2_obj: "a tennis racket", allowed_other: [no_interaction]}
+    - {object: toothbrush,    verb: brush_with, ing: "brushing their teeth with", obj_np: "the toothbrush", q2_obj: "a toothbrush", allowed_other: [no_interaction]}
+    - {object: sports_ball,   verb: throw,      ing: throwing,  obj_np: "the ball",          q2_obj: "a ball",          allowed_other: [no_interaction, catch, hit, block]}
+    - {object: sports_ball,   verb: hit,        ing: hitting,   obj_np: "the ball",          q2_obj: "a ball",          allowed_other: [no_interaction, throw, catch, block]}
+    - {object: sports_ball,   verb: dribble,    ing: dribbling, obj_np: "the ball",          q2_obj: "a ball",          allowed_other: [no_interaction, block, inspect]}
+    - {object: cake,          verb: blow,       ing: "blowing out the candles on", obj_np: "the cake", q2_obj: "a cake", allowed_other: [no_interaction, hold, carry, pick_up]}
+    - {object: bottle,        verb: drink_with, ing: "drinking from", obj_np: "the bottle",      q2_obj: "a bottle",        allowed_other: [no_interaction]}
+    - {object: cell_phone,    verb: talk_on,    ing: "talking on", obj_np: "the phone",          q2_obj: "a phone",         allowed_other: [no_interaction]}
+    - {object: car,           verb: drive,      ing: driving,   obj_np: "the car",           q2_obj: "a car",           allowed_other: [no_interaction, ride, board, sit_on]}
+  whitelist_vcoco:   # verb = V-COCO action, role = obj|instr, object = COCO class name
+    - {object: frisbee,       verb: catch,            role: obj,   ing: catching,         obj_np: "the frisbee",       q2_obj: "a frisbee",       allowed_other: [look, throw]}
+    - {object: frisbee,       verb: throw,            role: obj,   ing: throwing,         obj_np: "the frisbee",       q2_obj: "a frisbee",       allowed_other: [look, catch]}
+    - {object: laptop,        verb: work_on_computer, role: instr, ing: "typing on",      obj_np: "the laptop",        q2_obj: "a laptop",        allowed_other: [look]}
+    - {object: sports ball,   verb: kick,             role: obj,   ing: kicking,          obj_np: "the ball",          q2_obj: "a ball",          allowed_other: [look]}
+    - {object: sports ball,   verb: hit,              role: obj,   ing: hitting,          obj_np: "the ball",          q2_obj: "a ball",          allowed_other: [look, throw, catch]}
+    - {object: sports ball,   verb: catch,            role: obj,   ing: catching,         obj_np: "the ball",          q2_obj: "a ball",          allowed_other: [look, throw, hit, kick]}
+    - {object: sports ball,   verb: throw,            role: obj,   ing: throwing,         obj_np: "the ball",          q2_obj: "a ball",          allowed_other: [look, catch, hit]}
+    - {object: tennis racket, verb: hit,              role: instr, ing: swinging,         obj_np: "the tennis racket", q2_obj: "a tennis racket", allowed_other: [look]}
+    - {object: baseball bat,  verb: hit,              role: instr, ing: swinging,         obj_np: "the baseball bat",  q2_obj: "a baseball bat",  allowed_other: [look]}
+    - {object: cell phone,    verb: talk_on_phone,    role: instr, ing: "talking on",     obj_np: "the phone",         q2_obj: "a phone",         allowed_other: [look]}
+    - {object: knife,         verb: cut,              role: instr, ing: "cutting with",   obj_np: "the knife",         q2_obj: "a knife",         allowed_other: [look]}
+    - {object: scissors,      verb: cut,              role: instr, ing: "cutting with",   obj_np: "the scissors",      q2_obj: "scissors",        allowed_other: [look]}
+    - {object: surfboard,     verb: surf,             role: instr, ing: "riding",         obj_np: "the surfboard",     q2_obj: "a surfboard",     allowed_other: [look]}
+    - {object: skateboard,    verb: skateboard,       role: instr, ing: "riding",         obj_np: "the skateboard",    q2_obj: "a skateboard",    allowed_other: [look]}
+    - {object: snowboard,     verb: snowboard,        role: instr, ing: "riding",         obj_np: "the snowboard",     q2_obj: "a snowboard",     allowed_other: [look]}
+    - {object: skis,          verb: ski,              role: instr, ing: "skiing on",      obj_np: "the skis",          q2_obj: "skis",            allowed_other: [look]}
+    - {object: pizza,         verb: eat,              role: obj,   ing: eating,           obj_np: "the pizza",         q2_obj: "a pizza",         allowed_other: [look]}
+    - {object: book,          verb: read,             role: obj,   ing: reading,          obj_np: "the book",          q2_obj: "a book",          allowed_other: [look]}
+    - {object: cup,           verb: drink,            role: instr, ing: "drinking from",  obj_np: "the cup",           q2_obj: "a cup",           allowed_other: [look]}
+
+  thresholds:
+    cluster_iou: 0.5            # HICO boxes the same instance across HOI rows if IoU >= this
+    min_person_area_frac: 0.03  # CVC1 (relaxed to 0.02 automatically if < min_items survive)
+    relaxed_person_area_frac: 0.02
+    max_person_iou: 0.3         # CVC1 separability
+    det_object_conf: 0.20       # CVC2: deliberately low, so hidden duplicates get caught
+    det_person_conf: 0.40       # CVC1 detector check for an unannotated third person
+    det_person_min_area_frac: 0.01
+    det_match_iou: 0.5          # detector box == annotated box if IoU >= this
+    lr_min_center_gap_frac: 0.10  # left/right referencing only if centres differ by >= 10% of width
+    min_items: 400
+
+  detector: PekingU/rtdetr_r101vd_coco_o365   # COCO-class detector (transformers)
+
+# ---------------------------------------------------------------- synthetic subset
+synthetic:
+  n_per_verb: 200
+  size: [640, 480]
+  verbs:
+    - {key: kick_ball,     ing: kicking,  obj_np: "the ball",          q2: "kicking a ball"}
+    - {key: hold_umbrella, ing: holding,  obj_np: "the umbrella",      q2: "holding an umbrella"}
+    - {key: swing_racket,  ing: swinging, obj_np: "the tennis racket", q2: "swinging a tennis racket"}
+    - {key: hold_flag,     ing: holding,  obj_np: "the flag",          q2: "holding a flag"}
+  shirt_colors: [red, blue, green, yellow, purple, orange]
+
+# ---------------------------------------------------------------- prompts
+prompts:
+  # {X} = entity reference ("A", "B", "the person on the left"), {ing} {obj}
+  captions:
+    neutral:    "The image shows {X1} and {X2}."
+    consistent: "{X} is {ing} {obj}."
+    contra_1:   "I think {X} might be {ing} {obj}."
+    contra_2:   "{X} is {ing} {obj}."
+    contra_3:   "{X} is definitely {ing} {obj}."
+    contra_4:   "Verified annotation: {X} is {ing} {obj}. Confirmed: it is {X} who is {ing} {obj}."
+  # Paraphrases used only in the robustness profile (contra_2 level)
+  caption_paraphrases:
+    - "{X} is {ing} {obj}."
+    - "In this picture, {X} is {ing} {obj}."
+    - "Here {X} is the one {ing} {obj}."
+  ablation_system: "Answer from the image, not the caption."
+  caption_wrapper: 'Caption: "{caption}"'
+  q4:
+    - "Who is {ing} {obj}, {O1} or {O2}?"
+    - "Which person is {ing} {obj}: {O1} or {O2}?"
+    - "In the image, who is {ing} {obj}, {O1} or {O2}?"
+  q4_suffix_marker: "Answer with only the letter {O1} or {O2}."
+  q4_suffix_lr: "Answer with only one word: {O1} or {O2}."
+  q1_real: "Which marker is on the person on the left, {O1} or {O2}? Answer with only the letter {O1} or {O2}."
+  q1_synth: "Who wears the {color} shirt, {O1} or {O2}? Answer with only the letter {O1} or {O2}."
+  q2: "Is anyone {q2}? Answer with only Yes or No."
+  q3: "Does the caption match the image? Answer with only Yes or No."
+
+# ---------------------------------------------------------------- query profiles
+profiles:
+  # Plan section 2f: ~22 forward passes / item
+  full:
+    q4_conditions: [none, neutral, consistent, contra_1, contra_2, contra_3, contra_4]
+    q2_conditions: [none, contra_2, contra_4]
+    q2_foil: true
+    q3_conditions: [neutral, consistent, contra_2, contra_4]
+    q1: true
+  # Plan section 11: API budget, ~14 calls / item
+  core:
+    q4_conditions: [none, neutral, consistent, contra_1, contra_2, contra_4]
+    q2_conditions: [contra_2]
+    q2_foil: false
+    q3_conditions: [contra_2]
+    q1: false
+  # Extra blocks run on a subset (robustness_n items per dataset)
+  robustness_n: 100
+  ablation_n: 200
+
+# ---------------------------------------------------------------- models
+models:
+  # image_processor: attributes set on the processor's image processor (caps tiling = visual tokens = speed)
+  # max_image_side: per-model override of runtime.max_image_side
+  smolvlm2-2.2b:   {backend: hf_local, hf_id: HuggingFaceTB/SmolVLM2-2.2B-Instruct,        dtype: float16, quant: none, image_processor: {do_image_splitting: false}}
+  internvl3-2b:    {backend: hf_local, hf_id: OpenGVLab/InternVL3-2B-hf,                   dtype: float16, quant: none, image_processor: {crop_to_patches: false}}
+  qwen2.5-vl-3b:   {backend: hf_local, hf_id: Qwen/Qwen2.5-VL-3B-Instruct,                 dtype: float16, quant: 4bit}   # 6 GB GPU; use quant: none on a 16 GB T4
+  llava-ov-0.5b:   {backend: hf_local, hf_id: llava-hf/llava-onevision-qwen2-0.5b-ov-hf,   dtype: float16, quant: none, max_image_side: 384}   # anyres -> 1 crop + base
+  qwen2.5-vl-7b:   {backend: hf_local, hf_id: Qwen/Qwen2.5-VL-7B-Instruct,                 dtype: float16, quant: 4bit}   # stretch (T4)
+  # API reference points (text readout: AI Studio keys return no logprobs). Check quotas in AI Studio.
+  gemini-2.5-flash:      {backend: gemini_api, api_model: gemini-2.5-flash, thinking: budget0, rpm: 9}
+  gemini-3.5-flash-lite: {backend: gemini_api, api_model: gemini-3.5-flash-lite, thinking: none, rpm: 14}
+  # OpenRouter free tier: 50 requests/day on this key -> token reference only
+  openrouter-gemma4:     {backend: openrouter, api_model: "google/gemma-4-31b-it:free", rpm: 10}
+  mock:                  {backend: mock}
+
+runtime:
+  max_image_side: 640       # images are resized so the long side is <= this before querying
+  qwen_max_pixels: 401408   # 512*28*28; keeps Qwen visual token count small
