@@ -48,3 +48,4 @@ A/B markers vs left/right referencing, the "answer from the image" instruction a
 - 2026-11-13: Closed-model reference is `gemini-3.5-flash-lite` (text readout, no logprobs available on AI Studio keys); `gemini-2.5-flash-lite` is closed to new users and `gemini-2.5-flash` has a ~20 requests/day free quota.
 - 2026-11-13: The real subset has 152 automatic candidates (V-COCO 138, HICO 14), below the 400 target; the synthetic subset (800) carries power for H1/H2, and real-subset results are reported with their wider CIs.
 - 2026-11-13: Visual-token caps per model (`image_processor` / `max_image_side` in the config) so runs fit a 6 GB GPU; recorded in each results meta file.
+- 2026-11-14: The Gemini reference run uses `--limit 30` (30 real + 30 synthetic items, 840 queries) instead of 75 per dataset, to stay within the free-tier daily quota. It can be extended later with `--limit 75`; completed queries are kept.
