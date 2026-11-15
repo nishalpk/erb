@@ -1,4 +1,4 @@
-# Handover: state on 2026-11-13 (evening)
+# Handover: state on 2026-11-15 (updated after the 2026-11-14 Gemini run and R1 audit)
 
 Read `README.md` (pipeline) and `PREREGISTRATION.md` (hypotheses + every change from `PLAN.md`) first.
 This file is what's **done** and what's **left**, in order.
@@ -28,10 +28,11 @@ Check that everything runs (no GPU or keys needed, ~1 min):
 | D0 schema | `docs/schema_notes.md`. The HF `zhimeng/hico_det` copy drops the second person per action, so the sources are HAKE HICO-DET train + V-COCO |
 | D1 real subset | **152 items** (V-COCO 138, HICO 14) in `data/processed/real/` (committed, images included). Funnel: `funnel.csv`. Below the 400 target; see PREREGISTRATION deviations |
 | D4 synthetic | 800 scenes in `data/processed/synthetic/` (committed) |
-| D2 audit tooling | `reports/audit/audit_R{1,2,3}.html` generated (100 shared items + the rest split). **Not labelled yet** |
+| D2 audit tooling | `reports/audit/audit_R{1,2,3}.html` generated (100 shared items + the rest split). **R1 labelled** (118/118, `reports/audit/labels_R1.csv`, 2026-11-14); R2, R3 not yet |
 | D3 smoke tests | All 4 local models + Gemini + OpenRouter verified (see timings below) |
 | D6 analysis, D7 probe | Code done; analysis checked on the mock model; probe **not run** |
-| Kaggle | `notebooks/kaggle_runner.ipynb`; bundle via `python scripts/make_kaggle_bundle.py` |
+| Gemini reference | `gemini-3.5-flash-lite` **complete** with `--limit 30` (30 real + 30 synthetic, 840/840 queries, 0 errors, 2026-11-14). Deviation logged in PREREGISTRATION |
+| Kaggle | `notebooks/kaggle_runner.ipynb`; bundle via `python scripts/make_kaggle_bundle.py`. Note: Kaggle now unzips the bundle under `/kaggle/input/datasets/<user>/<name>/`, so cell 1's `glob` misses it; search `/kaggle/input` with `os.walk` instead |
 
 Measured on an RTX 4050 6 GB (time per forward pass, all 952 items ≈ 22,800 passes per model):
 
@@ -53,12 +54,12 @@ Measured on an RTX 4050 6 GB (time per forward pass, all 952 items ≈ 22,800 pa
    .venv/Scripts/python src/04_run_models.py --model qwen2.5-vl-3b
    ```
    InternVL3-2B (and Qwen-7B, stretch): Kaggle T4 via `notebooks/kaggle_runner.ipynb`, or locally with `quant: 4bit` in `configs/verbs.yaml` (say so in the report if you do).
-2. **Gemini reference.** `gemini-3.5-flash-lite`: 401 / 2,100 calls done. The free tier allows ~500 calls/day; rerun daily until it finishes, or pay a few dollars:
+2. **Gemini reference.** ✅ Done 2026-11-14 with `--limit 30` (840/840 queries) to fit the free tier; see PREREGISTRATION deviations. To extend to the planned 75 per dataset later, rerun with `--limit 75` (it resumes):
    ```bash
    .venv/Scripts/python src/04_run_models.py --model gemini-3.5-flash-lite --profile core --blocks main --limit 75
    ```
    It reads answers as text (no logprobs on AI Studio keys). Keep it out of the pooled regression.
-3. **Manual audit (CVC5). Needs 3 people.** Serve the pages and open one per person:
+3. **Manual audit (CVC5). Needs 3 people.** R1 ✅ done (`reports/audit/labels_R1.csv`); **R2 and R3 still needed.** Serve the pages and open one per person:
    ```bash
    .venv/Scripts/python -m http.server 8765 --directory reports
    ```
