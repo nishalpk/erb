@@ -101,30 +101,34 @@ session that hits the 12 h limit can be continued by re-running with the previou
 """),
     code("""
 import os, glob, shutil, subprocess, zipfile
-src = glob.glob("/kaggle/input/*/erb2_bundle.zip") + glob.glob("/kaggle/input/*/*/erb2_bundle.zip")
+# Kaggle mounts datasets at varying depths (e.g. /kaggle/input/datasets/<user>/<name>/), and may
+# auto-extract the zip. Walk the whole input tree for either the zip or an extracted folder with src/.
 WORK = "/kaggle/working/erb2"
-if src:
-    zipfile.ZipFile(src[0]).extractall(WORK)
-else:  # dataset uploaded unzipped
-    d = [p for p in glob.glob("/kaggle/input/*") if os.path.exists(p + "/src")][0]
-    shutil.copytree(d, WORK, dirs_exist_ok=True)
-os.chdir(WORK); print(os.listdir())
+zip_path, folder = None, None
+for root, dirs, files in os.walk("/kaggle/input"):
+    if "erb2_bundle.zip" in files:
+        zip_path = os.path.join(root, "erb2_bundle.zip"); break
+    if "src" in dirs and os.path.exists(os.path.join(root, "src", "04_run_models.py")):
+        folder = root; break
+if zip_path:
+    zipfile.ZipFile(zip_path).extractall(WORK)
+elif folder:
+    shutil.copytree(folder, WORK, dirs_exist_ok=True)
+else:
+    raise SystemExit("bundle not found under /kaggle/input - check that the dataset is attached")
+os.chdir(WORK); print("bundle from", zip_path or folder); print(os.listdir())
 """),
     code("""
 !pip install -q -U "transformers>=4.57" accelerate bitsandbytes num2words pyyaml pyarrow
 import torch; print(torch.__version__, torch.cuda.get_device_name(0))
 """),
     code("""
-# T4 = 16 GB: run Qwen2.5-VL-3B unquantised; 7B in 4-bit.
-import yaml
-cfg = yaml.safe_load(open("configs/verbs.yaml"))
-cfg["models"]["qwen2.5-vl-3b"]["quant"] = "none"
-yaml.safe_dump(cfg, open("configs/verbs.yaml", "w"), sort_keys=False)
-MODELS = ["llava-ov-0.5b", "smolvlm2-2.2b", "internvl3-2b", "qwen2.5-vl-3b"]   # + "qwen2.5-vl-7b" if time allows
+# Only the model that does not fit the 6 GB laptop. The others run locally (Qwen-3B there in 4-bit).
+MODELS = ["internvl3-2b"]   # optional stretch: + "qwen2.5-vl-7b" (4-bit)
 """),
     code("""
-# D3: 50-item smoke test + timing on the smallest model
-!python src/04_run_models.py --model llava-ov-0.5b --limit 50 --tag smoke
+# Smoke test + timing (20 items per dataset, ~1-2 min). Check: n_errors 0, note the s/item line.
+!python src/04_run_models.py --model internvl3-2b --limit 20 --blocks main --tag smoke
 """),
     code("""
 for m in MODELS:
