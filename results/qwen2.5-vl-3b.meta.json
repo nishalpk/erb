@@ -1,0 +1,62 @@
+{
+  "model": "qwen2.5-vl-3b",
+  "spec": {
+    "backend": "hf_local",
+    "hf_id": "Qwen/Qwen2.5-VL-3B-Instruct",
+    "dtype": "float16",
+    "quant": "4bit"
+  },
+  "config_hash": "973d887011",
+  "profile": "full",
+  "blocks": [
+    "ablation",
+    "lr",
+    "main",
+    "robust"
+  ],
+  "n_items": 952,
+  "n_queries": 29928,
+  "n_rows": 29928,
+  "n_errors": 0,
+  "load_s": 28.3,
+  "mean_latency_s": 0.6013,
+  "versions": {
+    "python": "3.14.2",
+    "torch": "2.11.0+cu128",
+    "transformers": "5.23.0",
+    "accelerate": "1.15.0",
+    "bitsandbytes": "0.50.2",
+    "google.genai": "3.3.0",
+    "cuda_device": "NVIDIA GeForce RTX 4050 Laptop GPU"
+  },
+  "prompts": {
+    "captions": {
+      "neutral": "The image shows {X1} and {X2}.",
+      "consistent": "{X} is {ing} {obj}.",
+      "contra_1": "I think {X} might be {ing} {obj}.",
+      "contra_2": "{X} is {ing} {obj}.",
+      "contra_3": "{X} is definitely {ing} {obj}.",
+      "contra_4": "Verified annotation: {X} is {ing} {obj}. Confirmed: it is {X} who is {ing} {obj}."
+    },
+    "caption_paraphrases": [
+      "{X} is {ing} {obj}.",
+      "In this picture, {X} is {ing} {obj}.",
+      "Here {X} is the one {ing} {obj}."
+    ],
+    "ablation_system": "Answer from the image, not the caption.",
+    "caption_wrapper": "Caption: \"{caption}\"",
+    "q4": [
+      "Who is {ing} {obj}, {O1} or {O2}?",
+      "Which person is {ing} {obj}: {O1} or {O2}?",
+      "In the image, who is {ing} {obj}, {O1} or {O2}?"
+    ],
+    "q4_suffix_marker": "Answer with only the letter {O1} or {O2}.",
+    "q4_suffix_lr": "Answer with only one word: {O1} or {O2}.",
+    "q1_real": "Which marker is on the person on the left, {O1} or {O2}? Answer with only the letter {O1} or {O2}.",
+    "q1_synth": "Who wears the {color} shirt, {O1} or {O2}? Answer with only the letter {O1} or {O2}.",
+    "q2": "Is anyone {q2}? Answer with only Yes or No.",
+    "q3": "Does the caption match the image? Answer with only Yes or No."
+  },
+  "stopped_early": null,
+  "finished": "2026-11-15 23:03:44"
+}

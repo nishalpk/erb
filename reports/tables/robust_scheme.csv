@@ -1,9 +1,57 @@
 model,dataset,condition,mean,count,scheme
-mock,synthetic,contra_2,0.2631578947368421,95,A/B markers
-mock,synthetic,contra_4,0.5578947368421052,95,A/B markers
-mock,synthetic,neutral,0.0,95,A/B markers
-mock,synthetic,none,0.0,95,A/B markers
-mock,synthetic,contra_2,0.28865979381443296,97,left/right
-mock,synthetic,contra_4,0.5360824742268041,97,left/right
-mock,synthetic,neutral,0.041237113402061855,97,left/right
-mock,synthetic,none,0.0,97,left/right
+gemini-3.5-flash-lite,real,contra_2,0.0,22,A/B markers
+gemini-3.5-flash-lite,real,contra_4,0.045454545454545456,22,A/B markers
+gemini-3.5-flash-lite,real,neutral,0.0,22,A/B markers
+gemini-3.5-flash-lite,real,none,0.0,22,A/B markers
+gemini-3.5-flash-lite,synthetic,contra_2,0.0,2,A/B markers
+gemini-3.5-flash-lite,synthetic,contra_4,0.0,2,A/B markers
+gemini-3.5-flash-lite,synthetic,neutral,0.0,2,A/B markers
+gemini-3.5-flash-lite,synthetic,none,0.0,2,A/B markers
+llava-ov-0.5b,real,contra_2,0.0,40,A/B markers
+llava-ov-0.5b,real,contra_4,0.975,40,A/B markers
+llava-ov-0.5b,real,neutral,0.0,40,A/B markers
+llava-ov-0.5b,real,none,0.0,40,A/B markers
+llava-ov-0.5b,synthetic,contra_2,0.05555555555555555,54,A/B markers
+llava-ov-0.5b,synthetic,contra_4,0.5555555555555556,54,A/B markers
+llava-ov-0.5b,synthetic,neutral,0.07407407407407407,54,A/B markers
+llava-ov-0.5b,synthetic,none,0.0,54,A/B markers
+qwen2.5-vl-3b,real,contra_2,0.8181818181818182,55,A/B markers
+qwen2.5-vl-3b,real,contra_4,0.8363636363636363,55,A/B markers
+qwen2.5-vl-3b,real,neutral,0.07272727272727272,55,A/B markers
+qwen2.5-vl-3b,real,none,0.0,55,A/B markers
+qwen2.5-vl-3b,synthetic,contra_2,0.23595505617977527,89,A/B markers
+qwen2.5-vl-3b,synthetic,contra_4,0.34831460674157305,89,A/B markers
+qwen2.5-vl-3b,synthetic,neutral,0.0,89,A/B markers
+qwen2.5-vl-3b,synthetic,none,0.0,89,A/B markers
+smolvlm2-2.2b,real,contra_2,1.0,28,A/B markers
+smolvlm2-2.2b,real,contra_4,1.0,28,A/B markers
+smolvlm2-2.2b,real,neutral,0.17857142857142858,28,A/B markers
+smolvlm2-2.2b,real,none,0.0,28,A/B markers
+smolvlm2-2.2b,synthetic,contra_2,0.8297872340425532,47,A/B markers
+smolvlm2-2.2b,synthetic,contra_4,1.0,47,A/B markers
+smolvlm2-2.2b,synthetic,neutral,0.0425531914893617,47,A/B markers
+smolvlm2-2.2b,synthetic,none,0.0,47,A/B markers
+llava-ov-0.5b,real,contra_2,0.5166666666666667,60,left/right
+llava-ov-0.5b,real,contra_4,0.9,60,left/right
+llava-ov-0.5b,real,neutral,0.03333333333333333,60,left/right
+llava-ov-0.5b,real,none,0.0,60,left/right
+llava-ov-0.5b,synthetic,contra_2,0.05660377358490566,53,left/right
+llava-ov-0.5b,synthetic,contra_4,1.0,53,left/right
+llava-ov-0.5b,synthetic,neutral,0.0,53,left/right
+llava-ov-0.5b,synthetic,none,0.0,53,left/right
+qwen2.5-vl-3b,real,contra_2,0.6341463414634146,82,left/right
+qwen2.5-vl-3b,real,contra_4,0.7317073170731707,82,left/right
+qwen2.5-vl-3b,real,neutral,0.012195121951219513,82,left/right
+qwen2.5-vl-3b,real,none,0.0,82,left/right
+qwen2.5-vl-3b,synthetic,contra_2,0.12121212121212122,99,left/right
+qwen2.5-vl-3b,synthetic,contra_4,0.31313131313131315,99,left/right
+qwen2.5-vl-3b,synthetic,neutral,0.0,99,left/right
+qwen2.5-vl-3b,synthetic,none,0.0,99,left/right
+smolvlm2-2.2b,real,contra_2,1.0,1,left/right
+smolvlm2-2.2b,real,contra_4,1.0,1,left/right
+smolvlm2-2.2b,real,neutral,0.0,1,left/right
+smolvlm2-2.2b,real,none,0.0,1,left/right
+smolvlm2-2.2b,synthetic,contra_2,0.5,2,left/right
+smolvlm2-2.2b,synthetic,contra_4,1.0,2,left/right
+smolvlm2-2.2b,synthetic,neutral,0.0,2,left/right
+smolvlm2-2.2b,synthetic,none,0.0,2,left/right

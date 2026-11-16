@@ -34,7 +34,7 @@ Check that everything runs (no GPU or keys needed, ~1 min):
 | Gemini reference | `gemini-3.5-flash-lite` **complete** with `--limit 30` (30 real + 30 synthetic, 840/840 queries, 0 errors, 2026-11-14). Deviation logged in PREREGISTRATION |
 | Kaggle | `notebooks/kaggle_runner.ipynb`; bundle via `python scripts/make_kaggle_bundle.py`. Note: Kaggle now unzips the bundle under `/kaggle/input/datasets/<user>/<name>/`, so cell 1's `glob` misses it; search `/kaggle/input` with `os.walk` instead |
 
-Measured on an RTX 4050 6 GB (time per forward pass, all 952 items ≈ 22,800 passes per model):
+Measured on an RTX 4050 6 GB (time per forward pass; all 952 items with every block ≈ 29,900 passes per model):
 
 | Model | s/pass | full run | note |
 |---|---|---|---|
@@ -44,6 +44,8 @@ Measured on an RTX 4050 6 GB (time per forward pass, all 952 items ≈ 22,800 pa
 | internvl3-2b | 3.0 | ~19 h | fp16 spills past 6 GB → run on Kaggle T4 |
 
 ## 3. TODO (in this order)
+
+> 2026-11-15: `python scripts/run_all_local.py --skip-probe` started on the RTX 4050 (SmolVLM2 → LLaVA-OV → Qwen-3B 4-bit → analysis, ~8 h). Log: `results/run_all_local.log`. If it was interrupted, rerun the same command; it resumes. InternVL3-2B: see `KAGGLE_RUN.md`.
 
 1. **Full model runs (D5).** Partial results are committed and runs **resume** from `results/<model>.jsonl`:
    - `smolvlm2-2.2b`: ~3,900 / 22,800 queries done
@@ -69,7 +71,8 @@ Measured on an RTX 4050 6 GB (time per forward pass, all 952 items ≈ 22,800 pa
    .venv/Scripts/python src/02_audit_sample.py triage     # after model runs: items all models miss -> re-review
    ```
 4. **Analysis (D6):** `python src/05_analysis.py`, then `python src/05_analysis.py --audited-only`. Fill the hypothesis table from `reports/results.md`.
-5. **Probe/patching (D7):** `python src/06_probe_patch.py --model qwen2.5-vl-3b --n 200` → `fig8`, H5 verdict.
+5. **Probe/patching (D7), deferred to TODO (2026-11-15).** Script tested end to end on Qwen-3B (6 items): patching recovers ~100% at the entity token in early layers, and the attention-knockout hook was verified to take effect. Full run ≈ 1.5 h on the RTX 4050:
+   `python src/06_probe_patch.py --model qwen2.5-vl-3b --n 200` → `fig8`, H5 verdict (then rerun `src/05_analysis.py` to pick it up).
 6. **Deck (D8):** outline in PLAN.md section 10; figures in `reports/figures/`.
 
 ## 4. Future work (deferred)
