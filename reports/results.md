@@ -11,7 +11,7 @@ Models: gemini-3.5-flash-lite, llava-ov-0.5b, qwen2.5-vl-3b, smolvlm2-2.2b
 | H2 dose-response | positive trend in 88% of cells; monotone in 62%. GEE: real: OR/level 3.46 [2.85, 4.18], p=5.3e-37; synthetic: OR/level 2.22 [2.10, 2.34], p=3.2e-171 |
 | H3 dissociation | P(Q2 ok | rebind) lower bound > .5 in 5/5 cells. llava-ov-0.5b/synthetic: DR 0.02 [0.00, 0.12]; qwen2.5-vl-3b/real: DR 0.51 [0.40, 0.63]; qwen2.5-vl-3b/synthetic: DR 0.54 [0.46, 0.61]; smolvlm2-2.2b/real: DR 0.00 [0.00, 0.07]; smolvlm2-2.2b/synthetic: DR 0.00 [0.00, 0.01] |
 | H4 awareness does not protect | no strong protection in 8/8 cells (OR rebind|flag vs no flag: gemini-3.5-flash-lite/real 0.02 [0.00, 2.09]; gemini-3.5-flash-lite/synthetic 0.02 [0.00, 2.02]; llava-ov-0.5b/real 133.00 [1.09, 16274.61]; llava-ov-0.5b/synthetic 27.90 [1.12, 695.35]; qwen2.5-vl-3b/real 0.03 [0.00, 0.55]; qwen2.5-vl-3b/synthetic 0.25 [0.17, 0.36]; smolvlm2-2.2b/real 0.01 [0.00, 1.24]; smolvlm2-2.2b/synthetic 0.28 [0.01, 14.07]) |
-| H5 probe (stretch) | not run (src/06_probe_patch.py) |
+| H5 probe (stretch) | NOT supported (representation itself flips: probe reads the caption's person): layer 34 (probe acc on `none` 0.92; decodable from layer 23) recovers the true actor on 0.22 [0.15, 0.31] of 101 output-flipped items (qwen2.5-vl-3b) |
 
 ## Sample
 | model | dataset | items | |S_m| |
@@ -434,3 +434,6 @@ Difficulty features (GEE, odds ratio per SD, rebind under contra_2):
 | log_area_ratio_z | 1.173 | 1.026 | 1.341 | 0.02 |
 
 Examples: `reports/rebinding_gallery.html` (20 per model).
+
+## Extra analyses
+Bayesian Beta-Binomial reassignment rates and PCA of hidden states: `reports/results_extras.md` (`src/07_extras.py`, exploratory, not pre-registered).

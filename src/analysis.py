@@ -381,3 +381,32 @@ def difficulty_regression(q4, S, items, cond="contra_2"):
 
 def power_note(ns=(100, 200, 400, 800)):
     return pd.DataFrame({"n": ns, "max 95% CI half-width (pp)": [round(100 * 1.96 * math.sqrt(0.25 / n), 1) for n in ns]})
+
+
+# ------------------------------------------------------------------ H5 verdict
+def h5_verdict(probe: pd.DataFrame, model: str, n_items: int, min_clean_acc: float = 0.75) -> str:
+    """H5: the true actor stays linearly decodable on items whose OUTPUT flips.
+
+    Only layers where the probe works on clean input (acc_none >= min_clean_acc) are eligible; picking the
+    layer that maximises flipped-item accuracy among layers where nothing is decodable would be noise-fitting.
+    Among eligible layers the one with the best clean accuracy is used (ties -> earliest), then
+    flipped-item accuracy is tested against 0.5 with a Wilson CI.
+    """
+    n_f = int(probe.n_flipped.iloc[0]) if len(probe) else 0
+    if n_f == 0:
+        return f"inconclusive: no output flips under contra_3 among {n_items} items ({model})"
+    ok = probe[probe.acc_none >= min_clean_acc]
+    if ok.empty:
+        return f"inconclusive: probe never reaches {min_clean_acc:.2f} on `none` ({model})"
+    best = ok.loc[ok.acc_none.idxmax()]
+    k = int(round(best.acc_contra3_flipped * n_f))
+    p, lo, hi = wilson(k, n_f)
+    first = int(ok.layer.min())
+    if lo > 0.5:
+        tag = "SUPPORTED"
+    elif hi < 0.5:
+        tag = "NOT supported (representation itself flips: probe reads the caption's person)"
+    else:
+        tag = "NOT supported (at chance)"
+    return (f"{tag}: layer {int(best.layer)} (probe acc on `none` {best.acc_none:.2f}; decodable from layer {first}) "
+            f"recovers the true actor on {p:.2f} [{lo:.2f}, {hi:.2f}] of {n_f} output-flipped items ({model})")

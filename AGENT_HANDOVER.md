@@ -210,3 +210,15 @@ Format: the user has not chosen one. Ask whether they want PowerPoint (.pptx), G
   - Windows cp1252 output errors (set `PYTHONIOENCODING`).
   - Kaggle mounts input at variable depth (the notebook uses `os.walk`).
   - AI Studio Gemini keys return no logprobs.
+
+## 8. Update 2026-11-16 (presentation prep)
+
+- **H3 correction.** §3b misreads H3. `P(Q2 ok | rebind)` is 0.89–1.00 in all 5 measurable cells, so models keep perceiving the action when they rebind: **H3 is supported** (the `results.md` line is right). The "dissociation rate" DR = P(Q2 ok AND Q3 flags conflict | rebind) is low for SmolVLM2/LLaVA because they never flag the conflict (Q3), not because they lose perception.
+- **H5 probe run** (Qwen-3B 4-bit, 352 items, `results/probe_run.log`). Probe trained on `none` decodes the true actor at ~0.9 from layer 23 on, but on the 101 output-flipped `contra_3` items it reads the *caption's* person (0.22 [0.15, 0.31] at layer 34). **H5 not supported:** the caption overwrites the actor representation itself. The old verdict rule (max flipped-accuracy over mid layers) picked layers where nothing is decodable; it is now `analysis.h5_verdict` (only layers with clean accuracy ≥ 0.75).
+- **`src/07_extras.py`** (no GPU): Beta-Binomial posteriors of RR (fig9, `bayes_rr.csv`, `bayes_effects.csv`), PCA of probe residuals + probe on k PCs (fig10, `pca_probe.csv`), refreshes `probe_summary.json`. PC1 (28%) is exactly real vs synthetic. Writes `reports/results_extras.md`.
+- **`src/demo.py`**: local web demo. `python src/demo.py` (live SmolVLM2; custom captions) or `--replay` (recorded answers, no GPU). Port 8800 (launch.json: `demo-live`, `demo-replay` on 8801).
+- **PLACEHOLDER audit**: `labels_R2.csv`/`labels_R3.csv` are simulated (`scripts/make_placeholder_audit.py`; `--remove` deletes them). Kappa/precision/`results_audited.md` are not real until humans label. Logged in PREREGISTRATION deviations.
+- **Patching/knockout (60 items, all used):** recovery of the true answer when patching clean→corrupt sits on the *entity token* in layers 0–15 (~0.9–1.0), moves to the *question tokens* in layers 18–24 (~0.6), and to the *final token* from layer 27 (0.5 → 0.9 at layer 33). Knockout of final→entity attention changes nothing (Δ≈0): the caption's entity is routed via the question tokens, not read directly. fig8 = `reports/figures/fig8_probe_patch.png`.
+- **Order of analysis commands matters:** `05_analysis.py --audited-only` overwrites `reports/tables` and `figures`; always finish with plain `05_analysis.py` then `07_extras.py`.
+- Live demo verified 2026-11-16: matches the recorded run to the percent; ~5–6 s per image on the RTX 4050 after a ~35 s model load.
+- `02_audit_sample.py score` appends a "CVC5: manual audit kept" row to `data/processed/real/funnel.csv`. With placeholder labels that row is fake: it was reverted (`git checkout -- data/processed/real/funnel.csv`). Rerun `score` only once the real R2/R3 labels are in.

@@ -380,7 +380,13 @@ def main():
     md += ["## Error analysis", "![](figures/fig7_heatmap.png)\n",
            "Difficulty features (GEE, odds ratio per SD, rebind under contra_2):",
            md_table(diff.reset_index().rename(columns={"index": "feature"})) if isinstance(diff, pd.DataFrame) else f"_{diff}_\n",
-           "Examples: `reports/rebinding_gallery.html` (20 per model).", ""]
+           "Examples: `reports/rebinding_gallery.html` (20 per model).", "",
+           "## Extra analyses", "Bayesian Beta-Binomial reassignment rates and PCA of hidden states: `reports/results_extras.md` "
+           "(`src/07_extras.py`, exploratory, not pre-registered).", ""]
+    if a.audited_only and any(pd.read_csv(p, dtype=str).get("notes", pd.Series(dtype=str)).fillna("").str.startswith("PLACEHOLDER").any()
+                              for p in (REPORTS / "audit").glob("labels_*.csv")):
+        md.insert(1, "\n> **WARNING: some audit labels are PLACEHOLDERS (simulated by scripts/make_placeholder_audit.py). "
+                     "This file is a pipeline check, not a result.**")
     (REPORTS / ("results_audited.md" if a.audited_only else "results.md")).write_text("\n".join(md), encoding="utf-8")
     print(ver.to_string(index=False))
     print("wrote", REPORTS / "results.md")

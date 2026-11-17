@@ -104,6 +104,10 @@ def main():
     meta["flipped"] = (meta.ld_none > 0) & (meta.ld_contra_3 < 0)
     Xn, Xc = np.stack(feats["none"]), np.stack(feats["contra_3"])
     y = meta.y.to_numpy()
+    # cache residuals (float16) so PCA / extra probes can run without the GPU (src/07_extras.py)
+    np.savez_compressed(ROOT / "results" / f"probe_resid_{a.model}.npz", Xn=Xn.astype(np.float16), Xc=Xc.astype(np.float16),
+                        y=y, flipped=meta.flipped.to_numpy(), item_id=meta.item_id.to_numpy().astype(str),
+                        dataset=meta.dataset.to_numpy().astype(str))
     from sklearn.linear_model import LogisticRegression
     from sklearn.model_selection import GroupKFold
     from sklearn.pipeline import make_pipeline
@@ -123,6 +127,9 @@ def main():
                      "acc_contra3_flipped": ok_c[meta.flipped].mean() if meta.flipped.any() else np.nan,
                      "n_flipped": int(meta.flipped.sum())})
     probe = pd.DataFrame(rows)
+    (REPORTS / "tables").mkdir(parents=True, exist_ok=True)
+    probe.to_csv(REPORTS / "tables" / "probe_by_layer.csv", index=False)  # early save in case patching fails
+    meta.to_csv(REPORTS / "tables" / "probe_items.csv", index=False)
 
     # ---------------------------------------------------------------- 2. patching
     sel = [it for it in items][: a.patch_n]
@@ -203,16 +210,8 @@ def main():
     pd.DataFrame(rec_mean, columns=groups).rename_axis("layer").to_csv(tab / "patch_recovery.csv")
     pd.DataFrame({"window_start": range(nL), "delta_logit_diff": np.nanmean(knock, 0)}).to_csv(tab / "knockout.csv", index=False)
 
-    mid = probe.iloc[len(probe) // 4: 3 * len(probe) // 4]
-    best = mid.loc[mid.acc_contra3_flipped.idxmax()] if mid.acc_contra3_flipped.notna().any() else None
-    from analysis import wilson
-    if best is not None and best.n_flipped > 0:
-        k_ok = round(best.acc_contra3_flipped * best.n_flipped)
-        p, lo, hi = wilson(int(k_ok), int(best.n_flipped))
-        verdict = (f"{'SUPPORTED' if lo > 0.5 else 'NOT supported'}: best mid layer {int(best.layer)} decodes the true actor on "
-                   f"{p:.2f} [{lo:.2f}, {hi:.2f}] of {int(best.n_flipped)} output-flipped items ({a.model}; probe trained on `none`)")
-    else:
-        verdict = f"inconclusive: no output flips under contra_3 among {len(meta)} items ({a.model})"
+    from analysis import h5_verdict
+    verdict = h5_verdict(probe, a.model, len(meta))
     (tab / "probe_summary.json").write_text(json.dumps({"model": a.model, "verdict": verdict, "n_items": len(meta),
                                                         "n_flipped": int(meta.flipped.sum()), "n_layers": nL}, indent=2))
 

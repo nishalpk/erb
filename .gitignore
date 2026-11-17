@@ -11,3 +11,4 @@ erb2_bundle.zip
 # test-only results (pipeline check and smoke runs)
 results/mock.*
 results/*_smoke.*
+results/probe_resid_*.npz

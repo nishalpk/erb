@@ -148,6 +148,10 @@ def score(a, cfg):
     n_ann = assign.annotator.nunique()
 
     lines = ["# Audit summary", ""]
+    ph = sorted(L[L.get("notes", pd.Series("", index=L.index)).str.startswith("PLACEHOLDER")].annotator.unique())
+    if ph:
+        lines += [f"> **WARNING: PLACEHOLDER labels for {', '.join(ph)} (simulated by scripts/make_placeholder_audit.py). "
+                  "Kappa and precision below are NOT real results.**", ""]
     S = L[L.item_id.isin(shared)]
     full = S.groupby("item_id").annotator.nunique()
     S = S[S.item_id.isin(full[full == n_ann].index)]
@@ -188,7 +192,7 @@ def score(a, cfg):
 def triage(a, cfg):
     rows = []
     for p in RESULTS.glob("*.parquet"):
-        if p.stem.startswith("mock"):
+        if p.stem.startswith("mock") or p.stem.endswith("_smoke"):
             continue
         d = pd.read_parquet(p)
         d = d[(d.question == "q4") & (d.block == "main") & (d.condition == "none") & (d.dataset == "real") & d.error.isna()]

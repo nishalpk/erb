@@ -1,0 +1,7 @@
+{
+  "model": "qwen2.5-vl-3b",
+  "verdict": "NOT supported (representation itself flips: probe reads the caption's person): layer 34 (probe acc on `none` 0.92; decodable from layer 23) recovers the true actor on 0.22 [0.15, 0.31] of 101 output-flipped items (qwen2.5-vl-3b)",
+  "n_items": 352,
+  "n_flipped": 101,
+  "n_layers": 36
+}
