@@ -3,7 +3,7 @@
 | Speaker | Slides | Rubric part | Time |
 |---|---|---|---|
 | **Speaker 1** | 1–7 | Introduction, Objectives, Block diagram | ~5 min |
-| **Speaker 2** | 8–10 | Dataset, Configurations, **Live demo** | ~5 min |
+| **Speaker 2** | 8–10 | Dataset, Configurations, **Live demo** | ~5.5 min (demo ~4) |
 | **Speaker 3** | 11–17 | Results, Analysis, Conclusion | ~5 min |
 
 Handovers are marked with ➜. Slide 18 (References) is shown at the end but not read out.
@@ -93,20 +93,20 @@ Handovers are marked with ➜. Slide 18 (References) is shown at the end but not
 - All on a 6 GB laptop GPU: **29,928 queries each, zero errors**.
 - Prompts frozen and pre-registered. Statistics validated on a mock model with known effects.
 
-### Slide 10: Live demo (~3 min)
-- *(Switch to browser at localhost:8800, started before the talk.)*
-- **Pick the frisbee image.** Ground truth shows "A is throwing the frisbee".
-- **Explain the bars:**
-  - Each row is one caption.
-  - The bar is the model's probability for the **correct** person.
-  - The dashed line is 50%. **Red means the model now names the wrong person.**
-- **Walk down:** none, neutral and true are green; the lies turn red as confidence rises.
-- **Point at the badges:**
-  - Q2 says **yes**: it still sees the action.
-  - Q3 says the caption **matches**: it never noticed the lie.
-- **Ask the audience for a caption**, type it in and run it live (~6 s).
-- Point out that the live numbers match our recorded run exactly, so the system is deterministic and reproducible.
-- *Backup if the GPU fails:* run `python src/demo.py --replay`.
+### Slide 10: Live demo (~4 min): `src/demo_app.py`, 7 steps = the block diagram
+- *(Before the talk: start `.venv/Scripts/python src/demo_app.py` and open http://127.0.0.1:8810. Qwen takes about 30 s to load. Use the ← → keys to move between steps.)*
+- *(Image selector: keep the **⚠ fooled · real: throwing the frisbee** item. The selector lists images this model gets fooled on first.)*
+- **Step 1, Data:** "This is the raw COCO photo with its original V-COCO labels. The orange person is labelled *throw*. These rules all pass: exactly two people, one frisbee, only one thrower. Then we draw the A/B boxes."
+- **Step 2, Prompts:** "Seven captions, from none to 'Verified annotation', and four questions. That's 24 queries for this one image."
+- **Step 3, Run:** click **▶ Run all 24 queries**. "Each row is one forward pass on the GPU. Watch the 'who' rows turn red as the lie gets stronger, while 'Is anyone throwing?' stays Yes."
+- **Step 4, Readout:** "Here is the model's actual next-token distribution: 'B' 70%, 'A' 30%. We keep the two letters, softmax, then average both answer orders, giving p_true = 37%. That's below 50%, so it names the wrong person."
+- **Step 5, Score:**
+  - "The image counts because the model gets it right with no caption, in both orders."
+  - The bars go from 87% to 37%.
+  - Q2 = Yes: it still sees the throw. Q3 = Yes: it didn't notice the lie.
+  - **Ask the audience for a caption**, type it and run it.
+- **Step 7, Inside** (skip step 6; Speaker 3 covers it with the slides): click **▶ Probe this image**. "Without a caption the probe reads A. With the lie it reads B, so inside the model the lie has overwritten the truth."
+- *Backup if the GPU fails:* `.venv/Scripts/python src/demo_app.py --replay` gives the same 7 steps from the recorded run. Step 4's full-vocabulary chart, custom captions and the live probe need the GPU.
 - ➜ *"[Speaker 3] will now show what the full experiment found."*
 
 ---

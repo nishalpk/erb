@@ -685,22 +685,21 @@ for k, (h, b) in enumerate(cfg):
          fill=[TINT, OTINT, TINT][k])
 
 # ================================================================ 12. demo
-s = new_slide("LIVE DEMO", "Change the caption, watch the model's answer move",
-              notes="DEMO SCRIPT (2 min). 1) Start before the talk: python src/demo.py, open localhost:8800 (model load "
-                    "about 35 s). 2) Click the frisbee or cake image: bars show the probability of the correct person "
-                    "under each caption; they turn red as the lie gets more confident. 3) Point at Q2: the model still "
-                    "says someone is doing the action. Q3: it says the caption matches. 4) Ask the audience for a "
-                    "caption and type it in. If the GPU fails: python src/demo.py --replay shows the recorded answers.")
+s = new_slide("LIVE DEMO", "A guided 7-step walk through the pipeline, live on the GPU",
+              notes="DEMO SCRIPT (4 min). 1) Start before the talk: python src/demo_app.py, open localhost:8810 (model load "
+                    "about 35 s). Walk the 7 steps with the arrow keys: Data (raw photo and labels), Prompts (24 queries), "
+                    "Run (live), Readout (logits to probability), Score (bars turn red; Q2 still sees the action, Q3 misses "
+                    "the lie; audience caption), then Inside (live probe). Full script in reports/presentation/SPEAKER_SCRIPT.md. If the GPU fails: python src/demo_app.py --replay shows the recorded answers.")
 picture(s, FIGS / "demo.jpg", X0, 2.15, w=5.45, border=LGREY)
-steps = [("Pick an image", "real or synthetic, A/B marked"),
-         ("Model answers Q4", "under all 7 captions, both orders (≈ 6 s)"),
-         ("Bar = p_true", "turns red below 50%: wrong person named"),
-         ("Audience types a caption", "Q2/Q3 badges: still sees the action, misses the lie")]
+steps = [("Data → Prompts", "raw photo + V-COCO labels, validity rules, 24 queries"),
+         ("Run live on the GPU", "one forward pass per query, rows fill in live"),
+         ("Readout → Score", "logits → softmax → p_true; red = wrong person"),
+         ("Dataset → Inside", "statistics, then a live logistic probe on this image")]
 for k, (h, b) in enumerate(steps):
     y = 2.15 + k * 0.98
     chip(s, 6.1, y + 0.1, 0.5, str(k + 1), fill=RED if k == 2 else NAVY, size=15)
     tb(s, 6.7, y, 2.85, 0.9, [[(h, dict(size=14, bold=True, color=NAVY))], [(b, dict(size=12, color=GREY))]], anchor=MSO_ANCHOR.MIDDLE)
-card(s, X0, 6.32, 5.45, 0.55, [[("python src/demo.py", dict(size=13, bold=True, font="Courier New", color=WHITE)),
+card(s, X0, 6.32, 5.45, 0.55, [[("python src/demo_app.py", dict(size=13, bold=True, font="Courier New", color=WHITE)),
                                 ("   backup: --replay (no GPU)", dict(size=12, color=SKY))]], fill=NAVY, anchor=MSO_ANCHOR.MIDDLE)
 card(s, 6.1, 6.12, 3.45, 0.75, [[("Live answers match the recorded run to the percent: deterministic and reproducible.",
                                   dict(size=12, color=NAVY, bold=True))]], fill=OTINT, anchor=MSO_ANCHOR.MIDDLE)
