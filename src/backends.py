@@ -8,6 +8,7 @@ gemini_api: temperature 0, parse the option; logprobs when the API returns them
 openrouter: same as gemini_api via the OpenAI-compatible endpoint
 mock      : a simulated model with known effects, used to test the pipeline and the statistics
 """
+
 from __future__ import annotations
 
 import base64
@@ -21,12 +22,14 @@ import time
 from PIL import Image
 
 
-def _parse(text: str, options: list[str]) -> str | None:
+def _parse_answer(text: str, options: list[str]) -> str | None:
     t = (text or "").strip()
-    for o in options:  # exact leading token first
+    for o in options:
         if re.match(rf"^\W*{re.escape(o)}\b", t, flags=re.I):
             return o
-    hits = [(m.start(), o) for o in options for m in [re.search(rf"\b{re.escape(o)}\b", t, flags=re.I)] if m]
+    hits = [
+        (m.start(), o) for o in options for m in [re.search(rf"\b{re.escape(o)}\b", t, flags=re.I)] if m
+    ]
     return min(hits)[1] if hits else None
 
 
@@ -36,11 +39,20 @@ def _jpeg_bytes(img: Image.Image) -> bytes:
     return b.getvalue()
 
 
-# ------------------------------------------------------------------ HF local
+
 class HFLocal:
-    def __init__(self, hf_id: str, dtype="float16", quant="none", qwen_max_pixels=None, device=None, image_processor=None):
+    def __init__(
+        self,
+        hf_id: str,
+        dtype="float16",
+        quant="none",
+        qwen_max_pixels=None,
+        device=None,
+        image_processor=None,
+    ):
         import torch
         from transformers import AutoModelForImageTextToText, AutoProcessor
+
         self.torch = torch
         self.device = device or ("cuda" if torch.cuda.is_available() else "cpu")
         td = getattr(torch, dtype) if self.device == "cuda" else torch.float32
@@ -54,11 +66,17 @@ class HFLocal:
         mkw = dict(torch_dtype=td, low_cpu_mem_usage=True)
         if quant == "4bit" and self.device == "cuda":
             from transformers import BitsAndBytesConfig
-            mkw["quantization_config"] = BitsAndBytesConfig(load_in_4bit=True, bnb_4bit_quant_type="nf4",
-                                                            bnb_4bit_compute_dtype=td, bnb_4bit_use_double_quant=True)
+
+            mkw["quantization_config"] = BitsAndBytesConfig(
+                load_in_4bit=True,
+                bnb_4bit_quant_type="nf4",
+                bnb_4bit_compute_dtype=td,
+                bnb_4bit_use_double_quant=True,
+            )
             mkw["device_map"] = {"": 0}
         elif quant == "8bit" and self.device == "cuda":
             from transformers import BitsAndBytesConfig
+
             mkw["quantization_config"] = BitsAndBytesConfig(load_in_8bit=True)
             mkw["device_map"] = {"": 0}
         try:
@@ -117,14 +135,21 @@ class HFLocal:
         z = sum(math.exp(v - m) for v in scores.values())
         p = {o: math.exp(v - m) / z for o, v in scores.items()}
         top = self.tok.decode([int(logits.argmax())])
-        return {"answer": max(p, key=p.get), "p_options": p, "logits": scores, "option_mass": mass, "raw_text": top}
+        return {
+            "answer": max(p, key=p.get),
+            "p_options": p,
+            "logits": scores,
+            "option_mass": mass,
+            "raw_text": top,
+        }
 
 
-# ------------------------------------------------------------------ Gemini API
+
 class GeminiAPI:
     def __init__(self, api_model: str, rpm: float = 10, thinking: str = "none", logprobs: bool = False):
         from google import genai
         from google.genai import types
+
         key = os.environ.get("GEMINI_API_KEY") or os.environ.get("GOOGLE_API_KEY")
         if not key:
             raise RuntimeError("Set GEMINI_API_KEY (AI Studio) in .env or the environment.")
@@ -135,10 +160,13 @@ class GeminiAPI:
         self.min_gap = 60.0 / rpm
         self._last = 0.0
         self.thinking = thinking
-        self.logprobs_ok = logprobs  # AI Studio keys currently return 400 "Logprobs is not enabled" -> text readout
+        self.logprobs_ok = (
+            logprobs  # AI Studio keys currently return 400 "Logprobs is not enabled" -> text readout
+        )
 
-    def _cfg(self, system, with_logprobs):
+    def _generation_config(self, system, with_logprobs):
         from google.genai import types
+
         kw = dict(temperature=0.0, max_output_tokens=32)
         if system and not self.model.startswith("gemma"):
             kw["system_instruction"] = system
@@ -151,6 +179,7 @@ class GeminiAPI:
 
     def ask(self, image, prompt, options, system=None):
         from google.genai import errors, types
+
         if system and self.model.startswith("gemma"):  # gemma on AI Studio has no system role
             prompt = system + "\n" + prompt
         parts = [types.Part.from_bytes(data=_jpeg_bytes(image), mime_type="image/jpeg"), prompt]
@@ -160,8 +189,11 @@ class GeminiAPI:
                 time.sleep(wait)
             self._last = time.time()
             try:
-                resp = self.client.models.generate_content(model=self.model, contents=parts,
-                                                           config=self._cfg(system, self.logprobs_ok))
+                resp = self.client.models.generate_content(
+                    model=self.model,
+                    contents=parts,
+                    config=self._generation_config(system, self.logprobs_ok),
+                )
                 break
             except errors.ClientError as e:
                 msg = str(e)
@@ -171,15 +203,15 @@ class GeminiAPI:
                 if e.code == 429:
                     if "PerDay" in msg or "per day" in msg.lower():
                         raise QuotaExhausted(msg) from e
-                    time.sleep(min(60, 5 * 2 ** attempt))
+                    time.sleep(min(60, 5 * 2**attempt))
                     continue
                 raise
             except errors.ServerError:
-                time.sleep(5 * 2 ** attempt)
+                time.sleep(5 * 2**attempt)
         else:
             raise RuntimeError("Gemini retries exhausted")
         text = resp.text or ""
-        ans = _parse(text, options)
+        ans = _parse_answer(text, options)
         p = None
         try:
             cand = resp.candidates[0]
@@ -206,12 +238,13 @@ class QuotaExhausted(RuntimeError):
     pass
 
 
-# ------------------------------------------------------------------ OpenRouter
+
 class OpenRouter:
     URL = "https://openrouter.ai/api/v1/chat/completions"
 
     def __init__(self, api_model: str, rpm: float = 15):
         import requests
+
         self.requests = requests
         self.key = os.environ.get("OPENROUTER_API_KEY")
         if not self.key:
@@ -221,16 +254,32 @@ class OpenRouter:
     def ask(self, image, prompt, options, system=None):
         url = "data:image/jpeg;base64," + base64.b64encode(_jpeg_bytes(image)).decode()
         msgs = ([{"role": "system", "content": system}] if system else []) + [
-            {"role": "user", "content": [{"type": "image_url", "image_url": {"url": url}}, {"type": "text", "text": prompt}]}]
-        body = {"model": self.model, "messages": msgs, "temperature": 0, "max_tokens": 5, "logprobs": True, "top_logprobs": 5}
+            {
+                "role": "user",
+                "content": [
+                    {"type": "image_url", "image_url": {"url": url}},
+                    {"type": "text", "text": prompt},
+                ],
+            }
+        ]
+        body = {
+            "model": self.model,
+            "messages": msgs,
+            "temperature": 0,
+            "max_tokens": 5,
+            "logprobs": True,
+            "top_logprobs": 5,
+        }
         for attempt in range(6):
             wait = self.min_gap - (time.time() - self._last)
             if wait > 0:
                 time.sleep(wait)
             self._last = time.time()
-            r = self.requests.post(self.URL, json=body, headers={"Authorization": f"Bearer {self.key}"}, timeout=120)
+            r = self.requests.post(
+                self.URL, json=body, headers={"Authorization": f"Bearer {self.key}"}, timeout=120
+            )
             if r.status_code == 429:
-                time.sleep(min(60, 5 * 2 ** attempt))
+                time.sleep(min(60, 5 * 2**attempt))
                 continue
             r.raise_for_status()
             j = r.json()
@@ -239,11 +288,14 @@ class OpenRouter:
             raise QuotaExhausted("OpenRouter rate limit")
         ch = j["choices"][0]
         text = ch["message"].get("content") or ""
-        ans = _parse(text, options)
+        ans = _parse_answer(text, options)
         p = None
         try:
             top = ch["logprobs"]["content"][0]["top_logprobs"]
-            sc = {o: max(t["logprob"] for t in top if t["token"].strip().lower() == o.lower()) for o in options}
+            sc = {
+                o: max(t["logprob"] for t in top if t["token"].strip().lower() == o.lower())
+                for o in options
+            }
             m = max(sc.values())
             z = sum(math.exp(v - m) for v in sc.values())
             p = {o: math.exp(v - m) / z for o, v in sc.items()}
@@ -254,7 +306,7 @@ class OpenRouter:
         return {"answer": ans, "p_options": p, "logits": None, "option_mass": None, "raw_text": text}
 
 
-# ------------------------------------------------------------------ Mock
+
 class Mock:
     """Simulated model with KNOWN effects, for pipeline and statistics tests.
 
@@ -262,23 +314,26 @@ class Mock:
     with intact perception (H3 true), flagging gives no protection (H4 true), small A-letter bias that order
     averaging must cancel.
     """
+
     LEVEL = {"contra_1": 0.6, "contra_2": 1.4, "contra_3": 1.9, "contra_4": 2.6}
 
     def __init__(self, seed: int = 0):
         self.seed = seed
 
-    def _u(self, *key) -> float:
+    def _uniform_sample(self, *key) -> float:
         h = hashlib.sha256(("|".join(map(str, key)) + str(self.seed)).encode()).digest()
-        return int.from_bytes(h[:8], "big") / 2 ** 64
+        return int.from_bytes(h[:8], "big") / 2**64
 
-    def _z(self, *key) -> float:  # ~N(0,1)
-        u1, u2 = max(self._u(*key, "a"), 1e-12), self._u(*key, "b")
+    def _normal_sample(self, *key) -> float:  # ~N(0,1)
+        u1, u2 = max(self._uniform_sample(*key, "a"), 1e-12), self._uniform_sample(*key, "b")
         return math.sqrt(-2 * math.log(u1)) * math.cos(2 * math.pi * u2)
 
     def ask_query(self, q, item):
-        skill = 2.5 + 1.2 * self._z(q.item_id, "skill") - (0.8 if item["dataset"] == "real" else 0)
-        gull = 0.9 * self._z(q.item_id, "gull")
-        noise = 0.4 * self._z(q.qid)
+        skill = (
+            2.5 + 1.2 * self._normal_sample(q.item_id, "skill") - (0.8 if item["dataset"] == "real" else 0)
+        )
+        gull = 0.9 * self._normal_sample(q.item_id, "gull")
+        noise = 0.4 * self._normal_sample(q.qid)
         if q.question == "q4":
             x = skill
             if q.condition in self.LEVEL:
@@ -288,36 +343,61 @@ class Mock:
             elif q.condition == "neutral":
                 x -= 0.15
             x += noise
-            bias = 0.3 if q.options[0] == q.correct else -0.3  # first-option bias
+            bias = 0.3 if q.options[0] == q.correct else -0.3
             p_true = 1 / (1 + math.exp(-(x + bias)))
             p = {q.correct: p_true, q.distractor: 1 - p_true}
         elif q.question in ("q2", "q2_foil"):
             want_yes = q.correct == "Yes"
-            x = 2.2 + 0.5 * self._z(q.item_id, "perc") - (0.35 * self.LEVEL.get(q.condition, 0) if want_yes else 0) + noise
+            x = (
+                2.2
+                + 0.5 * self._normal_sample(q.item_id, "perc")
+                - (0.35 * self.LEVEL.get(q.condition, 0) if want_yes else 0)
+                + noise
+            )
             if not want_yes:
                 x = 1.0 + noise
             p_c = 1 / (1 + math.exp(-x))
             p = {q.correct: p_c, ("No" if q.correct == "Yes" else "Yes"): 1 - p_c}
         elif q.question == "q3":
-            x = 0.4 + 0.6 * self._z(q.item_id, "flag") + 0.3 * self.LEVEL.get(q.condition, 0) * (q.correct == "No") + noise
+            x = (
+                0.4
+                + 0.6 * self._normal_sample(q.item_id, "flag")
+                + 0.3 * self.LEVEL.get(q.condition, 0) * (q.correct == "No")
+                + noise
+            )
             p_c = 1 / (1 + math.exp(-x))
             p = {q.correct: p_c, ("No" if q.correct == "Yes" else "Yes"): 1 - p_c}
-        else:  # q1
+        else:
             p_c = 1 / (1 + math.exp(-(2.5 + noise)))
             other = [o for o in q.options if o != q.correct][0]
             p = {q.correct: p_c, other: 1 - p_c}
         lg = {o: math.log(max(v, 1e-9)) for o, v in p.items()}
-        return {"answer": max(p, key=p.get), "p_options": p, "logits": lg, "option_mass": 0.95, "raw_text": max(p, key=p.get)}
+        return {
+            "answer": max(p, key=p.get),
+            "p_options": p,
+            "logits": lg,
+            "option_mass": 0.95,
+            "raw_text": max(p, key=p.get),
+        }
 
 
 def make_backend(spec: dict, runtime: dict):
     b = spec["backend"]
     if b == "hf_local":
-        return HFLocal(spec["hf_id"], spec.get("dtype", "float16"), spec.get("quant", "none"), runtime.get("qwen_max_pixels"),
-                       image_processor=spec.get("image_processor"))
+        return HFLocal(
+            spec["hf_id"],
+            spec.get("dtype", "float16"),
+            spec.get("quant", "none"),
+            runtime.get("qwen_max_pixels"),
+            image_processor=spec.get("image_processor"),
+        )
     if b == "gemini_api":
-        return GeminiAPI(spec["api_model"], rpm=spec.get("rpm", 10), thinking=spec.get("thinking", "none"),
-                         logprobs=spec.get("logprobs", False))
+        return GeminiAPI(
+            spec["api_model"],
+            rpm=spec.get("rpm", 10),
+            thinking=spec.get("thinking", "none"),
+            logprobs=spec.get("logprobs", False),
+        )
     if b == "openrouter":
         return OpenRouter(spec["api_model"], rpm=spec.get("rpm", 15))
     if b == "mock":

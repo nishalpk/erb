@@ -1,6 +1,6 @@
 # Audit summary
 
-> **WARNING: PLACEHOLDER labels for R2, R3 (simulated by scripts/make_placeholder_audit.py). Kappa and precision below are NOT real results.**
+> **WARNING: PLACEHOLDER labels for R2, R3 were simulated. Kappa and precision below are NOT real results.**
 
 - Fleiss' kappa (exactly_one), 100 shared items x 3 raters: **0.707**
 - Fleiss' kappa (who), 100 shared items x 3 raters: **0.975**

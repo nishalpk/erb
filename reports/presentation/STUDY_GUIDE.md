@@ -202,7 +202,7 @@ dated **deviation**.
 | Statistics | **statsmodels** (GEE regression, McNemar), **SciPy** (Beta distributions, Fisher's test), **scikit-learn** (logistic-regression probe, PCA) |
 | Detector and figures | **RT-DETR** (via transformers) as the object detector; **matplotlib** for figures; **python-pptx** for the deck |
 
-### 4.1 Dataset filter (`src/01_build_real.py`)
+### 4.1 Dataset filter (`src/build_real_dataset.py`)
 ```
 for each photo in V-COCO (and HICO-DET):
     people ← annotated person boxes
@@ -245,7 +245,7 @@ S_m ← items with Q4 correct under 'none' in both orders AND Q2 'Yes' under 'no
 RR(caption) ← fraction of S_m with p_true < 0.5          # with a Wilson 95% CI
 ```
 
-### 4.5 Hypothesis tests (`src/05_analysis.py`)
+### 4.5 Hypothesis tests (`src/analyze_results.py`)
 ```
 H1: for each model × dataset: McNemar(none vs plain lie), McNemar(neutral vs plain lie); Holm-correct all p-values
 H2: Cochran–Armitage trend per model; GEE logistic regression: rebind ~ level + model + verb + side + size, clustered by image
@@ -254,7 +254,7 @@ H4: Fisher's exact test on the 2×2 table (flagged the lie? × rebound?), odds r
 Bayes: posterior Beta(1+k, 1+n−k) for each RR
 ```
 
-### 4.6 Probe and patching (`src/06_probe_patch.py`, Qwen only)
+### 4.6 Probe and patching (`src/probe_model.py`, Qwen only)
 ```
 for 352 images:
     run Q4 under 'none' and under 'definitely' lie; save the last-token hidden vector at each of 37 layers

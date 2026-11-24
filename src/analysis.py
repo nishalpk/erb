@@ -1,10 +1,10 @@
-"""Statistics for the ERB study (imported by 05_analysis.py and 05_analysis.ipynb)."""
+"""Statistics for the ERB study."""
+
 from __future__ import annotations
 
 import json
 import math
 import warnings
-from pathlib import Path
 
 import numpy as np
 import pandas as pd
@@ -14,10 +14,18 @@ from common import PROC, RESULTS
 
 CONTRA = ["contra_1", "contra_2", "contra_3", "contra_4"]
 COND_ORDER = ["none", "neutral", "consistent"] + CONTRA
-LEVEL = {"none": 0, "neutral": 0, "consistent": 0, "contra_1": 1, "contra_2": 2, "contra_3": 3, "contra_4": 4}
+LEVEL = {
+    "none": 0,
+    "neutral": 0,
+    "consistent": 0,
+    "contra_1": 1,
+    "contra_2": 2,
+    "contra_3": 3,
+    "contra_4": 4,
+}
 
 
-# ------------------------------------------------------------------ basic stats
+
 def wilson(k, n, z=1.96):
     if n == 0:
         return (np.nan, np.nan, np.nan)
@@ -56,7 +64,7 @@ def cochran_armitage(levels, k, n):
         return np.nan, 1.0
     p = K / N
     T = np.sum(levels * (k - n * p))
-    var = p * (1 - p) * (np.sum(n * levels ** 2) - np.sum(n * levels) ** 2 / N)
+    var = p * (1 - p) * (np.sum(n * levels**2) - np.sum(n * levels) ** 2 / N)
     if var <= 0:
         return np.nan, 1.0
     z = T / math.sqrt(var)
@@ -71,7 +79,7 @@ def odds_ratio_2x2(a, b, c, d):
     return orr, math.exp(math.log(orr) - 1.96 * se), math.exp(math.log(orr) + 1.96 * se)
 
 
-# ------------------------------------------------------------------ loading
+
 def load_items():
     fr = []
     aud, plain = PROC / "real" / "items_real_audited.parquet", PROC / "real" / "items_real.parquet"
@@ -107,32 +115,36 @@ def load_results(models=None, include_mock=False):
     return res
 
 
-# ------------------------------------------------------------------ per-item tables
-def q4_table(res, block="main", scheme="marker"):
+
+def summarize_binding_answers(res, block="main", scheme="marker"):
     """Order-averaged Q4: one row per (model, item, condition, cap_tpl, q_tpl)."""
     d = res[(res.question == "q4") & (res.block == block) & (res.scheme == scheme)].copy()
     d["correct_ans"] = d["answer"] == d["correct"]
     d["names_distractor"] = d["answer"] == d["distractor"]
     g = d.groupby(["model", "item_id", "dataset", "condition", "cap_tpl", "q_tpl"], as_index=False).agg(
-        p_true=("p_correct", "mean"), n_orders=("order", "nunique"), both_correct=("correct_ans", "all"),
-        any_distractor=("names_distractor", "any"), logit_diff=("logit_diff", "mean"),
-        readout=("readout", "first"))
+        p_true=("p_correct", "mean"),
+        n_orders=("order", "nunique"),
+        both_correct=("correct_ans", "all"),
+        any_distractor=("names_distractor", "any"),
+        logit_diff=("logit_diff", "mean"),
+        readout=("readout", "first"),
+    )
     g["rebind"] = (g["p_true"] < 0.5).astype(int)
     g["tie"] = np.isclose(g["p_true"], 0.5)
     return g
 
 
-def yesno_table(res, question):
-    d = res[(res.question == question) & (res.block == "main")].copy()
-    d["ok"] = (d["answer"] == d["correct"]).astype(int)
-    return d[["model", "item_id", "dataset", "condition", "ok", "p_correct"]]
+def score_yes_no_answers(res, question):
+    answers = res[(res.question == question) & (res.block == "main")].copy()
+    answers["ok"] = (answers["answer"] == answers["correct"]).astype(int)
+    return answers[["model", "item_id", "dataset", "condition", "ok", "p_correct"]]
 
 
-def competence(res, q4):
+def competence_set(res, q4):
     """S_m: correct on `none` Q4 in both orders and on Q2 under `none` (if asked)."""
     base = q4[(q4.condition == "none") & (q4.cap_tpl == 0) & (q4.q_tpl == 0)]
     s = base[(base.both_correct) & (base.n_orders == 2)][["model", "item_id"]].copy()
-    q2 = yesno_table(res, "q2")
+    q2 = score_yes_no_answers(res, "q2")
     q2n = q2[q2.condition == "none"]
     out = []
     for m, sm in s.groupby("model"):
@@ -147,20 +159,40 @@ def competence(res, q4):
     return pd.concat(out, ignore_index=True) if out else s.assign(s_def="")
 
 
-def rr_table(q4, S, by=("model", "dataset")):
-    d = q4[(q4.cap_tpl == 0) & (q4.q_tpl == 0)].merge(S[["model", "item_id"]], on=["model", "item_id"])
+def _default_binding_answers(q4, competent_items):
+    default_templates = q4[(q4.cap_tpl == 0) & (q4.q_tpl == 0)]
+    keys = ["model", "item_id"]
+    return default_templates.merge(competent_items[keys], on=keys)
+
+
+def reassignment_rates(q4, competent_items, by=("model", "dataset")):
+    answers = _default_binding_answers(q4, competent_items)
+    group_columns = [*by, "condition"]
     rows = []
-    for key, g in d.groupby(list(by) + ["condition"]):
-        k, n = int(g.rebind.sum()), len(g)
+    for key, group in answers.groupby(group_columns):
+        k, n = int(group.rebind.sum()), len(group)
         p, lo, hi = wilson(k, n)
-        rows.append({**dict(zip(list(by) + ["condition"], key)), "n": n, "k": k, "RR": p, "lo": lo, "hi": hi,
-                     "ERBS": 1 - p, "mean_logit_diff": g.logit_diff.mean(), "ties": int(g.tie.sum())})
-    out = pd.DataFrame(rows)
-    out["condition"] = pd.Categorical(out["condition"], COND_ORDER, ordered=True)
-    return out.sort_values(list(by) + ["condition"])
+        rows.append(
+            {
+                **dict(zip(group_columns, key)),
+                "n": n,
+                "k": k,
+                "RR": p,
+                "lo": lo,
+                "hi": hi,
+                "ERBS": 1 - p,
+                "mean_logit_diff": group.logit_diff.mean(),
+                "ties": int(group.tie.sum()),
+            }
+        )
+    rates = pd.DataFrame(rows)
+    rates["condition"] = pd.Categorical(rates["condition"], COND_ORDER, ordered=True)
+    return rates.sort_values(group_columns)
 
 
-# ------------------------------------------------------------------ H1
+# H1
+
+
 def paired_effect(d, ref, test, n_boot=2000, seed=0):
     """McNemar + paired RR difference + conditional OR (b/c) with item-cluster bootstrap CIs."""
     w = d.pivot_table(index="item_id", columns="condition", values="rebind", aggfunc="first")
@@ -178,32 +210,44 @@ def paired_effect(d, ref, test, n_boot=2000, seed=0):
     bb = ((xb == 0) & (yb == 1)).sum(1) + 0.5
     cb = ((xb == 1) & (yb == 0)).sum(1) + 0.5
     or_b = bb / cb
-    return {"n": len(x), "RR_ref": x.mean(), "RR_test": y.mean(), "diff": y.mean() - x.mean(),
-            "diff_lo": np.percentile(diff_b, 2.5), "diff_hi": np.percentile(diff_b, 97.5),
-            "b": b, "c": c, "OR": (b + 0.5) / (c + 0.5),
-            "OR_lo": np.percentile(or_b, 2.5), "OR_hi": np.percentile(or_b, 97.5), "p": mcnemar(b, c)}
+    return {
+        "n": len(x),
+        "RR_ref": x.mean(),
+        "RR_test": y.mean(),
+        "diff": y.mean() - x.mean(),
+        "diff_lo": np.percentile(diff_b, 2.5),
+        "diff_hi": np.percentile(diff_b, 97.5),
+        "b": b,
+        "c": c,
+        "OR": (b + 0.5) / (c + 0.5),
+        "OR_lo": np.percentile(or_b, 2.5),
+        "OR_hi": np.percentile(or_b, 97.5),
+        "p": mcnemar(b, c),
+    }
 
 
-def h1(q4, S, n_boot=2000):
-    d = q4[(q4.cap_tpl == 0) & (q4.q_tpl == 0)].merge(S[["model", "item_id"]], on=["model", "item_id"])
+def test_caption_effects(q4, competent_items, n_boot=2000):
+    answers = _default_binding_answers(q4, competent_items)
     rows = []
-    for (m, ds), g in d.groupby(["model", "dataset"]):
+    for (model, dataset), group in answers.groupby(["model", "dataset"]):
         for ref in ("neutral", "none"):
             for test in CONTRA:
-                r = paired_effect(g, ref, test, n_boot)
-                if r:
-                    rows.append({"model": m, "dataset": ds, "ref": ref, "test": test, **r})
-    out = pd.DataFrame(rows)
-    if len(out):
-        prim = out.test == "contra_2"
-        out["p_holm"] = np.nan
-        out.loc[prim, "p_holm"] = holm(out.loc[prim, "p"])
-    return out
+                effect = paired_effect(group, ref, test, n_boot)
+                if effect:
+                    rows.append({"model": model, "dataset": dataset, "ref": ref, "test": test, **effect})
+    effects = pd.DataFrame(rows)
+    if not effects.empty:
+        primary = effects.test == "contra_2"
+        effects["p_holm"] = np.nan
+        effects.loc[primary, "p_holm"] = holm(effects.loc[primary, "p"])
+    return effects
 
 
-# ------------------------------------------------------------------ H2
-def h2(q4, S, items):
-    d = q4[(q4.cap_tpl == 0) & (q4.q_tpl == 0) & q4.condition.isin(CONTRA)].merge(S[["model", "item_id"]], on=["model", "item_id"])
+# H2
+
+
+def test_confidence_trend(q4, competent_items, items):
+    d = _default_binding_answers(q4[q4.condition.isin(CONTRA)], competent_items)
     d["level"] = d.condition.map(LEVEL)
     trend = []
     for (m, ds), g in d.groupby(["model", "dataset"]):
@@ -224,6 +268,7 @@ def h2(q4, S, items):
 def fit_gee(g):
     import statsmodels.api as sm
     import statsmodels.formula.api as smf
+
     g = g.copy()
     g["area_z"] = (g.min_person_area - g.min_person_area.mean()) / (g.min_person_area.std() or 1)
     parts = ["level"]
@@ -237,25 +282,48 @@ def fit_gee(g):
     with warnings.catch_warnings():
         warnings.simplefilter("ignore")
         try:
-            mod = smf.gee(formula, groups="item_id", data=g, family=sm.families.Binomial(),
-                          cov_struct=sm.cov_struct.Exchangeable()).fit()
+            mod = smf.gee(
+                formula,
+                groups="item_id",
+                data=g,
+                family=sm.families.Binomial(),
+                cov_struct=sm.cov_struct.Exchangeable(),
+            ).fit()
         except Exception as e:  # noqa: BLE001
             return {"formula": formula, "error": str(e)[:200]}
     b, se = mod.params["level"], mod.bse["level"]
-    return {"formula": formula, "beta_level": b, "OR_per_level": math.exp(b),
-            "OR_lo": math.exp(b - 1.96 * se), "OR_hi": math.exp(b + 1.96 * se), "p": mod.pvalues["level"],
-            "n_obs": int(mod.nobs), "n_clusters": int(g.item_id.nunique()), "summary": str(mod.summary())}
+    return {
+        "formula": formula,
+        "beta_level": b,
+        "OR_per_level": math.exp(b),
+        "OR_lo": math.exp(b - 1.96 * se),
+        "OR_hi": math.exp(b + 1.96 * se),
+        "p": mod.pvalues["level"],
+        "n_obs": int(mod.nobs),
+        "n_clusters": int(g.item_id.nunique()),
+        "summary": str(mod.summary()),
+    }
 
 
-# ------------------------------------------------------------------ H3/H4 + taxonomy
-def taxonomy(res, q4, S, cond="contra_2"):
-    d = q4[(q4.condition == cond) & (q4.cap_tpl == 0) & (q4.q_tpl == 0)].merge(S[["model", "item_id"]], on=["model", "item_id"])
-    q2 = yesno_table(res, "q2")
-    q3 = yesno_table(res, "q3")
-    d = d.merge(q2[q2.condition == cond][["model", "item_id", "ok"]].rename(columns={"ok": "q2_ok"}), on=["model", "item_id"], how="left")
-    d = d.merge(q3[q3.condition == cond][["model", "item_id", "ok"]].rename(columns={"ok": "q3_flag"}), on=["model", "item_id"], how="left")
+# H3/H4 + taxonomy
 
-    def lab(r):
+
+def taxonomy(res, q4, competent_items, cond="contra_2"):
+    d = _default_binding_answers(q4[q4.condition == cond], competent_items)
+    q2 = score_yes_no_answers(res, "q2")
+    q3 = score_yes_no_answers(res, "q3")
+    d = d.merge(
+        q2[q2.condition == cond][["model", "item_id", "ok"]].rename(columns={"ok": "q2_ok"}),
+        on=["model", "item_id"],
+        how="left",
+    )
+    d = d.merge(
+        q3[q3.condition == cond][["model", "item_id", "ok"]].rename(columns={"ok": "q3_flag"}),
+        on=["model", "item_id"],
+        how="left",
+    )
+
+    def classify_outcome(r):
         if r.tie:
             return "Other"
         if not r.rebind:
@@ -263,11 +331,12 @@ def taxonomy(res, q4, S, cond="contra_2"):
         if pd.isna(r.q2_ok):
             return "Rebound (Q2 not asked)"
         return "Rebound, perception intact" if r.q2_ok == 1 else "Rebound, perception lost"
-    d["outcome"] = d.apply(lab, axis=1)
+
+    d["outcome"] = d.apply(classify_outcome, axis=1)
     return d
 
 
-def h3_h4(tax):
+def summarize_perception_and_awareness(tax):
     rows = []
     for (m, ds), g in tax.groupby(["model", "dataset"]):
         g = g[~g.tie]
@@ -277,9 +346,14 @@ def h3_h4(tax):
             k = int(((rb.q2_ok == 1) & (rb.q3_flag == 1)).sum())
             r["DR"], r["DR_lo"], r["DR_hi"] = wilson(k, len(rb))
         if g.q2_ok.notna().any():
-            r["P_q2ok_rebind"], r["P_q2ok_rebind_lo"], r["P_q2ok_rebind_hi"] = wilson(int((rb.q2_ok == 1).sum()), len(rb))
+            r["P_q2ok_rebind"], r["P_q2ok_rebind_lo"], r["P_q2ok_rebind_hi"] = wilson(
+                int((rb.q2_ok == 1).sum()), len(rb)
+            )
             r["P_q2ok_stable"], _, _ = wilson(int((st.q2_ok == 1).sum()), len(st))
-            tab = [[int((rb.q2_ok == 1).sum()), int((rb.q2_ok == 0).sum())], [int((st.q2_ok == 1).sum()), int((st.q2_ok == 0).sum())]]
+            tab = [
+                [int((rb.q2_ok == 1).sum()), int((rb.q2_ok == 0).sum())],
+                [int((st.q2_ok == 1).sum()), int((st.q2_ok == 0).sum())],
+            ]
             r["p_q2_fisher"] = stats.fisher_exact(tab)[1] if min(map(sum, tab)) > 0 else np.nan
         if g.q3_flag.notna().any():
             fl, nf = g[g.q3_flag == 1], g[g.q3_flag == 0]
@@ -293,73 +367,132 @@ def h3_h4(tax):
     return pd.DataFrame(rows)
 
 
-# ------------------------------------------------------------------ capability panel
+
 def capability(res, q4):
     rows = []
     base = q4[(q4.condition == "none") & (q4.cap_tpl == 0) & (q4.q_tpl == 0)]
     for (m, ds), g in base.groupby(["model", "dataset"]):
         p, lo, hi = wilson(int(g.both_correct.sum()), len(g))
-        rows.append({"model": m, "dataset": ds, "task": "Q4 binding, no text (both orders)", "acc": p, "lo": lo, "hi": hi, "n": len(g)})
-    for q, cond, label in [("q1", "none", "Q1 entity identity"), ("q2", "none", "Q2 action present"),
-                           ("q2_foil", "none", "Q2 foil (absent action)"), ("q3", "consistent", "Q3 true caption = match"),
-                           ("q3", "contra_2", "Q3 false caption = conflict")]:
+        rows.append(
+            {
+                "model": m,
+                "dataset": ds,
+                "task": "Q4 binding, no text (both orders)",
+                "acc": p,
+                "lo": lo,
+                "hi": hi,
+                "n": len(g),
+            }
+        )
+    for q, cond, label in [
+        ("q1", "none", "Q1 entity identity"),
+        ("q2", "none", "Q2 action present"),
+        ("q2_foil", "none", "Q2 foil (absent action)"),
+        ("q3", "consistent", "Q3 true caption = match"),
+        ("q3", "contra_2", "Q3 false caption = conflict"),
+    ]:
         d = res[(res.question == q) & (res.block == "main") & (res.condition == cond)].copy()
         if q == "q1":
             d = d.groupby(["model", "dataset", "item_id"], as_index=False).apply(
-                lambda x: pd.Series({"ok": int((x.answer == x.correct).all())}), include_groups=False)
+                lambda x: pd.Series({"ok": int((x.answer == x.correct).all())}), include_groups=False
+            )
         else:
             d["ok"] = (d.answer == d.correct).astype(int)
         for (m, ds), g in d.groupby(["model", "dataset"]):
             p, lo, hi = wilson(int(g.ok.sum()), len(g))
-            rows.append({"model": m, "dataset": ds, "task": label, "acc": p, "lo": lo, "hi": hi, "n": len(g)})
+            rows.append(
+                {"model": m, "dataset": ds, "task": label, "acc": p, "lo": lo, "hi": hi, "n": len(g)}
+            )
     return pd.DataFrame(rows)
 
 
 def letter_bias(res):
-    d = res[(res.question == "q4") & (res.block == "main") & (res.condition == "none") & (res.scheme == "marker")]
-    out = d.groupby(["model", "dataset"]).apply(lambda g: pd.Series({
-        "P(answer=A)": (g.answer == "A").mean(), "P(answer=first option)": (g.answer == g.options.apply(lambda s: json.loads(s)[0] if isinstance(s, str) else s[0])).mean(),
-        "mean_option_mass": g.option_mass.mean()}), include_groups=False)
+    d = res[
+        (res.question == "q4")
+        & (res.block == "main")
+        & (res.condition == "none")
+        & (res.scheme == "marker")
+    ]
+    out = d.groupby(["model", "dataset"]).apply(
+        lambda g: pd.Series(
+            {
+                "P(answer=A)": (g.answer == "A").mean(),
+                "P(answer=first option)": (
+                    g.answer == g.options.apply(lambda s: json.loads(s)[0] if isinstance(s, str) else s[0])
+                ).mean(),
+                "mean_option_mass": g.option_mass.mean(),
+            }
+        ),
+        include_groups=False,
+    )
     return out.reset_index()
 
 
-# ------------------------------------------------------------------ robustness
+
 def robustness(res, S):
     out = {}
-    q4r = q4_table(res, block="robust")
+    q4r = summarize_binding_answers(res, block="robust")
     if len(q4r):
         d = q4r.merge(S[["model", "item_id"]], on=["model", "item_id"])
-        t = d[d.condition == "contra_2"].groupby(["model", "dataset", "cap_tpl", "q_tpl"]).rebind.mean().reset_index()
+        t = (
+            d[d.condition == "contra_2"]
+            .groupby(["model", "dataset", "cap_tpl", "q_tpl"])
+            .rebind.mean()
+            .reset_index()
+        )
         out["paraphrase"] = t
-        out["paraphrase_var"] = t.groupby(["model", "dataset"]).rebind.agg(["mean", "std", "min", "max"]).reset_index()
-    q4a = q4_table(res, block="ablation")
-    q4m = q4_table(res, block="main")
+        out["paraphrase_var"] = (
+            t.groupby(["model", "dataset"]).rebind.agg(["mean", "std", "min", "max"]).reset_index()
+        )
+    q4a = summarize_binding_answers(res, block="ablation")
+    q4m = summarize_binding_answers(res, block="main")
     if len(q4a):
         rows = []
-        for (m, ds), g in q4a.merge(S[["model", "item_id"]], on=["model", "item_id"]).groupby(["model", "dataset"]):
+        for (m, ds), g in q4a.merge(S[["model", "item_id"]], on=["model", "item_id"]).groupby(
+            ["model", "dataset"]
+        ):
             base = q4m[(q4m.model == m) & (q4m.condition == "contra_2") & q4m.item_id.isin(g.item_id)]
             both = pd.concat([base.assign(condition="contra_2"), g.assign(condition="contra_2+instr")])
             r = paired_effect(both, "contra_2", "contra_2+instr")
             if r:
                 rows.append({"model": m, "dataset": ds, **r})
         out["ablation"] = pd.DataFrame(rows)
-    q4l = q4_table(res, block="lr", scheme="lr")
+    q4l = summarize_binding_answers(res, block="lr", scheme="lr")
     if len(q4l):
         Sl = q4l[(q4l.condition == "none") & q4l.both_correct][["model", "item_id"]]
         d = q4l.merge(Sl, on=["model", "item_id"])
-        lr = d.groupby(["model", "dataset", "condition"]).rebind.agg(["mean", "count"]).reset_index().assign(scheme="left/right")
-        mk = q4m[q4m.item_id.isin(q4l.item_id.unique())].merge(S[["model", "item_id"]], on=["model", "item_id"])
-        mk = mk[mk.condition.isin(lr.condition.unique())].groupby(["model", "dataset", "condition"]).rebind.agg(["mean", "count"]).reset_index().assign(scheme="A/B markers")
+        lr = (
+            d.groupby(["model", "dataset", "condition"])
+            .rebind.agg(["mean", "count"])
+            .reset_index()
+            .assign(scheme="left/right")
+        )
+        mk = q4m[q4m.item_id.isin(q4l.item_id.unique())].merge(
+            S[["model", "item_id"]], on=["model", "item_id"]
+        )
+        mk = (
+            mk[mk.condition.isin(lr.condition.unique())]
+            .groupby(["model", "dataset", "condition"])
+            .rebind.agg(["mean", "count"])
+            .reset_index()
+            .assign(scheme="A/B markers")
+        )
         out["scheme"] = pd.concat([mk, lr], ignore_index=True)
     return out
 
 
-# ------------------------------------------------------------------ error analysis
-def difficulty_regression(q4, S, items, cond="contra_2"):
+
+def difficulty_regression(q4, competent_items, items, cond="contra_2"):
     import statsmodels.api as sm
     import statsmodels.formula.api as smf
-    d = q4[(q4.condition == cond) & (q4.cap_tpl == 0) & (q4.q_tpl == 0)].merge(S[["model", "item_id"]], on=["model", "item_id"])
-    d = d.merge(items[["item_id", "min_person_area", "person_dist", "obj_area", "obj_actor_dist", "log_area_ratio"]], on="item_id")
+
+    d = _default_binding_answers(q4[q4.condition == cond], competent_items)
+    d = d.merge(
+        items[
+            ["item_id", "min_person_area", "person_dist", "obj_area", "obj_actor_dist", "log_area_ratio"]
+        ],
+        on="item_id",
+    )
     if d.rebind.nunique() < 2 or len(d) < 30:
         return None
     for c in ["min_person_area", "person_dist", "obj_area", "obj_actor_dist", "log_area_ratio"]:
@@ -372,18 +505,35 @@ def difficulty_regression(q4, S, items, cond="contra_2"):
     with warnings.catch_warnings():
         warnings.simplefilter("ignore")
         try:
-            m = smf.gee(f, groups="item_id", data=d, family=sm.families.Binomial(), cov_struct=sm.cov_struct.Exchangeable()).fit()
+            m = smf.gee(
+                f,
+                groups="item_id",
+                data=d,
+                family=sm.families.Binomial(),
+                cov_struct=sm.cov_struct.Exchangeable(),
+            ).fit()
         except Exception as e:  # noqa: BLE001
             return str(e)
-    t = pd.DataFrame({"OR": np.exp(m.params), "lo": np.exp(m.conf_int()[0]), "hi": np.exp(m.conf_int()[1]), "p": m.pvalues})
+    t = pd.DataFrame(
+        {
+            "OR": np.exp(m.params),
+            "lo": np.exp(m.conf_int()[0]),
+            "hi": np.exp(m.conf_int()[1]),
+            "p": m.pvalues,
+        }
+    )
     return t[t.index.str.endswith("_z")]
 
 
 def power_note(ns=(100, 200, 400, 800)):
-    return pd.DataFrame({"n": ns, "max 95% CI half-width (pp)": [round(100 * 1.96 * math.sqrt(0.25 / n), 1) for n in ns]})
+    return pd.DataFrame(
+        {"n": ns, "max 95% CI half-width (pp)": [round(100 * 1.96 * math.sqrt(0.25 / n), 1) for n in ns]}
+    )
 
 
-# ------------------------------------------------------------------ H5 verdict
+# H5 verdict
+
+
 def h5_verdict(probe: pd.DataFrame, model: str, n_items: int, min_clean_acc: float = 0.75) -> str:
     """H5: the true actor stays linearly decodable on items whose OUTPUT flips.
 
@@ -408,5 +558,7 @@ def h5_verdict(probe: pd.DataFrame, model: str, n_items: int, min_clean_acc: flo
         tag = "NOT supported (representation itself flips: probe reads the caption's person)"
     else:
         tag = "NOT supported (at chance)"
-    return (f"{tag}: layer {int(best.layer)} (probe acc on `none` {best.acc_none:.2f}; decodable from layer {first}) "
-            f"recovers the true actor on {p:.2f} [{lo:.2f}, {hi:.2f}] of {n_f} output-flipped items ({model})")
+    return (
+        f"{tag}: layer {int(best.layer)} (probe acc on `none` {best.acc_none:.2f}; decodable from layer {first}) "
+        f"recovers the true actor on {p:.2f} [{lo:.2f}, {hi:.2f}] of {n_f} output-flipped items ({model})"
+    )

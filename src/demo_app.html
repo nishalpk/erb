@@ -22,8 +22,6 @@ nav button.on{border-color:var(--navy);color:var(--navy);font-weight:600;backgro
 nav button.on b{background:var(--navy);color:#fff}
 nav button.done b{background:var(--sky);color:var(--navy)}
 main{padding:16px 20px 90px;max-width:1500px;margin:0 auto}
-.say{background:var(--ot);border-left:5px solid var(--orange);padding:9px 14px;border-radius:6px;margin-bottom:14px;font-size:15px}
-.say b{color:var(--dorange)}
 h2{color:var(--title);margin:4px 0 10px;font-size:22px}
 h3{color:var(--navy);margin:0 0 8px;font-size:16px}
 .grid{display:grid;gap:14px}.g2{grid-template-columns:1fr 1fr}.g3{grid-template-columns:repeat(3,1fr)}.g4{grid-template-columns:repeat(4,1fr)}
@@ -72,272 +70,447 @@ input[type=text]{font:inherit;padding:9px 10px;border:1px solid #ccd;border-radi
 <footer><button class="btn alt" id="prev">← Previous</button><span class="mut" id="foot"></span><button class="btn" id="next">Next →</button></footer>
 <div id="overlay"><div class="spin"></div><div id="ovtext">Loading…</div></div>
 <script>
-const STEPS=[["Data","raw photo → clean item"],["Prompts","captions × questions"],["Run","query the VLM live"],["Readout","logits → probability"],["Score","this image's verdict"],["Dataset","statistics over all images"],["Inside","logistic probe (H5)"]];
-const NICE={none:"no caption",neutral:"neutral",consistent:"TRUE caption",contra_1:"false · hedged",contra_2:"false · plain",contra_3:"false · “definitely”",contra_4:"false · “verified”"};
-const CONDS=["none","neutral","consistent","contra_1","contra_2","contra_3","contra_4"];
-const CCOL={none:"#ffffff",neutral:"#eeeeee",consistent:"#dcebf8",contra_1:"#fbdadb",contra_2:"#f5a9ab",contra_3:"#ec6a6e",contra_4:"#E31C24"};
-const QN={q1:"Q1 marker check",q2:"Q2 action seen?",q2_foil:"Q2 foil (absent action)",q3:"Q3 lie noticed?",q4:"Q4 WHO? (binding)"};
-let S={step:0,state:null,item:null,res:{},sel:null,ds:{},probe:null,live:null,busy:false};
-const $=id=>document.getElementById(id);
-const pct=(v,d=0)=>v==null?"–":(v*100).toFixed(d)+"%";
-const esc=s=>String(s??"").replace(/[&<>]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[c]));
-async function api(u,body){const r=await fetch(u,body?{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(body)}:{});return r.json()}
-function overlay(t){$("overlay").style.display=t?"flex":"none";if(t)$("ovtext").textContent=t}
-const img=p=>"/img?p="+encodeURIComponent(p);
-
-// ------------------------------------------------------------------ charts (plain SVG)
-function lineChart(o){
-  const W=o.w||640,H=o.h||280,ml=46,mr=14,mt=12,mb=o.mb||46,n=o.labels.length,y0=o.ymin??0,y1=o.ymax??1;
-  const X=i=>ml+(n<2?0:i*(W-ml-mr)/(n-1)),Y=v=>mt+(1-(v-y0)/(y1-y0))*(H-mt-mb);let s="";
-  for(let k=0;k<=4;k++){const v=y0+k*(y1-y0)/4;s+=`<line x1=${ml} x2=${W-mr} y1=${Y(v)} y2=${Y(v)} stroke="#eceef2"/><text x=${ml-6} y=${Y(v)+4} font-size=11 text-anchor=end fill="#777">${o.yfmt?o.yfmt(v):v}</text>`}
-  if(o.hline!=null)s+=`<line x1=${ml} x2=${W-mr} y1=${Y(o.hline)} y2=${Y(o.hline)} stroke="#999" stroke-dasharray="5 4"/><text x=${W-mr} y=${Y(o.hline)-4} font-size=11 text-anchor=end fill="#888">${o.hlabel||""}</text>`;
-  for(const se of o.series){
-    if(se.lo){let up="",dn="";se.lo.forEach((v,i)=>{if(v!=null&&se.hi[i]!=null){up+=`${X(i)},${Y(se.hi[i])} `;dn=`${X(i)},${Y(v)} `+dn}});s+=`<polygon points="${up}${dn}" fill="${se.color}" opacity=".13"/>`}
-    let d="",pen=false;se.y.forEach((v,i)=>{if(v==null){pen=false;return}d+=(pen?"L":"M")+X(i)+","+Y(v);pen=true});
-    s+=`<path d="${d}" fill=none stroke="${se.color}" stroke-width="${se.width||2.5}" ${se.dash?'stroke-dasharray="6 4"':""}/>`;
-    if(o.dots!==false)se.y.forEach((v,i)=>{if(v!=null)s+=`<circle cx=${X(i)} cy=${Y(v)} r=3.5 fill="${se.color}"/>`});
-  }
-  o.labels.forEach((l,i)=>{if(o.every&&i%o.every)return;s+=o.rot?`<text transform="translate(${X(i)},${H-mb+14}) rotate(-22)" font-size=11 text-anchor=end fill="#555">${esc(l)}</text>`:`<text x=${X(i)} y=${H-mb+16} font-size=11 text-anchor=middle fill="#555">${esc(l)}</text>`});
-  if(o.xlab)s+=`<text x=${(ml+W-mr)/2} y=${H-4} font-size=12 text-anchor=middle fill="#444">${o.xlab}</text>`;
-  if(o.ylab)s+=`<text transform="translate(12,${(mt+H-mb)/2}) rotate(-90)" font-size=12 text-anchor=middle fill="#444">${o.ylab}</text>`;
-  const leg=o.series.filter(x=>x.name).map(x=>`<span style="--c:${x.color}">${esc(x.name)}</span>`).join("");
-  return `<svg viewBox="0 0 ${W} ${H}" width="100%">${s}</svg><div class=legend>${leg}</div>`;
+const STEPS = [["Data", "raw photo → clean item"], ["Prompts", "captions × questions"], ["Run", "query the VLM live"], ["Readout", "logits → probability"], ["Score", "this image's verdict"], ["Dataset", "statistics over all images"], ["Inside", "logistic probe (H5)"]];
+const NICE = { none: "no caption", neutral: "neutral", consistent: "TRUE caption", contra_1: "false · hedged", contra_2: "false · plain", contra_3: "false · “definitely”", contra_4: "false · “verified”" };
+const CONDS = ["none", "neutral", "consistent", "contra_1", "contra_2", "contra_3", "contra_4"];
+const CCOL = { none: "#ffffff", neutral: "#eeeeee", consistent: "#dcebf8", contra_1: "#fbdadb", contra_2: "#f5a9ab", contra_3: "#ec6a6e", contra_4: "#E31C24" };
+const QN = { q1: "Q1 marker check", q2: "Q2 action seen?", q2_foil: "Q2 foil (absent action)", q3: "Q3 lie noticed?", q4: "Q4 WHO? (binding)" };
+const demo = { step: 0, state: null, item: null, answers: {}, selectedQueryId: null, datasetStats: {}, probe: null, live: null, busy: false };
+const $ = id => document.getElementById(id);
+const pct = (v, d = 0) => v == null ? "–" : (v * 100).toFixed(d) + "%";
+const esc = s => String(s ?? "").replace(/[&<>]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;" }[c]));
+async function requestJson(u, body) {
+    const r = await fetch(u, body ? { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) } : {});
+    return r.json();
 }
-function hbars(rows,o={}){ // rows:[{label,v,color,sub}]
-  const W=o.w||620,rh=o.rh||30,ml=o.ml||170,H=rows.length*rh+8,mx=o.max??1;let s="";
-  rows.forEach((r,i)=>{const y=i*rh+4,w=Math.max(0,(W-ml-60)*(o.log?Math.log10(Math.max(r.v,1))/Math.log10(mx):r.v/mx));
-    s+=`<text x=${ml-8} y=${y+rh/2+4} font-size=12.5 text-anchor=end fill="#333">${esc(r.label)}</text><rect x=${ml} y=${y+4} width=${W-ml-60} height=${rh-10} rx=4 fill="#eef0f4"/><rect x=${ml} y=${y+4} width=${w} height=${rh-10} rx=4 fill="${r.color||'#101141'}"/><text x=${ml+w+6} y=${y+rh/2+4} font-size=12.5 font-weight=700 fill="#222">${r.txt??pct(r.v)}</text>`});
-  if(o.mid)s+=`<line x1=${ml+(W-ml-60)/2} x2=${ml+(W-ml-60)/2} y1=0 y2=${H} stroke="#888" stroke-dasharray="5 4"/>`;
-  return `<svg viewBox="0 0 ${W} ${H}" width="100%">${s}</svg>`;
+function showOverlay(t) {
+    $("overlay").style.display = t ? "flex" : "none";
+    if (t)
+        $("ovtext").textContent = t;
 }
-function betaCurves(rows){ // rows:[{name,alpha,beta,color}] -> curves normalised to max 1
-  const xs=[...Array(301).keys()].map(i=>i/300);
-  return rows.map(r=>{const lp=xs.map(x=>(x<=0||x>=1)?((r.alpha==1&&x==0)||(r.beta==1&&x==1)?0:-Infinity):(r.alpha-1)*Math.log(x)+(r.beta-1)*Math.log(1-x));
-    const m=Math.max(...lp);return{...r,y:lp.map(v=>Math.exp(v-m))}});
+const img = p => "/img?p=" + encodeURIComponent(p);
+function lineChart(o) {
+    const W = o.w || 640, H = o.h || 280, ml = 46, mr = 14, mt = 12, mb = o.mb || 46, n = o.labels.length, y0 = o.ymin ?? 0, y1 = o.ymax ?? 1;
+    const X = i => ml + (n < 2 ? 0 : i * (W - ml - mr) / (n - 1)), Y = v => mt + (1 - (v - y0) / (y1 - y0)) * (H - mt - mb);
+    let s = "";
+    for (let k = 0; k <= 4; k++) {
+        const v = y0 + k * (y1 - y0) / 4;
+        s += `<line x1=${ml} x2=${W - mr} y1=${Y(v)} y2=${Y(v)} stroke="#eceef2"/><text x=${ml - 6} y=${Y(v) + 4} font-size=11 text-anchor=end fill="#777">${o.yfmt ? o.yfmt(v) : v}</text>`;
+    }
+    if (o.hline != null)
+        s += `<line x1=${ml} x2=${W - mr} y1=${Y(o.hline)} y2=${Y(o.hline)} stroke="#999" stroke-dasharray="5 4"/><text x=${W - mr} y=${Y(o.hline) - 4} font-size=11 text-anchor=end fill="#888">${o.hlabel || ""}</text>`;
+    for (const se of o.series) {
+        if (se.lo) {
+            let up = "", dn = "";
+            se.lo.forEach((v, i) => {
+                if (v != null && se.hi[i] != null) {
+                    up += `${X(i)},${Y(se.hi[i])} `;
+                    dn = `${X(i)},${Y(v)} ` + dn;
+                }
+            });
+            s += `<polygon points="${up}${dn}" fill="${se.color}" opacity=".13"/>`;
+        }
+        let d = "", pen = false;
+        se.y.forEach((v, i) => {
+            if (v == null) {
+                pen = false;
+                return;
+            }
+            d += (pen ? "L" : "M") + X(i) + "," + Y(v);
+            pen = true;
+        });
+        s += `<path d="${d}" fill=none stroke="${se.color}" stroke-width="${se.width || 2.5}" ${se.dash ? 'stroke-dasharray="6 4"' : ""}/>`;
+        if (o.dots !== false)
+            se.y.forEach((v, i) => {
+                if (v != null)
+                    s += `<circle cx=${X(i)} cy=${Y(v)} r=3.5 fill="${se.color}"/>`;
+            });
+    }
+    o.labels.forEach((l, i) => {
+        if (o.every && i % o.every)
+            return;
+        s += o.rot ? `<text transform="translate(${X(i)},${H - mb + 14}) rotate(-22)" font-size=11 text-anchor=end fill="#555">${esc(l)}</text>` : `<text x=${X(i)} y=${H - mb + 16} font-size=11 text-anchor=middle fill="#555">${esc(l)}</text>`;
+    });
+    if (o.xlab)
+        s += `<text x=${(ml + W - mr) / 2} y=${H - 4} font-size=12 text-anchor=middle fill="#444">${o.xlab}</text>`;
+    if (o.ylab)
+        s += `<text transform="translate(12,${(mt + H - mb) / 2}) rotate(-90)" font-size=12 text-anchor=middle fill="#444">${o.ylab}</text>`;
+    const leg = o.series.filter(x => x.name).map(x => `<span style="--c:${x.color}">${esc(x.name)}</span>`).join("");
+    return `<svg viewBox="0 0 ${W} ${H}" width="100%">${s}</svg><div class=legend>${leg}</div>`;
 }
-
-// ------------------------------------------------------------------ boot
-async function boot(){
-  overlay("Connecting…");
-  S.state=await api("/api/state");
-  $("mode").textContent=S.state.mode==="live"?"LIVE on GPU":"REPLAY (recorded run)";$("mode").className="pill "+S.state.mode;
-  $("model").innerHTML=S.state.models.map(m=>`<option ${m===S.state.model?"selected":""}>${m}</option>`).join("");
-  fillItems();overlay(null);
-  $("nav").innerHTML=STEPS.map((s,i)=>`<button data-i=${i}><b>${i+1}</b>${s[0]} <span class=mut>· ${s[1]}</span></button>`).join("");
-  $("nav").onclick=e=>{const b=e.target.closest("button");if(b)go(+b.dataset.i)};
-  $("prev").onclick=()=>go(S.step-1);$("next").onclick=()=>go(S.step+1);
-  document.onkeydown=e=>{if(e.target.tagName==="INPUT")return;if(e.key==="ArrowRight")go(S.step+1);if(e.key==="ArrowLeft")go(S.step-1)};
-  $("item").onchange=()=>loadItem($("item").value);
-  $("model").onchange=switchModel;
-  await loadItem($("item").value);
-  const h=location.hash.match(/s(\d)/);if(h)go(+h[1]-1);
+function horizontalBars(rows, o = {}) {
+    const W = o.w || 620, rh = o.rh || 30, ml = o.ml || 170, H = rows.length * rh + 8, mx = o.max ?? 1;
+    let s = "";
+    rows.forEach((r, i) => {
+        const y = i * rh + 4, w = Math.max(0, (W - ml - 60) * (o.log ? Math.log10(Math.max(r.v, 1)) / Math.log10(mx) : r.v / mx));
+        s += `<text x=${ml - 8} y=${y + rh / 2 + 4} font-size=12.5 text-anchor=end fill="#333">${esc(r.label)}</text><rect x=${ml} y=${y + 4} width=${W - ml - 60} height=${rh - 10} rx=4 fill="#eef0f4"/><rect x=${ml} y=${y + 4} width=${w} height=${rh - 10} rx=4 fill="${r.color || '#101141'}"/><text x=${ml + w + 6} y=${y + rh / 2 + 4} font-size=12.5 font-weight=700 fill="#222">${r.txt ?? pct(r.v)}</text>`;
+    });
+    if (o.mid)
+        s += `<line x1=${ml + (W - ml - 60) / 2} x2=${ml + (W - ml - 60) / 2} y1=0 y2=${H} stroke="#888" stroke-dasharray="5 4"/>`;
+    return `<svg viewBox="0 0 ${W} ${H}" width="100%">${s}</svg>`;
 }
-function fillItems(cur){
-  const c=S.state.curated,ids=new Set(c.map(x=>x.id));
-  $("item").innerHTML=`<optgroup label="Suggested for ${S.state.model}">`+c.map(x=>`<option value="${x.id}">${x.tag==="fooled"?"⚠ fooled":"✓ resists"} · ${esc(x.label)} (${x.id})</option>`).join("")+
-   `</optgroup><optgroup label="All 952 items">`+S.state.all.filter(x=>!ids.has(x.id)).map(x=>`<option value="${x.id}">${esc(x.label)} (${x.id})</option>`).join("")+"</optgroup>";
-  if(cur)$("item").value=cur;
+function betaCurves(rows) {
+    const xs = [...Array(301).keys()].map(i => i / 300);
+    return rows.map(r => {
+        const lp = xs.map(x => (x <= 0 || x >= 1) ? ((r.alpha == 1 && x == 0) || (r.beta == 1 && x == 1) ? 0 : -Infinity) : (r.alpha - 1) * Math.log(x) + (r.beta - 1) * Math.log(1 - x));
+        const m = Math.max(...lp);
+        return { ...r, y: lp.map(v => Math.exp(v - m)) };
+    });
 }
-async function switchModel(){
-  const m=$("model").value;overlay(S.state.mode==="live"?`Loading ${m} onto the GPU (30–60 s)…`:`Switching to ${m}…`);
-  const r=await api("/api/load",{model:m});overlay(null);
-  if(r.error){alert(r.error);return}
-  S.state.model=r.model;S.state.curated=r.curated;S.res={};S.ds={};S.live=null;fillItems(S.item?.id);render();
+async function boot() {
+    showOverlay("Connecting…");
+    demo.state = await requestJson("/api/state");
+    $("mode").textContent = demo.state.mode === "live" ? "LIVE on GPU" : "REPLAY (recorded run)";
+    $("mode").className = "pill " + demo.state.mode;
+    $("model").innerHTML = demo.state.models.map(m => `<option ${m === demo.state.model ? "selected" : ""}>${m}</option>`).join("");
+    fillItems();
+    showOverlay(null);
+    $("nav").innerHTML = STEPS.map((s, i) => `<button data-i=${i}><b>${i + 1}</b>${s[0]} <span class=mut>· ${s[1]}</span></button>`).join("");
+    $("nav").onclick = e => {
+        const b = e.target.closest("button");
+        if (b)
+            showStep(+b.dataset.i);
+    };
+    $("prev").onclick = () => showStep(demo.step - 1);
+    $("next").onclick = () => showStep(demo.step + 1);
+    document.onkeydown = e => {
+        if (e.target.tagName === "INPUT")
+            return;
+        if (e.key === "ArrowRight")
+            showStep(demo.step + 1);
+        if (e.key === "ArrowLeft")
+            showStep(demo.step - 1);
+    };
+    $("item").onchange = () => loadItem($("item").value);
+    $("model").onchange = switchModel;
+    await loadItem($("item").value);
+    const h = location.hash.match(/s(\d)/);
+    if (h)
+        showStep(+h[1] - 1);
 }
-async function loadItem(id){S.item=await api("/api/item?id="+encodeURIComponent(id));S.res={};S.live=null;S.sel=defaultSel();render()}
-function defaultSel(){const q=S.item.queries.find(q=>q.question==="q4"&&q.condition==="contra_2"&&q.order===0);return q.qid}
-function go(i){if(i<0||i>=STEPS.length)return;S.step=i;render();window.scrollTo(0,0)}
-function render(){
-  document.querySelectorAll("nav button").forEach((b,i)=>{b.className=i===S.step?"on":(i<S.step?"done":"")});
-  $("status").textContent=`${S.state.model}`;$("foot").textContent=`Step ${S.step+1} of 7 · ${STEPS[S.step][0]} · ← → keys to move`;
-  $("prev").disabled=S.step===0;$("next").disabled=S.step===6;
-  [stepData,stepPrompts,stepRun,stepReadout,stepScore,stepDataset,stepInside][S.step]();
+function fillItems(cur) {
+    const c = demo.state.curated, ids = new Set(c.map(x => x.id));
+    $("item").innerHTML = `<optgroup label="Suggested for ${demo.state.model}">` + c.map(x => `<option value="${x.id}">${x.tag === "fooled" ? "⚠ fooled" : "✓ resists"} · ${esc(x.label)} (${x.id})</option>`).join("") +
+        `</optgroup><optgroup label="All 952 items">` + demo.state.all.filter(x => !ids.has(x.id)).map(x => `<option value="${x.id}">${esc(x.label)} (${x.id})</option>`).join("") + "</optgroup>";
+    if (cur)
+        $("item").value = cur;
 }
-const I=()=>S.item, truth=()=>`<b>${I().actor}</b> is ${esc(I().action)}`;
-
-// ------------------------------------------------------------------ 1 data
-function boxesSVG(it,list,w,h){
-  const fs=Math.max(11,w/30),th=fs*1.35;
-  return `<svg viewBox="0 0 ${w} ${h}" preserveAspectRatio="none">`+list.map(b=>{const[x,y,bw,bh]=b.bbox,act=b.category==="person"&&b.actions?.includes(it.verb);
-   const c=b.category!=="person"?"#1F6FB5":(act?"#E39B00":"#E31C24");
-   const lab=(b.category==="person"?(act?"ACTOR":"person"):b.category)+(b.actions?.length?": "+b.actions.join(", "):"");
-   const ty=y-th>=0?y-th:y;
-   return `<rect x="${x}" y="${y}" width="${bw}" height="${bh}" fill="none" stroke="${c}" stroke-width="${Math.max(2,w/200)}"/><rect x="${x}" y="${ty}" width="${Math.min(w-x,lab.length*fs*0.55+8)}" height="${th}" fill="${c}"/><text x="${x+4}" y="${ty+fs*1.02}" font-size="${fs}" fill="white" font-weight="600" font-family="Segoe UI">${esc(lab)}</text>`}).join("")+"</svg>";
+async function switchModel() {
+    const m = $("model").value;
+    showOverlay(demo.state.mode === "live" ? `Loading ${m} onto the GPU (30–60 s)…` : `Switching to ${m}…`);
+    const r = await requestJson("/api/load", { model: m });
+    showOverlay(null);
+    if (r.error) {
+        alert(r.error);
+        return;
+    }
+    demo.state.model = r.model;
+    demo.state.curated = r.curated;
+    demo.answers = {};
+    demo.datasetStats = {};
+    demo.live = null;
+    fillItems(demo.item?.id);
+    render();
 }
-function stepData(){
-  const it=I(),f=S.state.funnel;
-  let left,right;
-  if(it.dataset==="real"){
-    left=`<div class=card><h3>① The raw source photo, with its original labels</h3><div class=imgwrap><img src="${img(it.raw)}">${boxesSVG(it,it.src||[],it.w,it.h)}</div>
-      <div class=mut style="margin-top:6px">${esc(it.source_file)} · ${it.source==="vcoco"?"COCO photo, action labels from V-COCO":"HICO-DET"} · ${it.w}×${it.h}px · orange = the person labelled with the action, red = other person, blue = object</div></div>`;
-    right=`<div class=card><h3>② What the dataset says about each person</h3><table><tr><th>object</th><th>box (x, y, w, h)</th><th>action labels</th></tr>${(it.src||[]).map(s=>`<tr><td>${esc(s.category)}</td><td class=mut>${s.bbox.map(v=>Math.round(v)).join(", ")}</td><td>${s.actions.length?esc(s.actions.join(", ")):"<span class=mut>–</span>"}</td></tr>`).join("")}</table>
-      <h3 style="margin-top:14px">③ Validity rules this photo passed</h3><table><tr><th>rule</th><th>meaning</th><th>this photo</th><th></th></tr>${it.checks.map(c=>`<tr><td><b>${c[0]}</b></td><td>${esc(c[1])}</td><td class=mut>${esc(c[2])}</td><td class=${c[3]?"ok":"bad"}>${c[3]?"✓":"✗"}</td></tr>`).join("")}</table></div>`;
-  }else{
-    left=`<div class=card><h3>① A synthetic scene (drawn by our generator)</h3><div class=imgwrap><img src="${img(it.plain)}"></div><div class=mut style="margin-top:6px">Procedurally drawn: the actor wears ${esc(it.colors?.[0])}, the other person ${esc(it.colors?.[1])}. Exact ground truth, perfectly balanced across 800 scenes.</div></div>`;
-    right=`<div class=card><h3>② Why synthetic scenes?</h3><p>Real photos give <b>realism</b> but only 152 survive our filter (±7.9 pp error bars). 800 drawn scenes (4 actions × 200) give <b>statistical power</b> (±3.5 pp). Same captions, same questions, same scoring.</p></div>`;
-  }
-  const fr=f.filter(r=>!r.stage.startsWith("(V-COCO only)")&&!r.stage.startsWith("CVC1 strict")&&!r.stage.startsWith("FINAL"));
-  $("main").innerHTML=`<h2>Step 1 · Data: from a raw labelled photo to a clean test item</h2>
-  <div class=say><b>Say:</b> “Public action datasets are messy: crowds, several frisbees, both people throwing. We start from the raw photo and its original annotation, keep it only if <i>who is doing the action</i> has exactly one honest answer, then mark the two people A and B.”</div>
+async function loadItem(id) {
+    demo.item = await requestJson("/api/item?id=" + encodeURIComponent(id));
+    demo.answers = {};
+    demo.live = null;
+    demo.selectedQueryId = defaultQueryId();
+    render();
+}
+function defaultQueryId() {
+    const q = demo.item.queries.find(q => q.question === "q4" && q.condition === "contra_2" && q.order === 0);
+    return q.qid;
+}
+function showStep(i) {
+    if (i < 0 || i >= STEPS.length)
+        return;
+    demo.step = i;
+    render();
+    window.scrollTo(0, 0);
+}
+function render() {
+    document.querySelectorAll("nav button").forEach((b, i) => {
+        b.className = i === demo.step ? "on" : (i < demo.step ? "done" : "");
+    });
+    $("status").textContent = `${demo.state.model}`;
+    $("foot").textContent = `Step ${demo.step + 1} of 7 · ${STEPS[demo.step][0]} · ← → keys to move`;
+    $("prev").disabled = demo.step === 0;
+    $("next").disabled = demo.step === 6;
+    [stepData, stepPrompts, stepRun, stepReadout, stepScore, stepDataset, stepInside][demo.step]();
+}
+const currentItem = () => demo.item, truth = () => `<b>${currentItem().actor}</b> is ${esc(currentItem().action)}`;
+function boxesSVG(it, list, w, h) {
+    const fs = Math.max(11, w / 30), th = fs * 1.35;
+    return `<svg viewBox="0 0 ${w} ${h}" preserveAspectRatio="none">` + list.map(b => {
+        const [x, y, bw, bh] = b.bbox, act = b.category === "person" && b.actions?.includes(it.verb);
+        const c = b.category !== "person" ? "#1F6FB5" : (act ? "#E39B00" : "#E31C24");
+        const lab = (b.category === "person" ? (act ? "ACTOR" : "person") : b.category) + (b.actions?.length ? ": " + b.actions.join(", ") : "");
+        const ty = y - th >= 0 ? y - th : y;
+        return `<rect x="${x}" y="${y}" width="${bw}" height="${bh}" fill="none" stroke="${c}" stroke-width="${Math.max(2, w / 200)}"/><rect x="${x}" y="${ty}" width="${Math.min(w - x, lab.length * fs * 0.55 + 8)}" height="${th}" fill="${c}"/><text x="${x + 4}" y="${ty + fs * 1.02}" font-size="${fs}" fill="white" font-weight="600" font-family="Segoe UI">${esc(lab)}</text>`;
+    }).join("") + "</svg>";
+}
+function stepData() {
+    const it = currentItem(), f = demo.state.funnel;
+    let left, right;
+    if (it.dataset === "real") {
+        left = `<div class=card><h3>① The raw source photo, with its original labels</h3><div class=imgwrap><img src="${img(it.raw)}">${boxesSVG(it, it.src || [], it.w, it.h)}</div>
+      <div class=mut style="margin-top:6px">${esc(it.source_file)} · ${it.source === "vcoco" ? "COCO photo, action labels from V-COCO" : "HICO-DET"} · ${it.w}×${it.h}px · orange = the person labelled with the action, red = other person, blue = object</div></div>`;
+        right = `<div class=card><h3>② What the dataset says about each person</h3><table><tr><th>object</th><th>box (x, y, w, h)</th><th>action labels</th></tr>${(it.src || []).map(s => `<tr><td>${esc(s.category)}</td><td class=mut>${s.bbox.map(v => Math.round(v)).join(", ")}</td><td>${s.actions.length ? esc(s.actions.join(", ")) : "<span class=mut>–</span>"}</td></tr>`).join("")}</table>
+      <h3 style="margin-top:14px">③ Validity rules this photo passed</h3><table><tr><th>rule</th><th>meaning</th><th>this photo</th><th></th></tr>${it.checks.map(c => `<tr><td><b>${c[0]}</b></td><td>${esc(c[1])}</td><td class=mut>${esc(c[2])}</td><td class=${c[3] ? "ok" : "bad"}>${c[3] ? "✓" : "✗"}</td></tr>`).join("")}</table></div>`;
+    }
+    else {
+        left = `<div class=card><h3>① A synthetic scene (drawn by our generator)</h3><div class=imgwrap><img src="${img(it.plain)}"></div><div class=mut style="margin-top:6px">Procedurally drawn: the actor wears ${esc(it.colors?.[0])}, the other person ${esc(it.colors?.[1])}. Exact ground truth, perfectly balanced across 800 scenes.</div></div>`;
+        right = `<div class=card><h3>② Why synthetic scenes?</h3><p>Real photos give <b>realism</b> but only 152 survive our filter (±7.9 pp error bars). 800 drawn scenes (4 actions × 200) give <b>statistical power</b> (±3.5 pp). Same captions, same questions, same scoring.</p></div>`;
+    }
+    const fr = f.filter(r => !r.stage.startsWith("(V-COCO only)") && !r.stage.startsWith("CVC1 strict") && !r.stage.startsWith("FINAL"));
+    $("main").innerHTML = `<h2>Step 1 · Data: from a raw labelled photo to a clean test item</h2>
   <div class="grid g2">${left}${right}</div>
   <div class="grid g2" style="margin-top:14px">
-   <div class=card><h3>④ The data-wrangling funnel (all 48,464 photos)</h3>${hbars(fr.map((r,i)=>({label:r.stage.replace(/\(.*?\)/g,"").slice(0,40),v:r.total,txt:r.total.toLocaleString(),color:i===fr.length-1?"#E31C24":"#101141"})),{log:true,max:60000,ml:250,rh:26})}<div class=mut>log scale · only 0.3% survive · 138 V-COCO + 14 HICO-DET real items, plus 800 synthetic</div></div>
+   <div class=card><h3>④ The data-wrangling funnel (all 48,464 photos)</h3>${horizontalBars(fr.map((r, i) => ({ label: r.stage.replace(/\(.*?\)/g, "").slice(0, 40), v: r.total, txt: r.total.toLocaleString(), color: i === fr.length - 1 ? "#E31C24" : "#101141" })), { log: true, max: 60000, ml: 250, rh: 26 })}<div class=mut>log scale · only 0.3% survive · 138 V-COCO + 14 HICO-DET real items, plus 800 synthetic</div></div>
    <div class=card><h3>⑤ What the model will actually see</h3><div class=flow><div style="flex:1"><div class=imgwrap><img src="${img(it.plain)}"></div><div class=mut>plain</div></div><div class=arrow>→</div><div style="flex:1"><div class=imgwrap><img src="${img(it.marked)}"></div><div class=mut>marked: identical yellow boxes A / B</div></div></div>
    <p style="margin:10px 0 0">Ground truth: ${truth()}. Letters are random, so the actor is A in ~50% of items.</p></div></div>`;
 }
-
-// ------------------------------------------------------------------ 2 prompts
-function stepPrompts(){
-  const it=I(),cnt={};it.queries.forEach(q=>cnt[q.question]=(cnt[q.question]||0)+1);
-  $("main").innerHTML=`<h2>Step 2 · Prompts: every caption × question combination for this image</h2>
-  <div class=say><b>Say:</b> “Only the text changes. Seven captions, from no caption to an official-sounding lie, and four questions, each in a fresh conversation, multiple-choice ones in both answer orders. That is ${it.queries.length} queries for this one image, about 30,000 per model.”</div>
-  <div class="grid g46"><div class=card><h3>The caption ladder (the “dose” of the lie)</h3><div class=ladder>${it.captions.map(c=>`<div style="background:${CCOL[c.cond]};${["contra_3","contra_4"].includes(c.cond)?"color:#fff":""};border:1px solid #e5e5e5"><b>${NICE[c.cond]}</b> &nbsp; <i>${c.text?"“"+esc(c.text)+"”":"(image only)"}</i></div>`).join("")}</div></div>
+function stepPrompts() {
+    const it = currentItem(), cnt = {};
+    it.queries.forEach(q => cnt[q.question] = (cnt[q.question] || 0) + 1);
+    $("main").innerHTML = `<h2>Step 2 · Prompts: every caption × question combination for this image</h2>
+  <div class="grid g46"><div class=card><h3>The caption ladder (the “dose” of the lie)</h3><div class=ladder>${it.captions.map(c => `<div style="background:${CCOL[c.cond]};${["contra_3", "contra_4"].includes(c.cond) ? "color:#fff" : ""};border:1px solid #e5e5e5"><b>${NICE[c.cond]}</b> &nbsp; <i>${c.text ? "“" + esc(c.text) + "”" : "(image only)"}</i></div>`).join("")}</div></div>
   <div class=card><h3>The four questions</h3><table><tr><th>question</th><th>why we ask it</th><th>n</th></tr>
-   <tr><td><b>Q1</b> “Which marker is on the person on the left?”</td><td>sanity: can it read the A/B marks?</td><td>${cnt.q1||0}</td></tr>
-   <tr><td><b>Q2</b> “Is anyone ${esc(it.ing)} …?”</td><td>does it still <b>see</b> the action?</td><td>${cnt.q2||0}</td></tr>
-   <tr><td><b>Q2 foil</b> same, with an action that is <i>not</i> there</td><td>proves “Yes” isn’t a habit</td><td>${cnt.q2_foil||0}</td></tr>
-   <tr><td><b>Q3</b> “Does the caption match the image?”</td><td>does it <b>notice</b> the lie?</td><td>${cnt.q3||0}</td></tr>
-   <tr style="background:#eef5fb"><td><b>Q4</b> “Who is ${esc(it.action)}, A or B?”</td><td><b>the binding question</b>: the main measurement</td><td>${cnt.q4||0}</td></tr></table>
+   <tr><td><b>Q1</b> “Which marker is on the person on the left?”</td><td>sanity: can it read the A/B marks?</td><td>${cnt.q1 || 0}</td></tr>
+   <tr><td><b>Q2</b> “Is anyone ${esc(it.ing)} …?”</td><td>does it still <b>see</b> the action?</td><td>${cnt.q2 || 0}</td></tr>
+   <tr><td><b>Q2 foil</b> same, with an action that is <i>not</i> there</td><td>proves “Yes” isn’t a habit</td><td>${cnt.q2_foil || 0}</td></tr>
+   <tr><td><b>Q3</b> “Does the caption match the image?”</td><td>does it <b>notice</b> the lie?</td><td>${cnt.q3 || 0}</td></tr>
+   <tr style="background:#eef5fb"><td><b>Q4</b> “Who is ${esc(it.action)}, A or B?”</td><td><b>the binding question</b>: the main measurement</td><td>${cnt.q4 || 0}</td></tr></table>
    <p class=mut>Both orders (“A or B” and “B or A”) cancel letter bias: LLaVA answers “A” 98% of the time on real photos.</p></div></div>
   <div class=card style="margin-top:14px"><h3>All ${it.queries.length} queries generated by <code>build_queries()</code> (exact text sent after the image)</h3>
-   <table><tr><th>#</th><th>question</th><th>caption</th><th>order</th><th>prompt</th><th>correct</th></tr>${it.queries.map((q,i)=>`<tr><td>${i+1}</td><td>${QN[q.question]}</td><td>${NICE[q.condition]}</td><td>${q.options.join(" / ")}</td><td style="white-space:pre-wrap">${esc(q.prompt)}</td><td><b>${q.correct}</b></td></tr>`).join("")}</table></div>`;
+   <table><tr><th>#</th><th>question</th><th>caption</th><th>order</th><th>prompt</th><th>correct</th></tr>${it.queries.map((q, i) => `<tr><td>${i + 1}</td><td>${QN[q.question]}</td><td>${NICE[q.condition]}</td><td>${q.options.join(" / ")}</td><td style="white-space:pre-wrap">${esc(q.prompt)}</td><td><b>${q.correct}</b></td></tr>`).join("")}</table></div>`;
 }
-
-// ------------------------------------------------------------------ 3 run
-async function runQueries(list,onEach){
-  if(S.busy)return;S.busy=true;
-  for(const q of list){if(S.res[q.qid])continue;const r=await api("/api/ask",{item:I().id,qid:q.qid});if(r.error){alert(r.error);break}S.res[q.qid]=r;onEach&&onEach(q,r)}
-  S.busy=false;
+async function runQueries(list, onEach) {
+    if (demo.busy)
+        return;
+    demo.busy = true;
+    for (const q of list) {
+        if (demo.answers[q.qid])
+            continue;
+        const r = await requestJson("/api/ask", { item: currentItem().id, qid: q.qid });
+        if (r.error) {
+            alert(r.error);
+            break;
+        }
+        demo.answers[q.qid] = r;
+        onEach && onEach(q, r);
+    }
+    demo.busy = false;
 }
-function resRow(q,i){const r=S.res[q.qid];const pc=r?r.p[q.correct]:null;
-  return `<tr class="click ${S.sel===q.qid?"sel":""}" data-q="${q.qid}"><td>${i+1}</td><td>${QN[q.question]}</td><td>${NICE[q.condition]}</td><td>${q.options.join("/")}</td>
-  <td>${r?`<b class=${r.answer===q.correct?"ok":"bad"}>${r.answer}</b>`:"<span class=mut>…</span>"}</td><td>${q.correct}</td>
-  <td style="width:220px">${r?`<div class=bar><i style="width:${pc*100}%;background:${pc>=.5?"var(--ok)":"var(--bad)"}"></i><div class=mid></div></div>`:""}</td><td>${r?pct(pc):""}</td><td class=mut>${r?r.sec.toFixed(2)+" s":""}</td></tr>`}
-function stepRun(){
-  const it=I(),n=it.queries.length,done=()=>it.queries.filter(q=>S.res[q.qid]).length;
-  $("main").innerHTML=`<h2>Step 3 · Run: send every query to ${S.state.model}</h2>
-  <div class=say><b>Say:</b> “Each row is one forward pass of the model on the GPU. We don’t let it write text; we read the probability it gives each allowed answer. Watch the binding question go red as the lie gets stronger, while Q2 still says the action is happening.”</div>
+function answerRow(q, i) {
+    const r = demo.answers[q.qid];
+    const pc = r ? r.p[q.correct] : null;
+    return `<tr class="click ${demo.selectedQueryId === q.qid ? "sel" : ""}" data-q="${q.qid}"><td>${i + 1}</td><td>${QN[q.question]}</td><td>${NICE[q.condition]}</td><td>${q.options.join("/")}</td>
+  <td>${r ? `<b class=${r.answer === q.correct ? "ok" : "bad"}>${r.answer}</b>` : "<span class=mut>…</span>"}</td><td>${q.correct}</td>
+  <td style="width:220px">${r ? `<div class=bar><i style="width:${pc * 100}%;background:${pc >= .5 ? "var(--ok)" : "var(--bad)"}"></i><div class=mid></div></div>` : ""}</td><td>${r ? pct(pc) : ""}</td><td class=mut>${r ? r.sec.toFixed(2) + " s" : ""}</td></tr>`;
+}
+function stepRun() {
+    const it = currentItem(), n = it.queries.length, done = () => it.queries.filter(q => demo.answers[q.qid]).length;
+    $("main").innerHTML = `<h2>Step 3 · Run: send every query to ${demo.state.model}</h2>
   <div class="grid g64"><div class=card><div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap"><button class=btn id=go>▶ Run all ${n} queries</button><span id=prog class=mut></span></div><div class=progress><i id=pbar></i></div>
-   <table id=rt><tr><th>#</th><th>question</th><th>caption</th><th>order</th><th>answer</th><th>truth</th><th>P(correct answer)</th><th></th><th>time</th></tr>${it.queries.map(resRow).join("")}</table>
-   <p class=mut>Click any row to dissect it in Step 4. ${S.state.mode==="replay"?"Replay mode: answers come from the recorded full run.":""}</p></div>
+   <table id=rt><tr><th>#</th><th>question</th><th>caption</th><th>order</th><th>answer</th><th>truth</th><th>P(correct answer)</th><th></th><th>time</th></tr>${it.queries.map(answerRow).join("")}</table>
+   <p class=mut>Click any row to dissect it in Step 4. ${demo.state.mode === "replay" ? "Replay mode: answers come from the recorded full run." : ""}</p></div>
    <div class=card><h3>Input image</h3><div class=imgwrap><img src="${img(it.marked)}"></div><p>Ground truth: ${truth()}</p></div></div>`;
-  const upd=()=>{const d=done();$("pbar").style.width=(100*d/n)+"%";$("prog").textContent=`${d} / ${n} done`;$("rt").innerHTML=$("rt").rows[0].outerHTML+it.queries.map(resRow).join("");bindRows()};
-  const bindRows=()=>$("rt").querySelectorAll("tr.click").forEach(tr=>tr.onclick=()=>{S.sel=tr.dataset.q;go(3)});
-  bindRows();upd();
-  $("go").onclick=async()=>{$("go").disabled=true;const t0=performance.now();await runQueries(it.queries,()=>{upd();$("prog").textContent+=` · ${((performance.now()-t0)/1000).toFixed(1)} s`});$("go").disabled=false};
+    const upd = () => {
+        const d = done();
+        $("pbar").style.width = (100 * d / n) + "%";
+        $("prog").textContent = `${d} / ${n} done`;
+        $("rt").innerHTML = $("rt").rows[0].outerHTML + it.queries.map(answerRow).join("");
+        bindRows();
+    };
+    const bindRows = () => $("rt").querySelectorAll("tr.click").forEach(tr => tr.onclick = () => {
+        demo.selectedQueryId = tr.dataset.q;
+        showStep(3);
+    });
+    bindRows();
+    upd();
+    $("go").onclick = async () => {
+        $("go").disabled = true;
+        const t0 = performance.now();
+        await runQueries(it.queries, () => {
+            upd();
+            $("prog").textContent += ` · ${((performance.now() - t0) / 1000).toFixed(1)} s`;
+        });
+        $("go").disabled = false;
+    };
 }
-
-// ------------------------------------------------------------------ 4 readout
-async function stepReadout(){
-  const it=I();let q=it.queries.find(x=>x.qid===S.sel)||it.queries[0];
-  $("main").innerHTML=`<h2>Step 4 · Readout: how one answer becomes a probability</h2>
-  <div class=say><b>Say:</b> “One forward pass gives a score, a logit, for every one of ~150,000 tokens in the vocabulary. We keep only the tokens that spell the allowed answers and apply a softmax. Then we ask again with the options swapped and average, so a model that just likes the first letter lands at 50%.”</div>
-  <div class=card style="margin-bottom:14px"><label class=mut>Query:</label> <select id=qsel style="font:inherit;padding:5px;max-width:100%">${it.queries.map(x=>`<option value="${x.qid}" ${x.qid===q.qid?"selected":""}>${QN[x.question]} · ${NICE[x.condition]} · order ${x.options.join("/")}</option>`).join("")}</select></div>
+async function stepReadout() {
+    const it = currentItem();
+    let q = it.queries.find(x => x.qid === demo.selectedQueryId) || it.queries[0];
+    $("main").innerHTML = `<h2>Step 4 · Readout: how one answer becomes a probability</h2>
+  <div class=card style="margin-bottom:14px"><label class=mut>Query:</label> <select id=qsel style="font:inherit;padding:5px;max-width:100%">${it.queries.map(x => `<option value="${x.qid}" ${x.qid === q.qid ? "selected" : ""}>${QN[x.question]} · ${NICE[x.condition]} · order ${x.options.join("/")}</option>`).join("")}</select></div>
   <div id=ro class=mut>running…</div>`;
-  $("qsel").onchange=()=>{S.sel=$("qsel").value;stepReadout()};
-  if(!S.res[q.qid])await runQueries([q]);
-  const r=S.res[q.qid];if(!r){$("ro").textContent="failed";return}
-  const pair=it.queries.find(x=>x.question===q.question&&x.condition===q.condition&&x.order!==q.order);
-  if(pair&&!S.res[pair.qid])await runQueries([pair]);
-  const r2=pair?S.res[pair.qid]:null,o=q.options,ls=r.logscore;
-  const ea=Math.exp(ls[o[0]]),eb=Math.exp(ls[o[1]]);
-  $("ro").className="";
-  $("ro").innerHTML=`<div class="grid g2">
-   <div class=card><h3>① Exact input to the model</h3>${r.chat?`<pre>${esc(r.chat)}</pre><p class=mut>${r.n_tokens} tokens in total; the image is inserted as a block of image tokens at <code>&lt;image&gt;</code> / <code>&lt;|image_pad|&gt;</code>.</p>`:`<pre>${esc(r.prompt)}</pre>`}</div>
-   <div class=card><h3>② Next-token distribution (top 10 of the whole vocabulary)</h3>${r.top?hbars(r.top.map(t=>({label:JSON.stringify(t.tok),v:t.p,color:o.map(x=>x.toLowerCase()).includes(t.tok.trim().toLowerCase())?(t.tok.trim().toLowerCase()===q.correct.toLowerCase()?"#1F6FB5":"#E31C24"):"#bbb",txt:(t.p*100).toFixed(2)+"%"})),{ml:110,rh:26}):`<p class=mut>Replay mode stores only the option scores, not the full vocabulary. Start the app without --replay to see this.</p>`}<p class=mut>blue = correct option · red = wrong option · grey = everything else</p></div></div>
+    $("qsel").onchange = () => {
+        demo.selectedQueryId = $("qsel").value;
+        stepReadout();
+    };
+    if (!demo.answers[q.qid])
+        await runQueries([q]);
+    const r = demo.answers[q.qid];
+    if (!r) {
+        $("ro").textContent = "failed";
+        return;
+    }
+    const pair = it.queries.find(x => x.question === q.question && x.condition === q.condition && x.order !== q.order);
+    if (pair && !demo.answers[pair.qid])
+        await runQueries([pair]);
+    const r2 = pair ? demo.answers[pair.qid] : null, o = q.options, ls = r.logscore;
+    const ea = Math.exp(ls[o[0]]), eb = Math.exp(ls[o[1]]);
+    $("ro").className = "";
+    $("ro").innerHTML = `<div class="grid g2">
+   <div class=card><h3>① Exact input to the model</h3>${r.chat ? `<pre>${esc(r.chat)}</pre><p class=mut>${r.n_tokens} tokens in total; the image is inserted as a block of image tokens at <code>&lt;image&gt;</code> / <code>&lt;|image_pad|&gt;</code>.</p>` : `<pre>${esc(r.prompt)}</pre>`}</div>
+   <div class=card><h3>② Next-token distribution (top 10 of the whole vocabulary)</h3>${r.top ? horizontalBars(r.top.map(t => ({ label: JSON.stringify(t.tok), v: t.p, color: o.map(x => x.toLowerCase()).includes(t.tok.trim().toLowerCase()) ? (t.tok.trim().toLowerCase() === q.correct.toLowerCase() ? "#1F6FB5" : "#E31C24") : "#bbb", txt: (t.p * 100).toFixed(2) + "%" })), { ml: 110, rh: 26 }) : `<p class=mut>Replay mode stores only the option scores, not the full vocabulary. Start the app without --replay to see this.</p>`}<p class=mut>blue = correct option · red = wrong option · grey = everything else</p></div></div>
    <div class="grid g2" style="margin-top:14px"><div class=card><h3>③ Keep only the allowed answers → softmax</h3>
    <div class=math>log-score(${o[0]}) = ${ls[o[0]].toFixed(3)} &nbsp;&nbsp; log-score(${o[1]}) = ${ls[o[1]].toFixed(3)}</div>
-   <div class=math>P(${o[0]}) = e<sup>${ls[o[0]].toFixed(2)}</sup> / (e<sup>${ls[o[0]].toFixed(2)}</sup> + e<sup>${ls[o[1]].toFixed(2)}</sup>) = ${ea.toFixed(3)} / ${(ea+eb).toFixed(3)} = <b>${r.p[o[0]].toFixed(3)}</b></div>
-   <p>Answer: <b class=${r.answer===q.correct?"ok":"bad"}>${r.answer}</b> · correct is <b>${q.correct}</b> → P(correct) = <b>${pct(r.p[q.correct],1)}</b>${r.option_ids?`<br><span class=mut>token ids counted for each option (A, " A", a, " a"): ${esc(JSON.stringify(r.option_ids))}</span>`:""}</p></div>
-   <div class=card><h3>④ Average both answer orders</h3>${r2?`<div class=math>p<sub>true</sub> = ½ [ ${pct(r.p[q.correct],1)} (${q.options.join(" or ")}) + ${pct(r2.p[pair.correct],1)} (${pair.options.join(" or ")}) ] = <b>${pct((r.p[q.correct]+r2.p[pair.correct])/2,1)}</b></div>
-    <p>${(r.p[q.correct]+r2.p[pair.correct])/2<.5?'<b class=bad>Below 50%: the model names the WRONG person.</b>':'<b class=ok>Above 50%: the model names the correct person.</b>'}</p>`:`<p class=mut>Yes/No questions are asked once (one order).</p>`}
+   <div class=math>P(${o[0]}) = e<sup>${ls[o[0]].toFixed(2)}</sup> / (e<sup>${ls[o[0]].toFixed(2)}</sup> + e<sup>${ls[o[1]].toFixed(2)}</sup>) = ${ea.toFixed(3)} / ${(ea + eb).toFixed(3)} = <b>${r.p[o[0]].toFixed(3)}</b></div>
+   <p>Answer: <b class=${r.answer === q.correct ? "ok" : "bad"}>${r.answer}</b> · correct is <b>${q.correct}</b> → P(correct) = <b>${pct(r.p[q.correct], 1)}</b>${r.option_ids ? `<br><span class=mut>token ids counted for each option (A, " A", a, " a"): ${esc(JSON.stringify(r.option_ids))}</span>` : ""}</p></div>
+   <div class=card><h3>④ Average both answer orders</h3>${r2 ? `<div class=math>p<sub>true</sub> = ½ [ ${pct(r.p[q.correct], 1)} (${q.options.join(" or ")}) + ${pct(r2.p[pair.correct], 1)} (${pair.options.join(" or ")}) ] = <b>${pct((r.p[q.correct] + r2.p[pair.correct]) / 2, 1)}</b></div>
+    <p>${(r.p[q.correct] + r2.p[pair.correct]) / 2 < .5 ? '<b class=bad>Below 50%: the model names the WRONG person.</b>' : '<b class=ok>Above 50%: the model names the correct person.</b>'}</p>` : `<p class=mut>Yes/No questions are asked once (one order).</p>`}
     <p class=mut>Why read probabilities? Deterministic (the live run matches the recorded run), no text parsing, and graded confidence instead of right/wrong.</p></div></div>`;
 }
-
-// ------------------------------------------------------------------ 5 score
-function q(question,cond,order){return I().queries.find(x=>x.question===question&&x.condition===cond&&(order==null||x.order===order))}
-async function stepScore(){
-  const it=I(),need=it.queries.filter(x=>["q4","q2","q2_foil","q3"].includes(x.question)),missing=need.filter(x=>!S.res[x.qid]);
-  if(missing.length){
-    $("main").innerHTML=`<h2>Step 5 · Score this image</h2><div class=card><p>${missing.length} queries have not been run yet.</p><button class=btn id=go>▶ Run them now</button><div class=progress><i id=pbar></i></div></div>`;
-    $("go").onclick=async()=>{$("go").disabled=true;let k=0;await runQueries(missing,()=>{$("pbar").style.width=(100*++k/missing.length)+"%"});stepScore()};if(location.hash.includes("auto"))$("go").click();return;
-  }
-  const P=c=>{const a=S.res[q("q4",c,0).qid],b=S.res[q("q4",c,1).qid];return(a.p[q("q4",c,0).correct]+b.p[q("q4",c,1).correct])/2};
-  const pt=Object.fromEntries(CONDS.map(c=>[c,P(c)]));
-  const n0=q("q4","none",0),n1=q("q4","none",1),none_ok=S.res[n0.qid].answer===n0.correct&&S.res[n1.qid].answer===n1.correct;
-  const q2n=S.res[q("q2","none").qid],q2ok=q2n.answer==="Yes",comp=none_ok&&q2ok;
-  const q2l=S.res[q("q2","contra_4").qid],q3l=S.res[q("q3","contra_4").qid],foil=S.res[q("q2_foil","none").qid];
-  const flipped=CONDS.filter(c=>c.startsWith("contra")&&pt[c]<.5);
-  $("main").innerHTML=`<h2>Step 5 · Score: what happened to this image</h2>
-  <div class=say><b>Say:</b> “We only count an image if the model gets it right with no caption, in both orders; you can’t be fooled about something you never knew. Then a caption ‘wins’ when the probability for the true person drops below 50%: a <b>reassignment</b>.”</div>
-  <div class="grid g64"><div class=card><h3>p<sub>true</sub> per caption: probability for the correct person, both orders averaged</h3>
-   ${hbars(CONDS.map(c=>({label:NICE[c],v:pt[c],color:pt[c]>=.5?"#1F6FB5":"#E31C24"})),{mid:true,ml:160,rh:36})}
-   ${it.captions.filter(c=>c.text).map(c=>`<div class=mut>${NICE[c.cond]}: “${esc(c.text)}”</div>`).join("")}</div>
-  <div><div class=card style="margin-bottom:12px"><h3>① Competence check</h3>
-   <div>${none_ok?"✅":"❌"} Q4 correct with no caption, both orders (${pct(S.res[n0.qid].p[n0.correct])}, ${pct(S.res[n1.qid].p[n1.correct])})</div>
-   <div>${q2ok?"✅":"❌"} Q2 “Is anyone ${esc(it.ing)}…?” with no caption → ${q2n.answer}</div>
-   <p style="margin:8px 0 0">${comp?'<b class=ok>Counts</b> for this model (in the competence set).':'<b class=bad>Not counted</b>: the model did not know the answer without a caption. Pick a “⚠ fooled” image to show the effect.'}</p></div>
-   <div class=card style="margin-bottom:12px"><h3>② Verdict</h3><p style="font-size:17px;margin:0">${flipped.length?`The lie <b class=bad>won</b> at: ${flipped.map(c=>NICE[c]).join(", ")}.`:`<b class=ok>The model resisted every false caption.</b>`}</p></div>
-   <div class=card><h3>③ Seeing vs noticing (with the “verified” lie)</h3>
-    <div class=badge style="background:${q2l.answer==="Yes"?"var(--tint)":"var(--rt)"}"><b>Q2</b> Is anyone ${esc(it.ing)} …? → <b>${q2l.answer}</b> (${pct(q2l.p.Yes)} yes)<br><span class=mut>${q2l.answer==="Yes"?"It still SEES the action: perception intact.":"It no longer reports the action."}</span></div>
-    <div class=badge style="background:var(--tint)"><b>Q2 foil</b> absent action → <b>${foil.answer}</b> <span class=mut>(“No” = not a yes-bias)</span></div>
-    <div class=badge style="background:${q3l.answer==="Yes"?"var(--rt)":"var(--tint)"}"><b>Q3</b> Does the caption match? → <b>${q3l.answer}</b> (${pct(q3l.p.Yes)} yes)<br><span class=mut>${q3l.answer==="Yes"?"It did NOT notice the lie.":"It noticed the conflict."}</span></div></div></div></div>
-  <div class=card style="margin-top:14px"><h3>Try your own caption</h3><div style="display:flex;gap:10px"><input type=text id=cap placeholder="e.g. Person ${it.actor==="A"?"B":"A"} is clearly ${esc(it.action)}."><button class=btn id=capgo>Run (both orders)</button></div><div id=capout style="margin-top:10px"></div></div>`;
-  $("capgo").onclick=async()=>{const c=$("cap").value.trim();if(!c)return;$("capout").textContent="running…";
-    const a=await api("/api/ask",{item:it.id,custom:c,order:0});if(a.error){$("capout").textContent=a.error;return}
-    const b=await api("/api/ask",{item:it.id,custom:c,order:1});const p=(a.p[a.correct]+b.p[b.correct])/2;
-    $("capout").innerHTML=hbars([{label:"your caption",v:p,color:p>=.5?"#1F6FB5":"#E31C24"}],{mid:true,ml:160,rh:36})+`<p>${p<.5?'<b class=bad>The caption won</b>: the model now names the wrong person.':'<b class=ok>The model kept the correct person.</b>'}</p>`};
+function findQuery(question, cond, order) {
+    return currentItem().queries.find(x => x.question === question && x.condition === cond && (order == null || x.order === order));
 }
-
-// ------------------------------------------------------------------ 6 dataset
-async function stepDataset(){
-  const m=S.state.model;if(!S.ds[m])S.ds[m]=await api("/api/dataset?model="+m);const d=S.ds[m];
-  const get=(ds,c)=>d.rr.find(r=>r.dataset===ds&&r.condition===c)||{};
-  const ser=(ds,col)=>({name:ds,color:col,y:CONDS.map(c=>get(ds,c).RR),lo:CONDS.map(c=>get(ds,c).lo),hi:CONDS.map(c=>get(ds,c).hi)});
-  const h1=d.h1.filter(r=>r.test==="contra_2"&&r.ref==="none");
-  const lv=["neutral","contra_1","contra_2","contra_3","contra_4"],lc={neutral:"#888",contra_1:"#9CC9EC",contra_2:"#4F95D6",contra_3:"#1F5FA8",contra_4:"#101141"};
-  const post=ds=>{const rows=lv.map(c=>{const b=d.bayes.find(r=>r.dataset===ds&&r.condition===c);return b?{name:NICE[c],alpha:b.alpha,beta:b.beta,color:lc[c]}:null}).filter(Boolean);
-    const cs=betaCurves(rows);return lineChart({w:520,h:230,labels:[...Array(301).keys()].map(i=>(i/300).toFixed(1)),every:60,dots:false,series:cs.map(c=>({name:c.name,color:c.color,y:c.y,width:2})),ymin:0,ymax:1,yfmt:()=>"",xlab:"reassignment rate θ"})};
-  const n=ds=>get(ds,"none").n;
-  const cmp=["qwen2.5-vl-3b","smolvlm2-2.2b","llava-ov-0.5b"];
-  $("main").innerHTML=`<h2>Step 6 · From one image to the whole dataset (${m})</h2>
-  <div class=say><b>Say:</b> “Now the same scoring over every image, from the recorded full run: ~30,000 queries per model. The reassignment rate rises with the confidence of the lie. We test it with paired McNemar tests, a GEE logistic regression and a Bayesian model.”</div>
+async function stepScore() {
+    const it = currentItem(), need = it.queries.filter(x => ["q4", "q2", "q2_foil", "q3"].includes(x.question)), missing = need.filter(x => !demo.answers[x.qid]);
+    if (missing.length) {
+        $("main").innerHTML = `<h2>Step 5 · Score this image</h2><div class=card><p>${missing.length} queries have not been run yet.</p><button class=btn id=go>▶ Run them now</button><div class=progress><i id=pbar></i></div></div>`;
+        $("go").onclick = async () => {
+            $("go").disabled = true;
+            let k = 0;
+            await runQueries(missing, () => {
+                $("pbar").style.width = (100 * ++k / missing.length) + "%";
+            });
+            stepScore();
+        };
+        if (location.hash.includes("auto"))
+            $("go").click();
+        return;
+    }
+    const P = c => {
+        const a = demo.answers[findQuery("q4", c, 0).qid], b = demo.answers[findQuery("q4", c, 1).qid];
+        return (a.p[findQuery("q4", c, 0).correct] + b.p[findQuery("q4", c, 1).correct]) / 2;
+    };
+    const pt = Object.fromEntries(CONDS.map(c => [c, P(c)]));
+    const n0 = findQuery("q4", "none", 0), n1 = findQuery("q4", "none", 1), none_ok = demo.answers[n0.qid].answer === n0.correct && demo.answers[n1.qid].answer === n1.correct;
+    const q2n = demo.answers[findQuery("q2", "none").qid], q2ok = q2n.answer === "Yes", comp = none_ok && q2ok;
+    const q2l = demo.answers[findQuery("q2", "contra_4").qid], q3l = demo.answers[findQuery("q3", "contra_4").qid], foil = demo.answers[findQuery("q2_foil", "none").qid];
+    const flipped = CONDS.filter(c => c.startsWith("contra") && pt[c] < .5);
+    $("main").innerHTML = `<h2>Step 5 · Score: what happened to this image</h2>
+  <div class="grid g64"><div class=card><h3>p<sub>true</sub> per caption: probability for the correct person, both orders averaged</h3>
+   ${horizontalBars(CONDS.map(c => ({ label: NICE[c], v: pt[c], color: pt[c] >= .5 ? "#1F6FB5" : "#E31C24" })), { mid: true, ml: 160, rh: 36 })}
+   ${it.captions.filter(c => c.text).map(c => `<div class=mut>${NICE[c.cond]}: “${esc(c.text)}”</div>`).join("")}</div>
+  <div><div class=card style="margin-bottom:12px"><h3>① Competence check</h3>
+   <div>${none_ok ? "✅" : "❌"} Q4 correct with no caption, both orders (${pct(demo.answers[n0.qid].p[n0.correct])}, ${pct(demo.answers[n1.qid].p[n1.correct])})</div>
+   <div>${q2ok ? "✅" : "❌"} Q2 “Is anyone ${esc(it.ing)}…?” with no caption → ${q2n.answer}</div>
+   <p style="margin:8px 0 0">${comp ? '<b class=ok>Counts</b> for this model (in the competence set).' : '<b class=bad>Not counted</b>: the model did not know the answer without a caption. Pick a “⚠ fooled” image to show the effect.'}</p></div>
+   <div class=card style="margin-bottom:12px"><h3>② Verdict</h3><p style="font-size:17px;margin:0">${flipped.length ? `The lie <b class=bad>won</b> at: ${flipped.map(c => NICE[c]).join(", ")}.` : `<b class=ok>The model resisted every false caption.</b>`}</p></div>
+   <div class=card><h3>③ Seeing vs noticing (with the “verified” lie)</h3>
+    <div class=badge style="background:${q2l.answer === "Yes" ? "var(--tint)" : "var(--rt)"}"><b>Q2</b> Is anyone ${esc(it.ing)} …? → <b>${q2l.answer}</b> (${pct(q2l.p.Yes)} yes)<br><span class=mut>${q2l.answer === "Yes" ? "It still SEES the action: perception intact." : "It no longer reports the action."}</span></div>
+    <div class=badge style="background:var(--tint)"><b>Q2 foil</b> absent action → <b>${foil.answer}</b> <span class=mut>(“No” = not a yes-bias)</span></div>
+    <div class=badge style="background:${q3l.answer === "Yes" ? "var(--rt)" : "var(--tint)"}"><b>Q3</b> Does the caption match? → <b>${q3l.answer}</b> (${pct(q3l.p.Yes)} yes)<br><span class=mut>${q3l.answer === "Yes" ? "It did NOT notice the lie." : "It noticed the conflict."}</span></div></div></div></div>
+  <div class=card style="margin-top:14px"><h3>Try your own caption</h3><div style="display:flex;gap:10px"><input type=text id=cap placeholder="e.g. Person ${it.actor === "A" ? "B" : "A"} is clearly ${esc(it.action)}."><button class=btn id=capgo>Run (both orders)</button></div><div id=capout style="margin-top:10px"></div></div>`;
+    $("capgo").onclick = async () => {
+        const c = $("cap").value.trim();
+        if (!c)
+            return;
+        $("capout").textContent = "running…";
+        const a = await requestJson("/api/ask", { item: it.id, custom: c, order: 0 });
+        if (a.error) {
+            $("capout").textContent = a.error;
+            return;
+        }
+        const b = await requestJson("/api/ask", { item: it.id, custom: c, order: 1 });
+        const p = (a.p[a.correct] + b.p[b.correct]) / 2;
+        $("capout").innerHTML = horizontalBars([{ label: "your caption", v: p, color: p >= .5 ? "#1F6FB5" : "#E31C24" }], { mid: true, ml: 160, rh: 36 }) + `<p>${p < .5 ? '<b class=bad>The caption won</b>: the model now names the wrong person.' : '<b class=ok>The model kept the correct person.</b>'}</p>`;
+    };
+}
+async function stepDataset() {
+    const m = demo.state.model;
+    if (!demo.datasetStats[m])
+        demo.datasetStats[m] = await requestJson("/api/dataset?model=" + m);
+    const d = demo.datasetStats[m];
+    const get = (ds, c) => d.rr.find(r => r.dataset === ds && r.condition === c) || {};
+    const ser = (ds, col) => ({ name: ds, color: col, y: CONDS.map(c => get(ds, c).RR), lo: CONDS.map(c => get(ds, c).lo), hi: CONDS.map(c => get(ds, c).hi) });
+    const h1 = d.h1.filter(r => r.test === "contra_2" && r.ref === "none");
+    const lv = ["neutral", "contra_1", "contra_2", "contra_3", "contra_4"], lc = { neutral: "#888", contra_1: "#9CC9EC", contra_2: "#4F95D6", contra_3: "#1F5FA8", contra_4: "#101141" };
+    const post = ds => {
+        const rows = lv.map(c => {
+            const b = d.bayes.find(r => r.dataset === ds && r.condition === c);
+            return b ? { name: NICE[c], alpha: b.alpha, beta: b.beta, color: lc[c] } : null;
+        }).filter(Boolean);
+        const cs = betaCurves(rows);
+        return lineChart({ w: 520, h: 230, labels: [...Array(301).keys()].map(i => (i / 300).toFixed(1)), every: 60, dots: false, series: cs.map(c => ({ name: c.name, color: c.color, y: c.y, width: 2 })), ymin: 0, ymax: 1, yfmt: () => "", xlab: "reassignment rate θ" });
+    };
+    const n = ds => get(ds, "none").n;
+    const cmp = ["qwen2.5-vl-3b", "smolvlm2-2.2b", "llava-ov-0.5b"];
+    $("main").innerHTML = `<h2>Step 6 · From one image to the whole dataset (${m})</h2>
   <div class="grid g4 kpi"><div class=card><div class=mut>competence set</div><div class=big>${n("real")} + ${n("synthetic")}</div><div class=mut>real + synthetic images scored</div></div>
-   <div class=card><div class=mut>fooled by the plain lie</div><div class=big style="color:var(--red)">${pct(get("real","contra_2").RR)}</div><div class=mut>real photos (synthetic ${pct(get("synthetic","contra_2").RR)})</div></div>
-   <div class=card><div class=mut>fooled by the “verified” lie</div><div class=big style="color:var(--red)">${pct(get("real","contra_4").RR)}</div><div class=mut>real photos (synthetic ${pct(get("synthetic","contra_4").RR)})</div></div>
+   <div class=card><div class=mut>fooled by the plain lie</div><div class=big style="color:var(--red)">${pct(get("real", "contra_2").RR)}</div><div class=mut>real photos (synthetic ${pct(get("synthetic", "contra_2").RR)})</div></div>
+   <div class=card><div class=mut>fooled by the “verified” lie</div><div class=big style="color:var(--red)">${pct(get("real", "contra_4").RR)}</div><div class=mut>real photos (synthetic ${pct(get("synthetic", "contra_4").RR)})</div></div>
    <div class=card><div class=mut>GEE: odds × per confidence step</div><div class=big>×${d.gee.real?.OR.toFixed(2)}</div><div class=mut>real [${d.gee.real?.lo}–${d.gee.real?.hi}] · synthetic ×${d.gee.synthetic?.OR.toFixed(2)} (pooled over models)</div></div></div>
-  <div class="grid g2" style="margin-top:14px"><div class=card><h3>Dose-response: reassignment rate with Wilson 95% CIs</h3>${lineChart({labels:CONDS.map(c=>NICE[c]),rot:true,mb:70,series:[ser("real","#E31C24"),ser("synthetic","#1F6FB5")],yfmt:v=>pct(v),ylab:"reassignment rate"})}</div>
+  <div class="grid g2" style="margin-top:14px"><div class=card><h3>Dose-response: reassignment rate with Wilson 95% CIs</h3>${lineChart({ labels: CONDS.map(c => NICE[c]), rot: true, mb: 70, series: [ser("real", "#E31C24"), ser("synthetic", "#1F6FB5")], yfmt: v => pct(v), ylab: "reassignment rate" })}</div>
    <div class=card><h3>H1 · McNemar paired test: no caption vs plain lie</h3><div class=math>χ² = (b − c)² / (b + c)</div><p class=mut>b = right → wrong after the caption · c = wrong → right · Holm-corrected · bootstrap CI on Δ</p>
-    <table><tr><th>data</th><th>n</th><th>b</th><th>c</th><th>RR none → plain</th><th>Δ [95% CI]</th><th>Holm p</th></tr>${h1.map(r=>`<tr><td>${r.dataset}</td><td>${r.n}</td><td>${r.b}</td><td>${r.c}</td><td>${pct(r.RR_ref)} → <b>${pct(r.RR_test)}</b></td><td>+${(r.diff*100).toFixed(0)} pp [${(r.diff_lo*100).toFixed(0)}, ${(r.diff_hi*100).toFixed(0)}]</td><td class=${r.p_holm<.05?"ok":"bad"}>${r.p_holm<.001?"< 0.001":r.p_holm?.toFixed(3)}</td></tr>`).join("")}</table>
-    <h3 style="margin-top:14px">All three models (real photos)</h3><table><tr><th>model</th><th>plain lie</th><th>“verified” lie</th></tr>${cmp.map(mm=>{const g=c=>d.compare.find(r=>r.model===mm&&r.dataset==="real"&&r.condition===c);return`<tr ${mm===m?'style="background:#eef5fb"':""}><td>${mm}</td><td>${pct(g("contra_2")?.RR)}</td><td>${pct(g("contra_4")?.RR)}</td></tr>`}).join("")}</table></div></div>
+    <table><tr><th>data</th><th>n</th><th>b</th><th>c</th><th>RR none → plain</th><th>Δ [95% CI]</th><th>Holm p</th></tr>${h1.map(r => `<tr><td>${r.dataset}</td><td>${r.n}</td><td>${r.b}</td><td>${r.c}</td><td>${pct(r.RR_ref)} → <b>${pct(r.RR_test)}</b></td><td>+${(r.diff * 100).toFixed(0)} pp [${(r.diff_lo * 100).toFixed(0)}, ${(r.diff_hi * 100).toFixed(0)}]</td><td class=${r.p_holm < .05 ? "ok" : "bad"}>${r.p_holm < .001 ? "< 0.001" : r.p_holm?.toFixed(3)}</td></tr>`).join("")}</table>
+    <h3 style="margin-top:14px">All three models (real photos)</h3><table><tr><th>model</th><th>plain lie</th><th>“verified” lie</th></tr>${cmp.map(mm => {
+        const g = c => d.compare.find(r => r.model === mm && r.dataset === "real" && r.condition === c);
+        return `<tr ${mm === m ? 'style="background:#eef5fb"' : ""}><td>${mm}</td><td>${pct(g("contra_2")?.RR)}</td><td>${pct(g("contra_4")?.RR)}</td></tr>`;
+    }).join("")}</table></div></div>
   <div class=card style="margin-top:14px"><h3>Bayesian view: posterior belief about the reassignment rate θ</h3><div class=math>θ ~ Beta(1,1) &nbsp;·&nbsp; k | θ ~ Binomial(n, θ) &nbsp;⇒&nbsp; θ | k ~ Beta(1+k, 1+n−k)</div>
    <div class="grid g2"><div><b>real photos</b>${post("real")}</div><div><b>synthetic scenes</b>${post("synthetic")}</div></div>
    <p class=mut>Each curve is what we believe about the error rate after seeing the data. Curves slide right as the lie gets more confident; narrow = many images, wide = few. P(θ<sub>verified</sub> &gt; θ<sub>neutral</sub>) = 1.00.</p></div>`;
 }
-
-// ------------------------------------------------------------------ 7 inside
-async function stepInside(){
-  if(!S.probe)S.probe=await api("/api/probe");const p=S.probe,L=p.layers;
-  const patchRows=["entity","caption_rest","question","final"],pl={entity:"caption’s “B” token",caption_rest:"rest of caption",question:"question tokens",final:"final token"};
-  const W=620,cw=(W-150)/p.patch.length;let hm="";
-  patchRows.forEach((k,ri)=>{hm+=`<text x=144 y=${ri*30+20} font-size=12 text-anchor=end>${pl[k]}</text>`;p.patch.forEach((r,ci)=>{const v=Math.max(0,Math.min(1,r[k]));hm+=`<rect x=${150+ci*cw} y=${ri*30+4} width=${cw+.5} height=26 fill="rgb(${Math.round(255-239*v)},${Math.round(255-238*v)},${Math.round(255-190*v)})"/>`})});
-  [0,10,20,30].forEach(l=>hm+=`<text x=${150+l*cw+cw/2} y=136 font-size=11 text-anchor=middle fill="#555">${l}</text>`);
-  $("main").innerHTML=`<h2>Step 7 · Inside the model: does it still know the truth? (H5)</h2>
-  <div class=say><b>Say:</b> “When the model answers wrongly, does it still know the truth internally? We read its hidden state, a 2,048-number vector at every one of 36 layers, with a logistic-regression probe. Answer: no. The lie overwrites the internal representation itself.”</div>
+async function stepInside() {
+    if (!demo.probe)
+        demo.probe = await requestJson("/api/probe");
+    const p = demo.probe, L = p.layers;
+    const patchRows = ["entity", "caption_rest", "question", "final"], pl = { entity: "caption’s “B” token", caption_rest: "rest of caption", question: "question tokens", final: "final token" };
+    const W = 620, cw = (W - 150) / p.patch.length;
+    let hm = "";
+    patchRows.forEach((k, ri) => {
+        hm += `<text x=144 y=${ri * 30 + 20} font-size=12 text-anchor=end>${pl[k]}</text>`;
+        p.patch.forEach((r, ci) => {
+            const v = Math.max(0, Math.min(1, r[k]));
+            hm += `<rect x=${150 + ci * cw} y=${ri * 30 + 4} width=${cw + .5} height=26 fill="rgb(${Math.round(255 - 239 * v)},${Math.round(255 - 238 * v)},${Math.round(255 - 190 * v)})"/>`;
+        });
+    });
+    [0, 10, 20, 30].forEach(l => hm += `<text x=${150 + l * cw + cw / 2} y=136 font-size=11 text-anchor=middle fill="#555">${l}</text>`);
+    $("main").innerHTML = `<h2>Step 7 · Inside the model: does it still know the truth? (H5)</h2>
   <div class="grid g3"><div class=card><h3>① Collect</h3>Qwen2.5-VL-3B, 352 images (152 real + 200 synthetic). For each, the last-token hidden state at all 37 layers, with <b>no caption</b> and with the <b>“definitely” lie</b>.</div>
    <div class=card><h3>② Train</h3>At each layer, a <b>logistic regression</b> learns “is the true actor A?” from the no-caption state. 5-fold <b>GroupKFold</b>: always tested on unseen images.</div>
    <div class=card><h3>③ Test on the lie</h3>Apply the same probe to the state <b>with the lie</b>, on the ${L[0].n_flipped} images whose answer flipped. Truth still readable → H5 supported. Probe reads the caption → overwritten.</div></div>
-  <div class="grid g2" style="margin-top:14px"><div class=card><h3>Probe accuracy for the TRUE actor, by layer</h3>${lineChart({labels:L.map(r=>r.layer),every:5,dots:false,hline:.5,hlabel:"chance",series:[{name:"no caption (all images)",color:"#1F6FB5",y:L.map(r=>r.acc_none)},{name:"with the lie, answer flipped",color:"#E31C24",y:L.map(r=>r.acc_contra3_flipped)}],yfmt:v=>pct(v),xlab:"decoder layer"})}
+  <div class="grid g2" style="margin-top:14px"><div class=card><h3>Probe accuracy for the TRUE actor, by layer</h3>${lineChart({ labels: L.map(r => r.layer), every: 5, dots: false, hline: .5, hlabel: "chance", series: [{ name: "no caption (all images)", color: "#1F6FB5", y: L.map(r => r.acc_none) }, { name: "with the lie, answer flipped", color: "#E31C24", y: L.map(r => r.acc_contra3_flipped) }], yfmt: v => pct(v), xlab: "decoder layer" })}
     <p><b>Blue:</b> from layer ~23 the model builds a clear “who is acting” signal (≈90%). <b>Red:</b> on flipped images the same probe reads the <i>caption’s</i> person: 22% true actor at the best layer, <b>below chance</b>. <b class=bad>H5 not supported: the truth is overwritten, not hidden.</b></p></div>
    <div class=card><h3>Live: probe <i>this</i> image</h3><p class=mut>Trained on the other 351 cached images (no-caption states only), then applied to this image’s hidden states computed right now, with no caption and with the plain lie (order A/B). Needs Qwen in live mode.</p><button class=btn id=pl>▶ Probe this image</button><div id=plout style="margin-top:10px"></div></div></div>
   <div class="grid g2" style="margin-top:14px"><div class=card><h3>Activation patching: where does the lie travel?</h3><svg viewBox="0 0 ${W} 145" width="100%">${hm}</svg><p class=mut>Copy one piece of the true-caption run into the lie run (layer × position) and measure how much of the answer is restored (dark = all of it). Route: the caption’s “B” (layers 0–15) → question tokens (18–24) → final token (27+). Blocking direct attention from the final token to “B” changes nothing.</p></div>
    <div class=card><h3>What it means</h3><ul><li>The model <b>does</b> represent who is acting (90% decodable).</li><li>A confident false caption <b>rewrites</b> that representation, so it is not a last-step output glitch.</li><li>So you cannot fix it by “reading the hidden truth”; the fix must come before the binding, e.g. checking the caption against the image first.</li></ul><p class=mut>Pre-registered rule: supported if the Wilson lower bound on flipped items &gt; 0.5. Observed 0.22 [0.15, 0.31].</p></div></div>`;
-  const show=r=>{if(r.error){$("plout").innerHTML=`<p class=bad>${esc(r.error)}</p>`;return}
-    const L2=r.layers,last=L2[L2.length-1],l25=L2[p.layer];
-    $("plout").innerHTML=lineChart({h:240,labels:L2.map(x=>x.layer),every:5,dots:false,hline:.5,series:[{name:"no caption",color:"#1F6FB5",y:L2.map(x=>x.none)},{name:"“"+r.lie_caption+"”",color:"#E31C24",y:L2.map(x=>x.lie)}],yfmt:v=>pct(v),ylab:"probe: P(true actor)",xlab:"layer"})+
-     `<p>Model’s own answer, P(true actor): no caption <b>${pct(r.answer_p_true.none)}</b> → with the lie <b class=${r.answer_p_true.lie<.5?"bad":"ok"}>${pct(r.answer_p_true.lie)}</b>.<br>Probe at layer ${p.layer}: no caption <b>${pct(l25.none)}</b> → with the lie <b class=${l25.lie<.5?"bad":"ok"}>${pct(l25.lie)}</b> ${l25.lie<.5?"(reads the caption’s person)":"(still reads the truth)"}.</p>`};
-  if(S.live)show(S.live);
-  $("pl").onclick=async()=>{$("pl").disabled=true;$("plout").textContent="computing hidden states and training 37 probes…";const r=await api("/api/probe_live",{item:I().id});if(!r.error)S.live=r;show(r);$("pl").disabled=false};
+    const show = r => {
+        if (r.error) {
+            $("plout").innerHTML = `<p class=bad>${esc(r.error)}</p>`;
+            return;
+        }
+        const L2 = r.layers, last = L2[L2.length - 1], l25 = L2[p.layer];
+        $("plout").innerHTML = lineChart({ h: 240, labels: L2.map(x => x.layer), every: 5, dots: false, hline: .5, series: [{ name: "no caption", color: "#1F6FB5", y: L2.map(x => x.none) }, { name: "“" + r.lie_caption + "”", color: "#E31C24", y: L2.map(x => x.lie) }], yfmt: v => pct(v), ylab: "probe: P(true actor)", xlab: "layer" }) +
+            `<p>Model’s own answer, P(true actor): no caption <b>${pct(r.answer_p_true.none)}</b> → with the lie <b class=${r.answer_p_true.lie < .5 ? "bad" : "ok"}>${pct(r.answer_p_true.lie)}</b>.<br>Probe at layer ${p.layer}: no caption <b>${pct(l25.none)}</b> → with the lie <b class=${l25.lie < .5 ? "bad" : "ok"}>${pct(l25.lie)}</b> ${l25.lie < .5 ? "(reads the caption’s person)" : "(still reads the truth)"}.</p>`;
+    };
+    if (demo.live)
+        show(demo.live);
+    $("pl").onclick = async () => {
+        $("pl").disabled = true;
+        $("plout").textContent = "computing hidden states and training 37 probes…";
+        const r = await requestJson("/api/probe_live", { item: currentItem().id });
+        if (!r.error)
+            demo.live = r;
+        show(r);
+        $("pl").disabled = false;
+    };
 }
 boot();
 </script>
